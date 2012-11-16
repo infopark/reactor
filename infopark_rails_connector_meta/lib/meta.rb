@@ -1,0 +1,8 @@
+require 'meta/eager_loader'
+require 'meta/base'
+require 'meta/obj_class'
+require 'meta/attribute'
+require 'meta/object_with_meta_data'
+require 'meta/content'
+require 'meta/version'
+require 'meta/blob_mapping'

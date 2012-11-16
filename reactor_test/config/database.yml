@@ -1,0 +1,13 @@
+cms: &cms
+  adapter: mysql
+  database: reactorcm
+  username: reactorcmuser
+  password: reactorcmuser
+  host: linux-sles11-tomek
+  reconnect: true
+
+test:
+  <<: *cms
+
+development:
+  <<: *cms

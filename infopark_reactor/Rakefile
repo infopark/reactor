@@ -1,0 +1,25 @@
+require 'bundler'
+#require 'yard'
+Bundler::GemHelper.install_tasks
+
+#YARD::Rake::YardocTask.new do |t|
+#  t.files   = ['lib/**/*.rb']   # optional
+##  t.options = ['--any', '--extra', '--opts'] # optional
+#end
+
+
+# remove this task, when this gem is distributed as a `real` gem (and not included in Gemfile through `:path =>` )
+task :update_gemspec_for_distribution do
+
+  fn = Dir[File.expand_path('../*.gemspec', __FILE__)].first
+  source_gemspec = File.read(fn)
+
+  source_gemspec.gsub!(/^([\t ]*)((s.files\s*=)[^\n]+\n)/m) {|s| "#{$1}##{$2}#{$1}#{$3} #{`git ls-files`.split("\n").inspect}\n"}
+  source_gemspec.gsub!(/^([\t ]*)((s.test_files\s*=)[^\n]+\n)/m) {|s| "#{$1}##{$2}#{$1}#{$3} #{`git ls-files -- {test,spec,features}/*`.split("\n").inspect}\n"}
+  source_gemspec.gsub!(/^([\t ]*)((s.executables\s*=)[^\n]+\n)/m) {|s| "#{$1}##{$2}#{$1}#{$3} #{`git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }.inspect}\n"}
+
+  File.open("#{fn}.resolved", 'w') do |f|
+    f.write source_gemspec
+  end
+
+end

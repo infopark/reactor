@@ -1,0 +1,8 @@
+Description:
+    Creates CM Migration with given name. Name should be CamelCased.
+
+Example:
+    rails g cm:migration MigrationName
+
+    This will create:
+        cm/migration/[timestamp]_migration_name.rb

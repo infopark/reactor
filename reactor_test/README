@@ -1,0 +1,26 @@
+    ./share/createInstance/createInstance
+    instance name: reactor
+    port: 6000
+
+    ./bin/CM -unrailsify
+    ./bin/CM -railsify
+
+
+    ./bin/CM -single
+    group create name not_root_group
+    user create login not_root defaultGroup not_root_group
+    user withLogin not_root set password not_root
+    obj withPath / permission permissionCreateChildren grantTo not_root_group
+    clearUsermanCache
+
+---
+    bundle exec rake spec
+
+#TEST ALL SUPPORTED VERSIONS:
+
+    bundle exec rake appraisal:install
+    bundle exec rake appraisal spec
+
+#WARNING!
+
+Running appraisal requires changes to Gemfile, as the path to gems is hardcoded.

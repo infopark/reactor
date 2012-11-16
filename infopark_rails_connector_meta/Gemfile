@@ -1,0 +1,4 @@
+source "http://rubygems.org"
+
+# Specify your gem's dependencies in infopark_rails_connector_meta.gemspec
+gemspec

@@ -1,0 +1,9 @@
+nbproject
+reactor_test/config/license.xml
+supported/*.gem
+.bundle
+.rvmrc
+infopark_rails_connector_meta/TEST/*
+releases/*
+reactor_test/config/initializers/reactor.rb
+supported/*

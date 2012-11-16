@@ -1,0 +1,44 @@
+IRC_VERSIONS = %w|6.8.0.beta.97.da30a7c 6.8.0.beta.63.67d2581|
+
+IRC_VERSIONS.each do |version|
+  appraise "infopark_rails_connector-#{version}" do
+    gem "infopark_rails_connector", "#{version}"
+    gem "rails", "3.0.10"
+  end
+end
+
+appraise "infopark_rails_connector-6.8.0.beta.200.121.856b3bf" do
+  gem "infopark_rails_connector", "6.8.0.beta.200.121.856b3bf"
+  gem "infopark_fiona_connector", "6.8.0.beta.200.121.856b3bf"
+  gem "rails", "3.0.10"
+end
+
+appraise "infopark_rails_connector-6.8.0.beta.200.475.e6438f7" do
+  gem "infopark_rails_connector", "6.8.0.beta.200.475.e6438f7"
+  gem "infopark_fiona_connector", "6.8.0.beta.200.475.e6438f7"
+  gem "rails", "3.1.3"
+end
+
+appraise "infopark_rails_connector-6.8.0.beta.200.165.bf42591" do
+  gem "infopark_rails_connector", "6.8.0.beta.200.165.bf42591"
+  gem "infopark_fiona_connector", "6.8.0.beta.200.165.bf42591"
+  gem "rails", "3.1.3"
+end
+
+appraise "infopark_rails_connector-6.8.0.beta.200.589.a0837cd" do
+  gem "infopark_rails_connector", "6.8.0.beta.200.589.a0837cd"
+  gem "infopark_fiona_connector", "6.8.0.beta.200.589.a0837cd"
+  gem "rails", "3.1.5"
+end
+
+appraise "infopark_rails_connector-6.8.0.beta.200.761.8cc6da0" do
+  gem "infopark_rails_connector", "6.8.0.beta.200.761.8cc6da0"
+  gem "infopark_fiona_connector", "6.8.0.beta.200.761.8cc6da0"
+  gem "rails", "3.2.9"
+end
+
+appraise "infopark_rails_connector-6.8.0.110.6570b45" do
+  gem 'infopark_rails_connector', '6.8.0.110.6570b45'
+  gem 'infopark_fiona_connector', '6.8.0.110.6570b45'
+  gem 'rails', '3.2.9'
+end
