@@ -1,7 +1,5 @@
 # How to use it #
 Just put this in your `Gemfile`:
-
-    source 'https://gems.gemfury.com/zi36d2GTfopPGA8ZGqpx/'
     
     gem "infopark_reactor"
 
