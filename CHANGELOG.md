@@ -1,3 +1,6 @@
+## 1.5.1
+* Open source edition
+
 ## Reactor 1.3.2
 * Fix a bug in `#super_objects` occuring for objects without super links
 * Support for Rails 3.2.8
