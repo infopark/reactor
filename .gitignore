@@ -7,3 +7,4 @@ infopark_rails_connector_meta/TEST/*
 releases/*
 reactor_test/config/initializers/reactor.rb
 supported/*
+vagrant/*
