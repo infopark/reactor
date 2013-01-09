@@ -1,3 +1,6 @@
+## 1.5.2
+Security update
+
 ## 1.5.1
 * Open source edition
 
