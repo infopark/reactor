@@ -7,6 +7,7 @@ end
 
 shared_examples "attribute type reader" do
   it { obj.send(:attribute_type, attr).should == type }
+  it { obj.send(:attribute_type, :channels).should == :multienum }
 end
 
 describe "Brand new TestClassWithCustomAttributes" do

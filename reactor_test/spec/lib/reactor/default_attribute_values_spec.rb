@@ -3,6 +3,10 @@ require 'spec_helper'
 describe "Default attribute values" do
   subject { TestClassWithCustomAttributes.new }
 
+  describe 'channels' do
+    specify { subject.channels.should eq([]) }
+  end
+
   describe 'date' do
     specify { subject.test_attr_date.should eq(nil) }
   end

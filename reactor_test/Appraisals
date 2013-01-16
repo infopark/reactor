@@ -3,42 +3,45 @@ IRC_VERSIONS = %w|6.8.0.beta.97.da30a7c 6.8.0.beta.63.67d2581|
 IRC_VERSIONS.each do |version|
   appraise "infopark_rails_connector-#{version}" do
     gem "infopark_rails_connector", "#{version}"
-    gem "rails", "3.0.10"
+    gem "rails", "3.0.19"
   end
 end
 
 appraise "infopark_rails_connector-6.8.0.beta.200.121.856b3bf" do
   gem "infopark_rails_connector", "6.8.0.beta.200.121.856b3bf"
   gem "infopark_fiona_connector", "6.8.0.beta.200.121.856b3bf"
-  gem "rails", "3.0.10"
+  gem "rails", "3.0.19"
 end
 
 appraise "infopark_rails_connector-6.8.0.beta.200.475.e6438f7" do
   gem "infopark_rails_connector", "6.8.0.beta.200.475.e6438f7"
   gem "infopark_fiona_connector", "6.8.0.beta.200.475.e6438f7"
-  gem "rails", "3.1.3"
+  gem "rails", "3.1.10"
 end
 
 appraise "infopark_rails_connector-6.8.0.beta.200.165.bf42591" do
   gem "infopark_rails_connector", "6.8.0.beta.200.165.bf42591"
   gem "infopark_fiona_connector", "6.8.0.beta.200.165.bf42591"
-  gem "rails", "3.1.3"
+  gem "rails", "3.1.10"
 end
 
-appraise "infopark_rails_connector-6.8.0.beta.200.589.a0837cd" do
-  gem "infopark_rails_connector", "6.8.0.beta.200.589.a0837cd"
-  gem "infopark_fiona_connector", "6.8.0.beta.200.589.a0837cd"
-  gem "rails", "3.1.5"
-end
+# appraise "infopark_rails_connector-6.8.0.beta.200.621.4c8e1b0" do
+#   gem "infopark_rails_connector", "6.8.0.beta.200.621.4c8e1b0"
+#   gem "infopark_fiona_connector", "6.8.0.beta.200.621.4c8e1b0"
+#   gem "rails", "3.1.10"
+# end
 
 appraise "infopark_rails_connector-6.8.0.beta.200.761.8cc6da0" do
   gem "infopark_rails_connector", "6.8.0.beta.200.761.8cc6da0"
   gem "infopark_fiona_connector", "6.8.0.beta.200.761.8cc6da0"
-  gem "rails", "3.2.9"
+  # Please install the mysql adapter: `gem install activerecord-mysql-adapter` (can't activate mysql (~> 2.8.1), already activated mysql-2.9.0. Make sure all dependencies are added to Gemfile.)
+  gem "mysql", "~> 2.8.1"
+  gem "rails", "3.2.11"
 end
 
-appraise "infopark_rails_connector-6.8.0.110.6570b45" do
-  gem 'infopark_rails_connector', '6.8.0.110.6570b45'
-  gem 'infopark_fiona_connector', '6.8.0.110.6570b45'
-  gem 'rails', '3.2.9'
+appraise "infopark_rails_connector-6.8.0.539.9384252" do
+  gem 'infopark_rails_connector', '6.8.0.539.93842523'
+  gem 'infopark_fiona_connector', '6.8.0.539.93842523'
+  gem "mysql", "~> 2.8.1"
+  gem 'rails', '3.2.11'
 end

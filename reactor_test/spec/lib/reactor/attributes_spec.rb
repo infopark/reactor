@@ -30,6 +30,18 @@ describe Reactor::Attributes do
       end
     end
 
+    describe "#channels=" do
+      it "sets channels" do
+        obj.channels = ["my.simple.channel"]
+        obj.channels.should == ["my.simple.channel"]
+      end
+
+      it "propagates the value to [:channels]" do
+        obj.channels = ["my.simple.channel"]
+        obj[:channels].should == ["my.simple.channel"]
+      end
+    end
+
     describe "#title=" do
       it "sets title" do
         obj.title = "new title"

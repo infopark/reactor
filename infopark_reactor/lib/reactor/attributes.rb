@@ -196,6 +196,14 @@ module Reactor
         set(:title, value)
       end
 
+      def channels=(value)
+        set(:channels, value)
+      end
+
+      def channels
+        self[:channels] || []
+      end
+
       # Sets given attribute, to given value. Converts values if neccessary
       # @see [Reactor::Attributes]
       # @note options are passed to underlying xml interface, but as of now have no effect
@@ -251,7 +259,7 @@ module Reactor
       end
 
       def builtin_attr?(attr)
-        [:valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :permalink, :title].include?(attr)
+        [:channels, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :permalink, :title].include?(attr)
       end
 
       def allowed_attr?(attr)
@@ -331,6 +339,7 @@ module Reactor
         return :html if [:body, :blob, :main_content].include?(attr.to_sym)
         return :date if [:valid_from, :valid_until, :last_changed].include?(attr.to_sym)
         return :string if [:name, :title, :obj_class, :permalink].include?(attr.to_sym)
+        return :multienum if [:channels].include?(attr.to_sym)
 
         custom_attr = self.obj_class_def.try(:custom_attributes).try(:[],attr.to_s)
         raise TypeError, "obj_class_def is nil for: #{obj_class}" if self.obj_class_def.nil?

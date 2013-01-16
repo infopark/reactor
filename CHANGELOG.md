@@ -1,3 +1,6 @@
+## 1.6.0
+Support for channels in reactor, migrations and meta
+
 ## 1.5.2
 Security update
 

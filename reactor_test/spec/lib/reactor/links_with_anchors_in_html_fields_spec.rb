@@ -18,7 +18,8 @@ describe "Links with anchors in html fields", :type => :routing do
     end
 
     it "link is stored properly with anchor" do
-      @obj.text_links.should_not be_empty
+      # @obj.text_links.should_not be_empty
+      @obj.text_links.empty?.should be_false
       @obj.text_links.first.fragment.should eq(@anchor)
       @obj.text_links.first.search.should eq(@GET)
     end
@@ -38,7 +39,8 @@ describe "Links with anchors in html fields", :type => :routing do
     end
 
     it "link is stored properly with anchor" do
-      @obj.text_links.should_not be_empty
+      # @obj.text_links.should_not be_empty
+      @obj.text_links.empty?.should be_false
       @obj.text_links.first.fragment.should eq(@anchor)
     end
   end
@@ -59,7 +61,8 @@ describe "Links with anchors in html fields", :type => :routing do
     end
 
     it "link is stored properly with anchor" do
-      @obj.text_links.should_not be_empty
+      # @obj.text_links.should_not be_empty
+      @obj.text_links.empty?.should be_false
       @obj.text_links.first.fragment.should eq(@anchor)
       @obj.text_links.first.search.should eq('test=true&test2=false')
     end

@@ -530,7 +530,13 @@ describe Reactor::Persistence do
   end
 
   describe '#save!' do
-    pending
+    after { @obj.destroy }
+    it "stores channels" do
+      @obj = Obj.create(:name => 'channels_test', :parent => '/', :obj_class => 'PlainObjClass')
+      @obj.channels = "my.simple.channel" # @obj.channels = ["my.simple.channel"] # is more valid!
+      @obj.save!
+      Obj.find(@obj.id).channels.should eq(['my.simple.channel'])
+    end
   end
 
   describe '#reasons_for_incomplete_state' do

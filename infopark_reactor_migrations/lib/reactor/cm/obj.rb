@@ -2,7 +2,7 @@ module Reactor
   module Cm
     class Obj
       attr_reader :obj_id
-      OBJ_ATTRS = [:permalink, :objClass, :workflowName, :name, :suppressExport, :parent]
+      OBJ_ATTRS = [:permalink, :objClass, :workflowName, :name, :suppressExport, :parent] 
       ATTR_LENGTH_CONSTRAINT = {:name => 250, :title => 250}
 
       def self.create(name, parent, objClass)

@@ -17,6 +17,7 @@ require 'reactor/cm/group'
 require 'reactor/cm/editorial_group'
 require 'reactor/cm/live_group'
 require 'reactor/cm/workflow'
+require 'reactor/cm/channel'
 
 # require main class
 require 'reactor/migration'
