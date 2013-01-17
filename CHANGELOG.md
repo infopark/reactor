@@ -1,3 +1,6 @@
+## 1.6.1
+1.6.0 release was broken, this fixes that
+
 ## 1.6.0
 Support for channels in reactor, migrations and meta
 
