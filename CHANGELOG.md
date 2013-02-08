@@ -1,3 +1,6 @@
+## 1.6.2
+Compatibility with Ruby 1.9
+
 ## 1.6.1
 1.6.0 release was broken, this fixes that
 
