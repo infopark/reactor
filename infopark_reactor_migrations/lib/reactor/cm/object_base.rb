@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/tools/xml_attributes'
 
 module Reactor

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ReactorController < ApplicationController
   def create_object
     obj_data  = params[:obj] || {}

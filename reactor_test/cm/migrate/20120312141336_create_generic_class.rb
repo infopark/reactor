@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateGenericClass < Reactor::Migration
   def self.up
     create_class :name => 'Generic', :type => 'generic'

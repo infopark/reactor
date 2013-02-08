@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateNewsPage < Reactor::Migration
   def self.up
     create_class :name => 'NewsPage', :type => 'publication' do

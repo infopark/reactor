@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'net/http'
 require 'reactor/cm/xml_response'
 require 'reactor/cm/xml_request_error'

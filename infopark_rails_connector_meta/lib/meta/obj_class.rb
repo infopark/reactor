@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module RailsConnector
 
   # This class is used to read out the custom attributes,

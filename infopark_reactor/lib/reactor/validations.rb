@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Reactor
   # This module provides standard validations for Objs (:permalink, :parent_obj_id, :name, :obj_class),
   # and presence validations for all mandatory fields.

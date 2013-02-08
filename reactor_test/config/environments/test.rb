@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 RailsConnector::Configuration.mode = :editor
 
 ReactorTest::Application.configure do

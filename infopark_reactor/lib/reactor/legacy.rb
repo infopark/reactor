@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Reactor
   # This is a collection of legacy method,s that have not found any better place to live.
   module Legacy

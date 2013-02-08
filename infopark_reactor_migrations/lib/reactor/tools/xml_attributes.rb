@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/cm/xml_attribute'
 require 'reactor/tools/response_handler/xml_attribute'
 

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateSimpleChannel < Reactor::Migration
   def self.up
     create_channel :name => 'my.simple.channel' do

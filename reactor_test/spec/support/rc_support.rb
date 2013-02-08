@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module RCSupport
   def stub_obj(class_name, attributes={})
     stub = stub_model(class_name)

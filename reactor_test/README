@@ -24,3 +24,4 @@
 #WARNING!
 
 Running appraisal requires changes to Gemfile, as the path to gems is hardcoded.
+

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Reactor
   module Tools
     class WorkflowGenerator

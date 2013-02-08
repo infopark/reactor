@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/plans/common_attribute'
 
 module Reactor

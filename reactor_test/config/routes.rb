@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 ReactorTest::Application.routes.draw do
   controller 'test' do
     match 'test' => :test, :as => :update_ll

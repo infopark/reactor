@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/attributes/date_serializer'
 require 'reactor/attributes/html_serializer'
 require 'reactor/attributes/link_list_serializer'
@@ -134,7 +135,7 @@ module Reactor
             end
 
             # attribute readers and writers
-            #{attribute_methods}
+            #{attribute_methods.join("\n")}
 
             # parent-setting handling
             def parent=(parent_something)

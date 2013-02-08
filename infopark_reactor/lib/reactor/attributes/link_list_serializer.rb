@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/link/temporary_link'
 require 'infopark_rails_connector'
 

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Cm
   module Generators
     class MigrationGenerator < Rails::Generators::NamedBase

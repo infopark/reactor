@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class TestController < ApplicationController
   def test
     @obj = Obj.find(params[:id])

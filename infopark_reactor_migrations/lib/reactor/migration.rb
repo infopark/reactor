@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/plans/create_obj'
 require 'reactor/plans/delete_obj'
 require 'reactor/plans/update_obj'

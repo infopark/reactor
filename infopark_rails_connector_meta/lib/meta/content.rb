@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module RailsConnector
 
   # This class allows us to read out the editor of an Obj,

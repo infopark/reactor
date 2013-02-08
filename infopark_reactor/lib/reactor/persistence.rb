@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- encoding : utf-8 -*-
 module Reactor
   module Persistence
     # Provides API for writing into the Content Manager.

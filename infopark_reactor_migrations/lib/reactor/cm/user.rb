@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/cm/object_base'
 require 'reactor/configuration'
 require 'reactor/cm/language'

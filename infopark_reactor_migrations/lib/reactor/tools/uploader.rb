@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Reactor
   module Tools
     class Uploader
@@ -57,8 +58,9 @@ module Reactor
       # Stream into CM from memory. Used in cases when the file
       # has already been read into memory
       def stream_data(data, extension)
-        response, ticket_id = (Net::HTTP.new(self.class.streaming_host, self.class.streaming_port).post('/stream', data,
+        response = (Net::HTTP.new(self.class.streaming_host, self.class.streaming_port).post('/stream', data,
           {'Content-Type' => self.class.content_type_for_ext(extension)}))
+        ticket_id = response.body
 
         handle_response(response, ticket_id)
       end
@@ -75,7 +77,8 @@ module Reactor
         Net::HTTP.start(self.class.streaming_host, self.class.streaming_port) do |http|
           http.read_timeout = 60
           #http.set_debug_output $stderr
-          response, ticket_id = http.request(request)
+          response = http.request(request)
+          ticket_id = response.body
         end
 
         handle_response(response, ticket_id)

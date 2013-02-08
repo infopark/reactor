@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # @author Anton Mezin
 module RailsConnector
   class Channel < InfoparkBase

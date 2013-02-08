@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'builder'
 
 module Reactor
@@ -30,7 +31,7 @@ module Reactor
 
       def get_key_tag!(base_name, key)
         get_tag!(base_name) do |xml|
-          if key.kind_of?(Array)
+          if key.kind_of?(::Array)
             key.each {|k| xml.tag!(k.to_s) }
           else
             xml.tag!(key.to_s) ; end
@@ -56,8 +57,8 @@ module Reactor
       end
 
       def value_tag!(key, value, options = {})
-        if value.kind_of? Array then array_value_tag!(key, value, options)
-        elsif value.kind_of? Hash then hash_value_tag!(key, value)
+        if value.kind_of? ::Array then array_value_tag!(key, value, options)
+        elsif value.kind_of? ::Hash then hash_value_tag!(key, value)
         else tag!(key.to_s) { text!(value.to_s) }
         end
       end

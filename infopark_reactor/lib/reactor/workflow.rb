@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/workflow/standard'
 require 'reactor/workflow/empty'
 

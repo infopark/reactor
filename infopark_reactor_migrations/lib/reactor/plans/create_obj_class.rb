@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/plans/common_obj_class'
 
 module Reactor

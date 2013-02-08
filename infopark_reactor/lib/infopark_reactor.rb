@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # Runtime Rails version detection
 module Reactor
   def self.rails3_0?

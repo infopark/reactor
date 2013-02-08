@@ -1,4 +1,6 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/tools/response_handler/xml_attribute'
+require 'rexml/document'
 
 module Reactor
 

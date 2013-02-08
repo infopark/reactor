@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class GroupTest < Reactor::Migration
 
   def self.up

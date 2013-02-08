@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module RailsConnector
   class BlobMapping < RailsConnector::InfoparkBase
     def self.exists?

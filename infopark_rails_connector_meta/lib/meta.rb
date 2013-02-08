@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'meta/eager_loader'
 require 'meta/base'
 require 'meta/obj_class'

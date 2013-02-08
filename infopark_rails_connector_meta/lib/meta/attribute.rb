@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module RailsConnector
 
   # The methods date?, enum?, html?, linklist?, markdown?, multienum?, string? and

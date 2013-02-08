@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 def with(object)
   yield(object) if block_given? && !object.nil?
 end

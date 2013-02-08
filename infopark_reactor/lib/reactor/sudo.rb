@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Reactor
   module Sudo
     def self.su(other_user_name, &block)

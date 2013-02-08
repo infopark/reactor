@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'reactor/session'
 require 'reactor/cache/permission'
 require 'reactor/cache/user'
@@ -159,6 +160,7 @@ module Reactor
       def set(permission, groups)
         identifier = identifier(permission)
 
+        groups = [groups] if groups.kind_of?(::String)
         crul_obj.permission_set(identifier, groups)
       end
 
@@ -167,6 +169,7 @@ module Reactor
       def grant(permission, groups)
         identifier = identifier(permission)
 
+        groups = [groups] if groups.kind_of?(::String)
         crul_obj.permission_grant(identifier, groups)
       end
 
@@ -175,6 +178,7 @@ module Reactor
       def revoke(permission, groups)
         identifier = identifier(permission)
 
+        groups = [groups] if groups.kind_of?(::String)
         crul_obj.permission_revoke(identifier, groups)
       end
 
