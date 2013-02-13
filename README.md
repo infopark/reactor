@@ -21,6 +21,6 @@ Following versions of `infopark_rails_connector` and `rails` are currently suppo
      |  6.8.0.beta.200.475.e6438f7 |  3.1.10  |  6.8.0.beta.200.475.e6438f7 |
      |  6.8.0.beta.200.621.4c8e1b0 |  3.1.10  |  6.8.0.beta.200.621.4c8e1b0 |
      |  6.8.0.beta.200.761.8cc6da0 |  3.2.11  |  6.8.0.beta.200.761.8cc6da0 |
-     |  6.8.0.539.93842523         |  3.2.11  |  6.8.0.539.93842523         |
+     |  6.8.0.539.93842523         |  3.2.12  |  6.8.0.539.93842523         |
 
 Fiona versions: 6.8.0, 6.7.3 and 6.7.2 are supported.

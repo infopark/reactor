@@ -1,26 +1,26 @@
 PATH
   remote: /Users/tomasz/Projects/reactor/infopark_rails_connector_meta
   specs:
-    infopark_rails_connector_meta (1.6.1)
-      activerecord (>= 3.0.10, <= 3.2.11)
-      activesupport (>= 3.0.10, <= 3.2.11)
+    infopark_rails_connector_meta (1.6.2)
+      activerecord (>= 3.0.10, <= 3.2.12)
+      activesupport (>= 3.0.10, <= 3.2.12)
       infopark_rails_connector
 
 PATH
   remote: /Users/tomasz/Projects/reactor/infopark_reactor
   specs:
-    infopark_reactor (1.6.1)
+    infopark_reactor (1.6.2)
       infopark_rails_connector
       infopark_rails_connector_meta (>= 0.0.3)
       infopark_reactor_migrations (>= 1.2.0)
-      rails (>= 3.0.10, <= 3.2.11)
+      rails (>= 3.0.10, <= 3.2.12)
 
 PATH
   remote: /Users/tomasz/Projects/reactor/infopark_reactor_migrations
   specs:
-    infopark_reactor_migrations (1.6.1)
+    infopark_reactor_migrations (1.6.2)
       nokogiri
-      rails (>= 3.0.10, <= 3.2.11)
+      rails (>= 3.0.10, <= 3.2.12)
       term-ansicolor
 
 GEM

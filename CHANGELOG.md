@@ -1,3 +1,6 @@
+## 1.6.3
+* Support for Rails 3.2.12
+
 ## 1.6.2
 Compatibility with Ruby 1.9
 
