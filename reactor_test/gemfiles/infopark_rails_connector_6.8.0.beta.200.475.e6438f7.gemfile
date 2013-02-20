@@ -7,8 +7,8 @@ gem "infopark_reactor_migrations", :path=>"/Users/tomasz/Projects/reactor/infopa
 gem "infopark_reactor", :path=>"/Users/tomasz/Projects/reactor/infopark_reactor"
 gem "rspec-rails"
 gem "appraisal"
-gem "ruby-debug"
 gem "infopark_rails_connector", "6.8.0.beta.200.475.e6438f7"
 gem "infopark_fiona_connector", "6.8.0.beta.200.475.e6438f7"
 gem "rails", "3.1.10"
+gem "mysql"
 

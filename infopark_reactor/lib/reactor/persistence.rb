@@ -99,11 +99,11 @@ module Reactor
         crul_obj.get('hasSuperLinks') == '1'
       end
 
-      # Return an array of RailsConnector::Obj that contain a link
+      # Return an array of RailsConnector::AbstractObj that contain a link
       # to this file.
       # @raise [Reactor::Cm::XmlRequestError] generic error occoured
       def super_objects
-        RailsConnector::Obj.where(:obj_id => crul_obj.get('superObjects')).to_a
+        RailsConnector::AbstractObj.where(:obj_id => crul_obj.get('superObjects')).to_a
       end
 
       # Returns true if this object hasn't been saved yet -- that is, a record
@@ -194,7 +194,7 @@ module Reactor
         # It should excactly match ActiveRecord::Base.new in it's behavior
         # @see ActiveRecord::Base.new
         def initialize(attributes = nil, &block)
-          if !self.class.send(:attribute_methods_overriden?)
+          if true ||  !self.class.send(:attribute_methods_overriden?) # FIXME !!!!
             ignored_attributes = ignore_attributes(attributes)
             # supress block hijacking!
             super(attributes) {}
@@ -208,7 +208,7 @@ module Reactor
         # It should excactly match ActiveRecord::Base.new in it's behavior
         # @see ActiveRecord::Base.new
         def initialize(attributes = nil, options={}, &block)
-          if !self.class.send(:attribute_methods_overriden?)
+          if true ||  !self.class.send(:attribute_methods_overriden?) #FIXME !!!
             ignored_attributes = ignore_attributes(attributes)
             # supress block hijacking!
             super(attributes, options) {}
@@ -465,8 +465,9 @@ module Reactor
       end
 
       protected
+      # TODO: TESTME!!!!
       def attribute_methods_overriden?
-        self.name != 'RailsConnector::Obj'
+        self.name != 'RailsConnector::AbstractObj'
       end
     end
   end

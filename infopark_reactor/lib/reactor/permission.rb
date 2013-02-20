@@ -90,6 +90,7 @@ module Reactor
       end
 
       def ensure_create_permission_granted(obj_id)
+        raise RuntimeError, "Permission check for object with id=#{obj_id.inspect} which does not exist" unless Obj.exists?(obj_id)
         raise Reactor::NotPermitted, 'Obj lacks neccessary permissions for creation' unless Obj.find(obj_id).permission.create_children?
         return true
       end

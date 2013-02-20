@@ -24,7 +24,7 @@ So, here you have it: REACTOR, writing layer for `RailsConnector`, tightly integ
     not_a_page.release! if not_a_page.valid?(:release)
 
 All of the above are examples of what can be done with `Persistence`, `Validations`, `Attributes`. There is more:
-* all standard ActiveModel callbacks + *_release callbacks
+* all standard ActiveModel callbacks + `*_release` callbacks
 * Validations in three contexts: create, update, release
 * If something works with ActiveRecord, there is a high chance it works with REACTOR too!
 * Rails 3 API
@@ -79,7 +79,6 @@ Awesome! What is missing/WHAT I NEED TO BE AWARE OF:
 - Therefore link operations are slow. 
 - Link position cannot be directly manipulated (it is implicit through array order)
 - Validations are implemented completely in Rails, there is no call to CM, so all you TCL validation callbacks aren't executed
-- There are no validations for `enum`/`multienum` field (but mandatory fields are supported)
 - You can change the `obj_class` of an obj, but after save you should get yourself a new instance. (it's a bug of `rails_connector_meta`)
 - You have to save an object before you can upload data (i.e. upload works only on existing objects)
 
@@ -91,7 +90,8 @@ HOW TO INSTALL
 3. Add initializer for Reactor if you haven't done so already
 4. Include modules into your Obj
 
-Sample code for points 3. and 4.
+CONFIGURING CMS ACCESS
+======================
 
 **config/initializers/reactor.rb:**
 
@@ -103,6 +103,41 @@ Sample code for points 3. and 4.
       :username => 'root', # default user for all requests
       :secret => 'password' # instance secret
     }
+
+USING WITH THE NEWEST RAILS CONNECTOR
+=====================================
+
+Recent versions of Rails Connector deprecated the usage of `ObjExtenions` module. Therefore, you have to create an `Obj` model which inherits the `RailsConnector::BasicObj` class. **For best compatibility do not call that model anything other that `Obj`!
+
+**app/models/obj.rb:**
+
+    require 'meta'
+    class Obj < RailsConnector::BasicObj
+          include RailsConnector::Meta
+
+          include Reactor::Legacy::Base       # core module
+          include Reactor::Attributes::Base   # core module
+          include Reactor::Persistence::Base  # core module
+
+          include Reactor::Validations::Base  # optional module, 
+                                              #  enables Rails validations
+
+          include Reactor::Permission::Base   # optional module,
+                                              #  enables permission checking
+
+          include Reactor::Workflow::Base     # optional module,
+                                              #  enables workflow API
+
+          include Reactor::StreamingUpload::Base
+                                              # optional module,
+                                              #  enables streaming interface for
+                                              #  uploads (strongly recommended!)
+    end
+
+USING WITH OLDER RAILS CONNECTOR
+================================
+
+Older version of Rails Connector support extensions to the RailsConnector::Obj class through `ObjExtensions` module. Use following code for the best compatibility.
 
 **lib/obj_extensions.rb:**
 

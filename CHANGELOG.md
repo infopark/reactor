@@ -1,3 +1,7 @@
+## 1.7.9
+* Support for Rails 3.2.x
+* Support for newest RailsConnector: compatible with both ObjExtensions and ObjExtensions-less variants
+
 ## 1.6.3
 * Support for Rails 3.2.12
 

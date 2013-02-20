@@ -6,7 +6,7 @@ describe RailsConnector::Channel do
   subject { described_class.find(channel_name) }
 
   before(:all) do
-    @obj = RailsConnector::Obj.create(:name => 'channel_test', :parent => '/', :obj_class => 'NewsPage')
+    @obj = RailsConnector::AbstractObj.create(:name => 'channel_test', :parent => '/', :obj_class => 'NewsPage')
     @obj.channels = ['my.simple.channel']
 
     @obj.save!

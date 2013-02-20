@@ -1,5 +1,5 @@
 cms: &cms
-  adapter: mysql
+  adapter: <%= defined?(Mysql2) ? 'mysql2' : 'mysql' %>
   database: reactor
   username: reactoruser
   password: reactoruser

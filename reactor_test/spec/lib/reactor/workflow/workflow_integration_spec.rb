@@ -14,7 +14,7 @@ describe 'Reactor::Workflow' do
     @generator.generate!
 
     @obj = @generator.obj
-    @rc_obj = RailsConnector::Obj.find(@obj.obj_id)
+    @rc_obj = RailsConnector::AbstractObj.find(@obj.obj_id)
   end
 
   after do

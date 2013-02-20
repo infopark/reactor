@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rspec"
 
-  s.add_runtime_dependency "activerecord", '>= 3.0.10', '<= 3.2.12'
-  s.add_runtime_dependency "activesupport", '>= 3.0.10', '<= 3.2.12'
+  s.add_runtime_dependency "activerecord", '>= 3.0.10', '<= 3.3'
+  s.add_runtime_dependency "activesupport", '>= 3.0.10', '<= 3.3'
   s.add_runtime_dependency "infopark_rails_connector"
 end

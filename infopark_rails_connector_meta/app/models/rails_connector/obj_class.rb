@@ -25,16 +25,16 @@ module RailsConnector
       @blob_data['titles'] || {}
     end
 
-    # Returns the custom Ruby class or RailsConnector::Obj.
+    # Returns the custom Ruby class or RailsConnector::AbstractObj.
     def ruby_class
       # this must be the same algorithm that the rest of the RailsConnector uses!
-      RailsConnector::Obj.compute_type(self.name)
+      RailsConnector::AbstractObj.compute_type(self.name)
     end
 
     # Returns true, if a custom Ruby class exists.
     def has_custom_ruby_class?
-      self.ruby_class.present? && self.ruby_class != RailsConnector::Obj &&
-          self.ruby_class.ancestors.include?(RailsConnector::Obj)
+      self.ruby_class.present? && self.ruby_class != RailsConnector::AbstractObj &&
+          self.ruby_class.ancestors.include?(RailsConnector::AbstractObj)
     end
 
     # Returns the custom attributes in the form of a Hash.

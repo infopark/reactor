@@ -125,7 +125,7 @@ module Reactor
 
       def set_permissions
         # get RC object
-        @rc_obj = RailsConnector::Obj.find(@obj.obj_id)
+        @rc_obj = RailsConnector::AbstractObj.find(@obj.obj_id)
 
         # use nice API to set permissions
         @groups.each do |group|
@@ -145,7 +145,7 @@ module Reactor
       end
 
       def destroy_objs
-        RailsConnector::Obj.find_all_by_obj_class(@class_name).each(&:destroy)
+        RailsConnector::AbstractObj.find_all_by_obj_class(@class_name).each(&:destroy)
       end
 
       def destroy_obj_class

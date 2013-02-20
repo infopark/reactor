@@ -12,7 +12,7 @@ describe Obj do
     nil.should be_false   # we're off a good start
 
     # everything should be false here
-    obj = RailsConnector::Obj.where(:obj_class => 'ObjClassWithoutRubyClass').first
+    obj = RailsConnector::AbstractObj.where(:obj_class => 'ObjClassWithoutRubyClass').first
     obj.obj_class_def.has_custom_ruby_class?.should be_false
     obj.has_custom_ruby_class?.should be_false
     obj.class.is_custom_ruby_class?.should be_false
@@ -25,7 +25,7 @@ describe Obj do
   end
 
   it "should respond to obj_class_def/obj_class_definition correctly" do
-    obj = RailsConnector::Obj.where(:obj_class => 'ObjClassWithoutRubyClass').first
+    obj = RailsConnector::AbstractObj.where(:obj_class => 'ObjClassWithoutRubyClass').first
     obj.obj_class_def.name.should == 'ObjClassWithoutRubyClass'
     obj.obj_class_definition.name.should == 'ObjClassWithoutRubyClass'
 
@@ -47,8 +47,7 @@ describe RailsConnector::ObjClass do
 
   it "should serve the proper Ruby class" do
     obj_class_def = RailsConnector::ObjClass.where(:obj_class_name => 'ObjClassWithoutRubyClass').first
-    obj_class_def.ruby_class.should == RailsConnector::Obj
-    obj_class_def.ruby_class.should == ::Obj
+    obj_class_def.ruby_class.should == RailsConnector::AbstractObj.obj_class_def.ruby_class.should == ::Obj
     obj_class_def.has_custom_ruby_class?.should be_false
 
     obj2_class_def = RailsConnector::ObjClass.where(:obj_class_name => 'StandardPage').first

@@ -12,7 +12,7 @@ module Reactor
 
 end
 
-class SeedObject < RailsConnector::Obj
+class SeedObject < RailsConnector::AbstractObj
 end
 
 module RailsConnector
