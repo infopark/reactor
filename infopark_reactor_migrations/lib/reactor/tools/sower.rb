@@ -16,7 +16,7 @@ class SeedObject < RailsConnector::AbstractObj
 end
 
 module RailsConnector
-  class Obj
+  class AbstractObj
 
     attr_accessor :keep_edited
 
