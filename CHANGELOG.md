@@ -1,4 +1,7 @@
-## 1.7.9
+## 1.7.1
+* Repair rake cm:seed
+
+## 1.7.0
 * Support for Rails 3.2.x
 * Support for newest RailsConnector: compatible with both ObjExtensions and ObjExtensions-less variants
 
