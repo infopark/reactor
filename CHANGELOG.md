@@ -1,3 +1,6 @@
+## 1.7.2
+* Fix mysterious bug in meta
+
 ## 1.7.1
 * Repair rake cm:seed
 

@@ -5,7 +5,7 @@ module RailsConnector
   # mandatory attributes and titles of an Obj.
   # Warning: Dependent on the setup of your DB replication, most tables
   # with meta information will not be available on your live system!
-  class ObjClass < RailsConnector::InfoparkBase
+  class ObjClass < RailsConnector::AbstractModel
 
     self.primary_key = :obj_class_id
 

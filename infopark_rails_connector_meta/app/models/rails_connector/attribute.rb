@@ -5,7 +5,7 @@ module RailsConnector
   # text? are created by meta programming have no documentation of their own.
   # Warning: Dependent on the setup of your DB replication, most tables
   # with meta information will not be available on your live system!
-  class Attribute < RailsConnector::InfoparkBase
+  class Attribute < RailsConnector::AbstractModel
 
     # The possible types of an attribute.
     TYPES = %w{date enum html linklist markdown multienum string text}

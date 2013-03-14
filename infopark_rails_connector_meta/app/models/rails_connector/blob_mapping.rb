@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 module RailsConnector
-  class BlobMapping < RailsConnector::InfoparkBase
+  class BlobMapping < RailsConnector::AbstractModel
     def self.exists?
       self.table_exists?
     end

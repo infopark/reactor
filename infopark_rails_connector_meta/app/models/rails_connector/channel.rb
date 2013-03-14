@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 # @author Anton Mezin
 module RailsConnector
-  class Channel < InfoparkBase
+  class Channel < AbstractModel
     self.primary_key = "channel_name"
 
     def self.table_name

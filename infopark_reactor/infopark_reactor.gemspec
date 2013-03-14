@@ -21,9 +21,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib", "lib/tools"]
 
   s.add_dependency 'rails', '<= 3.3', '>= 3.0.10'
-  s.add_dependency 'infopark_reactor_migrations', '>= 1.2.0'
+  s.add_dependency 'infopark_reactor_migrations', '>= 1.7.2'
   s.add_dependency 'infopark_rails_connector'
-  s.add_dependency 'infopark_rails_connector_meta', '>= 0.0.3'
+  s.add_dependency 'infopark_rails_connector_meta', '>= 1.7.2'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'yard'
