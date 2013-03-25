@@ -48,5 +48,5 @@ appraise "infopark_rails_connector-6.8.3.174.51542603" do
   gem 'infopark_rails_connector', '6.8.3.174.51542603'
   gem 'infopark_fiona_connector', '6.8.3.174.51542603'
   gem 'mysql2'
-  gem 'rails', '3.2.12'
+  gem 'rails', '3.2.13'
 end

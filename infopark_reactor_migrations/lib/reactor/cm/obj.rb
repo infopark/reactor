@@ -21,6 +21,12 @@ module Reactor
         end
       end
 
+      def self.load(id)
+        obj = Obj.new
+        obj.instance_variable_set('@obj_id', id)
+        obj
+      end
+
       def self.get(path_or_id)
         obj = Obj.new
         obj.send(:load, path_or_id)
@@ -202,6 +208,10 @@ module Reactor
 
       def reject!
         simple_command("reject")
+      end
+
+      def revert!
+        simple_command("revert")
       end
 
       def sign!

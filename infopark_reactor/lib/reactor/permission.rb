@@ -40,6 +40,14 @@ module Reactor
         return super
       end
 
+      # Wraps around Reactor::Persistence::Base#revert! and ensures
+      # that current user has required permissions to revert the object
+      # @raise [Reactor::NotPermitted] user lacks neccessary permission
+      def revert!
+        ensure_permission_granted(:revert)
+        return super
+      end
+
       # Wraps around Reactor::Persistence::Base#edit! and ensures
       # that current user has required permissions to edit the object
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
@@ -142,6 +150,11 @@ module Reactor
 
       # @see #write?
       def take?(user = nil)
+        write?(user)
+      end
+
+      # @see #write?
+      def revert?(user = nil)
         write?(user)
       end
 

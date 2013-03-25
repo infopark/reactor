@@ -4,7 +4,7 @@ require 'spec_helper'
 describe Reactor::Cm::Group do
 
   before(:all) { 
-    @group = subject.class.create(
+    @group = described_class.create(
       :name => 'created-group', 
       :real_name => 'test real name',
       :owner => 'not_root', 

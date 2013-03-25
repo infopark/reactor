@@ -1,3 +1,6 @@
+## 1.8.0
+* Implement revert function for objects
+
 ## 1.7.2
 * Fix mysterious bug in meta
 

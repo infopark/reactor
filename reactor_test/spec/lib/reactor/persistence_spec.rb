@@ -97,6 +97,54 @@ describe Reactor::Persistence do
     end
   end
 
+  [:revert, :revert!].each do |method|
+    describe "#{method}" do
+      before do
+        @obj = TestClassWithCustomAttributes.create(:name => 'no_working_version', :parent => '/')
+      end
+      after do
+        @obj.destroy
+      end
+
+      context "object with working version" do
+        before do
+          @obj.body = 'There is no need to be afraid, Kemp. We are partners.'
+          @obj.save!
+        end
+
+        it "clears attributes" do
+          @obj.send(method)
+          @obj.body.should be_blank
+          Obj.find(@obj.obj_id).body.should be_blank
+        end
+      end
+
+      context "released object with working version" do
+        before do
+          @obj.body = '1'
+          @obj.save!
+          @obj.release!
+          @obj.body = '2'
+          @obj.save!
+        end
+
+        it "resets attributes" do
+          @obj.send(method)
+          @obj.body.should eq('1')
+        end
+      end
+
+      it "returns true" do
+        @obj.send(method).should be_true
+      end
+
+      it "reloads object" do
+        @obj.should_receive(:reload)
+        @obj.send(method)
+      end
+    end
+  end
+
   describe '#take' do
     context "user is not the editor" do
       before do

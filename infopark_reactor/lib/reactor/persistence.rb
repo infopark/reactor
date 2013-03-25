@@ -34,6 +34,23 @@ module Reactor
         return false
       end
 
+      # Removes the working version of the object,
+      # if it exists
+      # @return [true]
+      def revert
+        return revert!
+      end
+
+      # Removes the working version of the object,
+      # if it exists
+      # @return [true]
+      # @note There is no difference between #revert and #revert!
+      def revert!
+        crul_obj.revert!
+        reload
+        return true
+      end
+
       # Releases the object. Returns true on succes, can raise exceptions
       # @raise [Reactor::AlreadyReleased]
       # @raise [ActiveRecord::RecordInvalid] validations failed
@@ -157,7 +174,7 @@ module Reactor
         clear_aggregation_cache
         clear_association_cache
         fresh_object = Obj.find(self.id, options)
-        @attributes.update(fresh_object.instance_variable_get('@attributes'))
+        @attributes = fresh_object.instance_variable_get('@attributes')
         @attributes_cache = {}
         # RC reload
         @attr_values = nil
@@ -309,7 +326,8 @@ module Reactor
       end
 
       def crul_obj
-        @crul_obj ||= Reactor::Cm::Obj.get(obj_id)
+        #@crul_obj ||= Reactor::Cm::Obj.get(obj_id)
+        @crul_obj ||= Reactor::Cm::Obj.load(obj_id)
       end
 
       def crul_obj_delete
@@ -457,7 +475,6 @@ module Reactor
         end
 
         instance = self.create!(attributes)# do |instance|
-          #debugger
           instance.upload(data_or_io, extension)
           instance.save!
         #end
