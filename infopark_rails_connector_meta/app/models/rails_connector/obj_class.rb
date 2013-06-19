@@ -25,6 +25,12 @@ module RailsConnector
       @blob_data['titles'] || {}
     end
 
+    # returns channel feature is_activate?
+    def can_create_news_items?
+      load_blob_data
+      @blob_data['canCreateNewsItems'].to_i != 0
+    end
+
     # Returns the custom Ruby class or RailsConnector::AbstractObj.
     def ruby_class
       # this must be the same algorithm that the rest of the RailsConnector uses!
