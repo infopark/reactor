@@ -56,6 +56,23 @@ module Reactor
 
         return get(pk_value)
       end
+
+      def exec
+        simple_commnad('exec')
+      end
+
+      def cancel
+        simple_command('cancel')
+      end
+
+      protected
+      def simple_command(cmd_name)
+        request = XmlRequest.prepare do |xml|
+          xml.where_key_tag!(self.base_name, 'name', self.name)
+          xml.tag!("#{self.base_name}-#{cmd_name}")
+        end
+        response = request.execute!
+      end
     end
   end
 end
