@@ -18,6 +18,9 @@ require 'reactor/plans/delete_group'
 require 'reactor/plans/rename_group'
 require 'reactor/plans/create_channel'
 require 'reactor/plans/delete_channel'
+require 'reactor/plans/create_job'
+require 'reactor/plans/update_job'
+require 'reactor/plans/delete_job'
 
 module Reactor
   class Migration
@@ -40,7 +43,10 @@ module Reactor
       :update_group => Plans::UpdateGroup,
       :rename_group => Plans::RenameGroup,
       :create_channel => Plans::CreateChannel,
-      :delete_channel => Plans::DeleteChannel
+      :delete_channel => Plans::DeleteChannel,
+      :create_job => Plans::CreateJob,
+      :delete_job => Plans::DeleteJob,
+      :update_job => Plans::UpdateJob
     }
 
     def self.method_missing(name, *args, &block)

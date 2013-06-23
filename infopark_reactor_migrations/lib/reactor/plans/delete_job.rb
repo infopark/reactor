@@ -1,10 +1,10 @@
 # -*- encoding : utf-8 -*-
-require 'reactor/cm/channel'
-require 'reactor/plans/common_channel'
-module Reactor
+require 'reactor/cm/job'
+require 'reactor/plans/common_job'
 
+module Reactor
   module Plans
-    class DeleteChannel < CommonChannel
+    class DeleteJob < CommonJob
       def initialize(*args)
         super()
         (name, x), options = separate_arguments(*args)
@@ -13,11 +13,11 @@ module Reactor
 
       def prepare!
         error("name is nil") if @name.nil?
-        error("channel #{@name} does not exist") if not Reactor::Cm::Channel.exists?(@name)
+        error("job #{@name} does not exist") if not Reactor::Cm::Job.exists?(@name)
       end
 
       def migrate!
-        Reactor::Cm::Channel.get(@name).delete!
+        Reactor::Cm::Job.delete!(@name)
       end
 
     end
