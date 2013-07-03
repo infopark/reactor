@@ -292,6 +292,18 @@ module Reactor
         result.kind_of?(Array) ? result.map(&:text).map(&:to_s) : [result.to_s]
       end
 
+      def workflow_comment
+        request = XmlRequest.prepare do |xml|
+          xml.tag!('content-where') do
+            xml.tag!('objectId', @obj_id)
+            xml.tag!('state', 'released')
+          end
+          xml.get_key_tag!('content', 'workflowComment')
+        end
+        response = request.execute!
+        result = response.xpath('//workflowComment/*').map {|x| x.text.to_s}.first
+      end
+
       def editor
         request = XmlRequest.prepare do |xml|
           xml.tag!('content-where') do
@@ -318,6 +330,20 @@ module Reactor
         @request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, 'id', @obj_id)
           xml.tag!("#{base_name}-#{cmd_name}")
+        end
+        response = @request.execute!
+      end
+
+      def simple_command_with_comment(cmd_name, comment=nil)
+        @request = XmlRequest.prepare do |xml|
+          xml.where_key_tag!(base_name, 'id', @obj_id)
+          if comment
+            xml.tag!("#{base_name}-#{cmd_name}") do
+              xml.tag!('comment', comment)
+            end
+          else
+            xml.tag!("#{base_name}-#{cmd_name}")
+          end
         end
         response = @request.execute!
       end

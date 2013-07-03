@@ -8,7 +8,7 @@ require 'reactor/tools/smart_xml_logger'
 module Reactor
   module Cm
 
-    if Rails.env.development? && false
+    if Rails.env.development? #&& false
       #LOGGER = SmartXmlLogger.new(Rails.logger, :debug)
       LOGGER = SmartXmlLogger.new(Kernel, :puts)
     else

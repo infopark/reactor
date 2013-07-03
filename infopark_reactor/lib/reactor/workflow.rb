@@ -15,6 +15,10 @@ module Reactor
           Empty.new(self)
         end
       end
+
+      def workflow_comment
+        crul_obj.workflow_comment
+      end
     end
   end
 end
