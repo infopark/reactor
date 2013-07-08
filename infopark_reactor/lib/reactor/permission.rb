@@ -27,7 +27,7 @@ module Reactor
       # Wraps around Reactor::Persistence::Base#release! and ensures
       # that current user has required permissions to release the object
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
-      def release!
+      def release!(*args)
         ensure_permission_granted(:release)
         return super
       end
@@ -35,7 +35,7 @@ module Reactor
       # Wraps around Reactor::Persistence::Base#take! and ensures
       # that current user has required permissions to take the object
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
-      def take!
+      def take!(*args)
         ensure_permission_granted(:take)
         return super
       end
@@ -43,7 +43,7 @@ module Reactor
       # Wraps around Reactor::Persistence::Base#revert! and ensures
       # that current user has required permissions to revert the object
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
-      def revert!
+      def revert!(*args)
         ensure_permission_granted(:revert)
         return super
       end
@@ -51,7 +51,7 @@ module Reactor
       # Wraps around Reactor::Persistence::Base#edit! and ensures
       # that current user has required permissions to edit the object
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
-      def edit!
+      def edit!(*args)
         ensure_permission_granted(:edit)
         return super
       end

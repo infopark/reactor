@@ -21,8 +21,8 @@ module Reactor
           valid_action?(action)
         end
 
-        define_method :"#{action}!" do
-          @obj.send(:crul_obj).send(:"#{action}!")
+        define_method :"#{action}!" do |*args|
+          @obj.send(:crul_obj).send(:"#{action}!", *args)
         end
       end
 

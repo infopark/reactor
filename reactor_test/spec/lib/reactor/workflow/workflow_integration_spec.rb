@@ -34,8 +34,14 @@ describe 'Reactor::Workflow' do
 
   context "Adam forwards the obj to Gert, Gert takes it" do
     before do
-      as('Adam') { @obj.forward! }
-      as('Gert') { @obj.take! }
+      as('Adam') { @obj.forward!('continue') }
+      as('Gert') { @obj.take!('got it') }
+    end
+
+    describe "workflow_comments" do
+      it "contains the last two comments" do
+        @rc_obj.workflow_comments.first(2).map(&:text).should eq(['got it', 'continue'])
+      end
     end
 
     it "Gert can commit the obj to Hans, Adam & Hans & Dirk can do only take or give" do
@@ -48,8 +54,14 @@ describe 'Reactor::Workflow' do
 
   context "Adam forwards, Gert commits" do
     before do
-      as('Adam') { @obj.forward! }
-      as('Gert') { @obj.take! ; @obj.commit! }
+      as('Adam') { @obj.forward!('done') }
+      as('Gert') { @obj.take!('picking up') ; @obj.commit!('check') }
+    end
+
+    describe "workflow_comments" do
+      it "contains the last three comments" do
+        @rc_obj.workflow_comments.first(3).map(&:text).should eq(['check', 'picking up', 'done'])
+      end
     end
 
     it "and Hans, Dirk can sign. Adam and Gert can't do anything" do
@@ -102,7 +114,13 @@ describe 'Reactor::Workflow' do
 
       context "Hans signs" do
         before do
-          as('Hans') { @rc_obj.workflow.sign! }
+          as('Hans') { @rc_obj.workflow.sign!('DONE') }
+        end
+
+        describe "workflow_comments" do
+          it "contains the last comment" do
+            @rc_obj.workflow_comments.first.text.should eq('DONE')
+          end
         end
 
         it "Dirk can release (but not sign!) and reject, others can do nothing" do

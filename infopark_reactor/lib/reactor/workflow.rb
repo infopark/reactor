@@ -16,8 +16,32 @@ module Reactor
         end
       end
 
-      def workflow_comment
-        crul_obj.workflow_comment
+      def workflow_comments
+        Reactor::Cm::LogEntry.where(:objectId => self.id).map {|entry| Comment.new(entry) }
+      end
+    end
+
+    class Comment < Struct.new(:time, :text, :type, :object_id, :receiver, :user)
+      def initialize(log_entry)
+        super(
+          parse_time(log_entry['logTime']),
+          log_entry['logText'],
+          log_entry['logType'],
+          log_entry['objectId'],
+          log_entry['receiver'],
+          log_entry['userLogin']
+        )
+      end
+
+      def object
+        ::AbstractObj.find(self.object_id)
+      end
+
+      alias obj object
+
+      protected
+      def parse_time(time)
+        Time.from_iso(time)
       end
     end
   end

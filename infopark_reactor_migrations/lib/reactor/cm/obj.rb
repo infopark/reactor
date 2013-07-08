@@ -186,36 +186,36 @@ module Reactor
       end
 
 
-      def release!
-        simple_command("release")
+      def release!(msg=nil)
+        simple_command("release",msg)
       end
 
-      def edit!
-        simple_command("edit")
+      def edit!(msg=nil)
+        simple_command("edit",msg)
       end
 
-      def take!
-        simple_command("take")
+      def take!(msg=nil)
+        simple_command("take",msg)
       end
 
-      def forward!
-        simple_command("forward")
+      def forward!(msg=nil)
+        simple_command("forward",msg)
       end
 
-      def commit!
-        simple_command("commit")
+      def commit!(msg=nil)
+        simple_command("commit",msg)
       end
 
-      def reject!
-        simple_command("reject")
+      def reject!(msg=nil)
+        simple_command("reject",msg)
       end
 
-      def revert!
-        simple_command("revert")
+      def revert!(msg=nil)
+        simple_command("revert",msg)
       end
 
-      def sign!
-        simple_command("sign")
+      def sign!(msg=nil)
+        simple_command("sign",msg)
       end
 
       def valid_actions
@@ -326,15 +326,7 @@ module Reactor
       end
 
       protected
-      def simple_command(cmd_name)
-        @request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @obj_id)
-          xml.tag!("#{base_name}-#{cmd_name}")
-        end
-        response = @request.execute!
-      end
-
-      def simple_command_with_comment(cmd_name, comment=nil)
+      def simple_command(cmd_name, comment=nil)
         @request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, 'id', @obj_id)
           if comment
