@@ -22,7 +22,7 @@ module Reactor
       # Wraps around Reactor::Persistence::Base#release! and validates object
       # in :release context before release. Raises exception when invalid.
       # @raise [ActiveRecord::RecordInvalid] validations registered for :release failed
-      def release!
+      def release!(*args)
         raise(ActiveRecord::RecordInvalid.new(self)) unless valid?(:release)
         return super
       end

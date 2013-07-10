@@ -1,6 +1,9 @@
+## 1.8.2
+* Support for worklfow comments
+
 ## 1.8.1
-Support rails connector 6.9
-Add #can_create_news_items? for ObjClass
+* Support rails connector 6.9
+* Add #can_create_news_items? for ObjClass
 
 ## 1.8.0
 * Implement revert function for objects

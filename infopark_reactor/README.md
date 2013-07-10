@@ -70,6 +70,15 @@ much more efficient than the traditional method.
 
 Permissions are checked also! And your user is automatically set according to `JSESSIONID` cookie.
 
+Workflow support is provided together with comments (just pass your comment as string to the relevant method):
+
+    obj.edit!('draft version created')
+    obj.forward!('please add your text')
+    # as other user
+    obj.take!
+    obj.release!('text added and released')
+
+
 KNOWN BUGS/ISSUES
 =================
 

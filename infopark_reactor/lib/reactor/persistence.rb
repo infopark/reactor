@@ -28,37 +28,41 @@ module Reactor
       # 2. the object has already been released
       # 3. object is invalid
       # 4. other error occoured
-      def release
-        return release!
+      # @param comment [String] comment to leave for the next user
+      def release(comment=nil)
+        return release!(comment)
       rescue Reactor::Cm::XmlRequestError, ActiveRecord::RecordInvalid, Reactor::NotPermitted, Reactor::AlreadyReleased
         return false
       end
 
       # Removes the working version of the object,
       # if it exists
+      # @param comment [String] comment to leave for the next user
       # @return [true]
-      def revert
-        return revert!
+      def revert(comment=nil)
+        return revert!(comment)
       end
 
       # Removes the working version of the object,
       # if it exists
+      # @param comment [String] comment to leave for the next user
       # @return [true]
       # @note There is no difference between #revert and #revert!
-      def revert!
-        crul_obj.revert!
+      def revert!(comment=nil)
+        crul_obj.revert!(comment)
         reload
         return true
       end
 
       # Releases the object. Returns true on succes, can raise exceptions
+      # @param comment [String] comment to leave for the next user
       # @raise [Reactor::AlreadyReleased]
       # @raise [ActiveRecord::RecordInvalid] validations failed
       # @raise [Reactor::NotPermitted] current user lacks required permissions
-      def release!
+      def release!(comment=nil)
         run_callbacks(:release) do
           raise(Reactor::AlreadyReleased) unless self.really_edited?
-          crul_obj.release!
+          crul_obj.release!(comment)
           reload
         end
         return true
@@ -70,8 +74,9 @@ module Reactor
       # 1. user lacks the permissions
       # 2. the object has not beed edited
       # 3. other error occured
-      def take
-        take!
+      # @param comment [String] comment to leave for the next user
+      def take(comment=nil)
+        take!(comment)
         return true
       rescue Reactor::Cm::XmlRequestError, Reactor::NotPermitted, Reactor::NoWorkingVersion
         return false
@@ -79,12 +84,13 @@ module Reactor
 
       # Makes the current user the editor of the object. Returns true when
       # user is already the editor or take succeded. Raises exceptions
+      # @param comment [String] comment to leave for the next user
       # @raise [Reactor::NoWorkingVersion] there is no working version of the object
       # @raise [Reactor::NotPermitted] current user lacks required permissions
-      def take!
+      def take!(comment=nil)
         raise(Reactor::NoWorkingVersion) unless self.really_edited?
         # TODO: refactor the if condition
-        crul_obj.take! if (crul_obj.editor != Reactor::Configuration::xml_access[:username])
+        crul_obj.take!(comment) if (crul_obj.editor != Reactor::Configuration::xml_access[:username])
         # neccessary to recalculate #editor
         reload
         return true
@@ -92,10 +98,11 @@ module Reactor
 
       # Creates a working version of the object. Returns true on success or when
       # the object already has a working version. Returns false when:
+      # @param comment [String] comment to leave for the next user
       # 1. user lacks the permissions
       # 2. other error occured
-      def edit
-        edit!
+      def edit(comment=nil)
+        edit!(comment)
         return true
       rescue Reactor::Cm::XmlRequestError, Reactor::NotPermitted
         return false
@@ -103,9 +110,10 @@ module Reactor
 
       # Creates a working version of the object. Returns true on success or when
       # the object already has a working version. Raises exceptions
+      # @param comment [String] comment to leave for the next user
       # @raise [Reactor::NotPermitted] current user lacks required permissions
-      def edit!
-        crul_obj.edit! unless self.really_edited?
+      def edit!(comment=nil)
+        crul_obj.edit!(comment) unless self.really_edited?
         reload
         return true
       end
