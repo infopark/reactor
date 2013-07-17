@@ -454,6 +454,17 @@ module Reactor
       def set_obj_class(obj_class)
         self.obj_class = obj_class
       end
+
+
+      # disables active record transactions
+      def with_transaction_returning_status
+        yield
+      end
+
+      # disables active record transactions
+      def rollback_active_record_state!
+        yield
+      end
     end
     module ClassMethods
       def sanitize_name(old_name)

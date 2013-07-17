@@ -1,3 +1,6 @@
+## 1.8.3
+* Workaround for ActiveRecord transaction issue
+
 ## 1.8.2
 * Support for worklfow comments
 
