@@ -28,6 +28,7 @@ module Reactor
 
       private
       def match_url
+        return {} if @url.match(/\A[a-z0-9]*:/) # ignore fully qualified urls
         relative_url_root = ENV['RAILS_RELATIVE_URL_ROOT']
         url = @url.clone
         url.gsub!(/^#{Regexp.escape(relative_url_root)}/, '') if relative_url_root.present?

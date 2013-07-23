@@ -1,3 +1,6 @@
+## 1.8.4
+* Fixed a bug in handling of external links (falsely recognized as internal links)
+
 ## 1.8.3
 * Workaround for ActiveRecord transaction issue
 

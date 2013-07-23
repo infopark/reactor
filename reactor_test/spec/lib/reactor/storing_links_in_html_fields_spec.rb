@@ -11,43 +11,115 @@ describe "in-content link persisting" do
   #use_vcr_cassette "link_persisting"
 
   shared_examples "persistent link serializer" do
+    before :all do
+      @sure_object = Obj.create!(:obj_class => 'PlainObjClass', :name => 'object_sure_to_exist', :permalink => 'object_sure_to_exist', :parent => '/')
+      @sure_image = Obj.create!(:obj_class => 'image', :name => 'image_sure_to_exist', :permalink => 'image_sure_to_exist', :parent => '/')
+    end
+    after :all do
+      @sure_object.destroy
+      @sure_image.destroy
+    end
+
     context "given a link to existing obj" do
-      it "stores an internal link" do
-        obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist">link</a> text|)
-        obj.save!
-        Obj.find(obj.id).send(attr).should match(/internallink:/)
+      context "with permalinks" do
+        it "stores an internal link" do
+          obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist">link</a> text|)
+          obj.save!
+          obj.text_links.first.destination_object.permalink.should eq('object_sure_to_exist')
+          Obj.find(obj.id).send(attr).should match(/internallink:/)
+        end
+
+
+        context "from html-safe string" do
+          it "stores an internal link" do
+            obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist">link</a> text|.html_safe)
+            obj.save!
+            obj.text_links.first.destination_object.permalink.should eq('object_sure_to_exist')
+            Obj.find(obj.id).send(attr).should match(/internallink:/)
+          end
+        end
+
+        context "given fully qualified url as image source" do
+          it "stores the url" do
+            obj.send(:"#{attr}=", %Q|<img src="http://www.page.com/object_sure_to_exist"> text|.html_safe)
+            obj.save!
+            obj.text_links.first.url.should eq('http://www.page.com/object_sure_to_exist')
+          end
+        end
+
+        context "given fully qualified url" do
+          it "stores the url" do
+            obj.send(:"#{attr}=", %Q|<a href="http://www.page.com/object_sure_to_exist">link</a> text|.html_safe)
+            obj.save!
+            obj.text_links.first.url.should eq('http://www.page.com/object_sure_to_exist')
+          end
+        end
       end
 
-      context "from html-safe string" do
+      context "given an image tag with existing obj as source" do
         it "stores an internal link" do
-          obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist">link</a> text|.html_safe)
+          obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist">|)
           obj.save!
+          obj.text_links.first.destination_object.permalink.should eq('image_sure_to_exist')
           Obj.find(obj.id).send(attr).should match(/internallink:/)
         end
       end
-    end
 
-    context "given an image tag with existing obj as source" do
-      it "stores an internal link" do
-        obj.send(:"#{attr}=", %Q|<img src="/object_sure_to_exist">|)
-        obj.save!
-        Obj.find(obj.id).send(attr).should match(/internallink:/)
+      context "given a HTML5 image tag with existing obj as source" do
+        it "stores an internal link" do
+          obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist" />|)
+          obj.save!
+          obj.text_links.first.destination_object.permalink.should eq('image_sure_to_exist')
+          Obj.find(obj.id).send(attr).should match(/internallink:/)
+        end
       end
-    end
 
-    context "given a HTML5 image tag with existing obj as source" do
-      it "stores an internal link" do
-        obj.send(:"#{attr}=", %Q|<img src="/object_sure_to_exist" />|)
-        obj.save!
-        Obj.find(obj.id).send(attr).should match(/internallink:/)
+      context "with /:id/:name" do
+        before do
+          @idname = "/#{@sure_object.id}/#{@sure_object.name}"
+          @objid = @sure_object.id
+        end
+
+        it "stores an internal link" do
+          obj.send(:"#{attr}=", %Q|<a href="#{@idname}">link</a> text|)
+          obj.save!
+          obj.text_links.first.destination_object.permalink.should eq('object_sure_to_exist')
+          Obj.find(obj.id).send(attr).should match(/internallink:/)
+        end
+
+        context "from html-safe string" do
+          it "stores an internal link" do
+            obj.send(:"#{attr}=", %Q|<a href="#{@idname}">link</a> text|.html_safe)
+            obj.save!
+            obj.text_links.first.destination_object.permalink.should eq('object_sure_to_exist')
+            Obj.find(obj.id).send(attr).should match(/internallink:/)
+          end
+        end
+
+        context "given fully qualified url as image source" do
+          it "stores the url" do
+            obj.send(:"#{attr}=", %Q|<img src="http://www.page.com#{@idname}"> text|.html_safe)
+            obj.save!
+            obj.text_links.first.url.should eq("http://www.page.com#{@idname}")
+          end
+        end
+
+        context "given fully qualified url" do
+          it "stores the url" do
+            obj.send(:"#{attr}=", %Q|<a href="http://www.page.com#{@idname}">link</a> text|.html_safe)
+            obj.save!
+            obj.text_links.first.url.should eq("http://www.page.com#{@idname}")
+          end
+        end
       end
     end
 
     context "given a malformed HTML5 image tag with existing obj as source" do
       it "stores an internal link" do
-        obj.send(:"#{attr}=", %Q|<img src="/object_sure_to_exist"/>|)
+        obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist"/>|)
         obj.save!
         Obj.find(obj.id).send(attr).should match(/internallink:/)
+        obj.text_links.should_not be_empty
       end
     end
 
@@ -56,6 +128,7 @@ describe "in-content link persisting" do
         obj.send(:"#{attr}=", %Q|<a href="/nonexistent_object">link</a> text|)
         obj.save!
         Obj.find(obj.id).send(attr).should match(/internallink:/)
+        obj.text_links.should be_empty
       end
     end
 
@@ -64,6 +137,7 @@ describe "in-content link persisting" do
         obj.send(:"#{attr}=", %Q|<img src="/nonexistent_object">|)
         obj.save!
         Obj.find(obj.id).send(attr).should match(/internallink:/)
+        obj.text_links.should be_empty
       end
     end
 
@@ -72,6 +146,7 @@ describe "in-content link persisting" do
         obj.send(:"#{attr}=", %Q|<a href="http://google.com">link</a> text|)
         obj.save!
         Obj.find(obj.id).send(attr).should match(/internallink:/) # YES! It stores external links with internallink: :-)
+        obj.text_links.should_not be_empty
       end
     end
   end
