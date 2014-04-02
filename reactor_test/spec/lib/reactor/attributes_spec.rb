@@ -13,7 +13,7 @@ describe Reactor::Attributes do
   before do
     @crul_obj = double().as_null_object
     @obj = Obj.find_by_path('/test_obj_with_custom_attributes')
-    @obj.stub!(:crul_obj).and_return(@crul_obj)
+    @obj.stub(:crul_obj).and_return(@crul_obj)
   end
 
   shared_examples "object with settable base attributes" do

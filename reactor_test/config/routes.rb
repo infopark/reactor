@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 ReactorTest::Application.routes.draw do
   controller 'test' do
-    match 'test' => :test, :as => :update_ll
+    get 'test' => :test, :as => :update_ll
   end
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -58,5 +58,12 @@ ReactorTest::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  match ':controller(/:action(/:id(.:format)))'
+  #match ':controller(/:action(/:id(.:format)))'
+  if Reactor.rails4_0?
+    # Currently broken with fiona_connector
+    # match ':controller(/:action(/:id(.:format)))', :via => :all
+    get '/whatever' => "trivial#nothing"
+  else
+    match ':controller(/:action(/:id(.:format)))'
+  end
 end

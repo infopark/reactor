@@ -229,7 +229,7 @@ module Reactor
             super(attributes)
           end
         end
-      elsif Reactor.rails3_1? || Reactor.rails3_2?
+      elsif Reactor.rails3_1? || Reactor.rails3_2? || Reactor.rails4_0?
         # It should excactly match ActiveRecord::Base.new in it's behavior
         # @see ActiveRecord::Base.new
         def initialize(attributes = nil, options={}, &block)
@@ -422,12 +422,20 @@ module Reactor
         end
       end
 
+      if Reactor.rails4_0?
+        alias_method :create_record, :create
+      end
+
       def update
          run_callbacks(:update) do
            crul_obj_save if crul_attributes_set? || crul_links_changed?
            self.reload
            self.id
          end
+      end
+
+      if Reactor.rails4_0?
+        alias_method :update_record, :update
       end
 
       def ignore_attributes(attributes)
@@ -474,6 +482,28 @@ module Reactor
                     gsub(/^_+/,'').
                     gsub(/_+$/,'')
         new_name
+      end
+
+      if Reactor.rails4_0?
+        # Detect the subclass from the inheritance column of attrs. If the inheritance column value
+        # is not self or a valid subclass, raises ActiveRecord::SubclassNotFound
+        # If this is a StrongParameters hash, and access to inheritance_column is not permitted,
+        # this will ignore the inheritance column and return nil
+        def subclass_from_attrs(attrs)
+          subclass_name = attrs.with_indifferent_access[inheritance_column]
+
+          if subclass_name.present? && subclass_name != self.name
+            subclass = subclass_name.safe_constantize
+            
+            if subclass # this if has been added
+              unless descendants.include?(subclass)
+                raise ActiveRecord::SubclassNotFound.new("Invalid single-table inheritance type: #{subclass_name} is not a subclass of #{name}")
+              end
+
+              subclass
+            end
+          end
+        end
       end
 
       # Convenience method: it is equivalent to following call chain:

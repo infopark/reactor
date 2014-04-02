@@ -30,7 +30,7 @@ describe Reactor::Persistence do
 
     context "invalid object" do
       let(:obj) { Obj.find_by_path('/invalid_object_for_release') }
-      before { obj.stub!(:valid?) { false } }
+      before { obj.stub(:valid?) { false } }
 
       it "returns false" do
         obj.release.should be_false
@@ -39,7 +39,7 @@ describe Reactor::Persistence do
 
     context "object without working version" do
       let(:obj) { Obj.find_by_path('/invalid_object_for_release') }
-      before { obj.stub!(:edited?) { false } }
+      before { obj.stub(:edited?) { false } }
 
       it "returns false" do
         obj.release.should be_false
@@ -48,7 +48,7 @@ describe Reactor::Persistence do
 
     context "user lacks permission to release the object" do
       let(:obj) { Obj.find_by_path('/invalid_object_for_release') }
-      before { obj.stub!(:permission) { double(:release? => false) } }
+      before { obj.stub(:permission) { double(:release? => false) } }
       it "returns false" do
         obj.release.should be_false
       end
@@ -72,7 +72,7 @@ describe Reactor::Persistence do
 
     context "invalid object" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub!(:valid?) { false } }
+      before { obj.stub(:valid?) { false } }
 
       it "raises RecordInvalid exception" do
         expect { obj.release! }.to raise_exception(ActiveRecord::RecordInvalid)
@@ -81,7 +81,7 @@ describe Reactor::Persistence do
 
     context "object without working version" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub!(:edited?) { false } }
+      before { obj.stub(:edited?) { false } }
 
       it "raises AlreadyReleased exception" do
         expect { obj.release! }.to raise_exception(Reactor::AlreadyReleased)
@@ -90,7 +90,7 @@ describe Reactor::Persistence do
 
     context "user lacks permission to release the object" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub!(:permission) { double(:release? => false) } }
+      before { obj.stub(:permission) { double(:release? => false) } }
       it "raises NotPermitted exception" do
         expect { obj.release! }.to raise_exception(Reactor::NotPermitted)
       end
@@ -213,7 +213,7 @@ describe Reactor::Persistence do
 
     context "the object has not been edited" do
       let(:obj) {stub_model(Obj)}
-      before { obj.stub!(:edited?) {false} }
+      before { obj.stub(:edited?) {false} }
       it "returns false" do
         obj.take.should be_false
       end
@@ -221,7 +221,7 @@ describe Reactor::Persistence do
 
     context "user lacks permission to edit the object" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub!(:permission) { double(:take? => false) } }
+      before { obj.stub(:permission) { double(:take? => false) } }
       it "returns false" do
         obj.take.should be_false
       end
@@ -296,7 +296,7 @@ describe Reactor::Persistence do
 
     context "the object has not been edited" do
       let(:obj) {stub_model(Obj)}
-      before { obj.stub!(:edited?) {false} }
+      before { obj.stub(:edited?) {false} }
       it "raises NoWorkingVersion" do
         expect { obj.take! }.to raise_exception(Reactor::NoWorkingVersion)
       end
@@ -304,7 +304,7 @@ describe Reactor::Persistence do
 
     context "user lacks permission to edit the object" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub!(:permission) { double(:take? => false) } }
+      before { obj.stub(:permission) { double(:take? => false) } }
       it "raises NotPermitted exception" do
         expect { obj.take! }.to raise_exception(Reactor::NotPermitted)
       end
@@ -342,7 +342,7 @@ describe Reactor::Persistence do
 
     context "user lacks permission to release the object" do
       let(:obj) { Obj.find_by_path('/valid_object_for_edit') }
-      before { obj.stub!(:permission) { double(:edit? => false) } }
+      before { obj.stub(:permission) { double(:edit? => false) } }
       it "returns false" do
         obj.edit.should be_false
       end
@@ -380,7 +380,7 @@ describe Reactor::Persistence do
 
     context "user lacks permission to release the object" do
       let(:obj) { Obj.find_by_path('/valid_object_for_edit') }
-      before { obj.stub!(:permission) { double(:edit? => false) } }
+      before { obj.stub(:permission) { double(:edit? => false) } }
       it "returns false" do
         expect {obj.edit!}.to raise_exception(Reactor::NotPermitted)
       end
@@ -553,7 +553,7 @@ describe Reactor::Persistence do
 
     context "user lacks permissions" do
       let(:obj) {Obj.find_by_path('/object_without_resolved_refs2')}
-      before {obj.stub!(:permission) {double(:write? => false)} }
+      before {obj.stub(:permission) {double(:write? => false)} }
       it "doesn't resolve refs" do
         obj_id = obj.id
         obj.resolve_refs

@@ -12,6 +12,10 @@ module Reactor
   def self.rails3_2?
     ::Rails::VERSION::MAJOR == 3 && ::Rails::VERSION::MINOR == 2
   end
+
+  def self.rails4_0?
+    ::Rails::VERSION::MAJOR == 4 && ::Rails::VERSION::MINOR == 0
+  end
 end
 
 # require exceptions

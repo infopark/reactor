@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'rails', '>= 3.0.10', '<= 3.333'
+  s.add_dependency 'rails', '>= 3.0.10', '<= 4.1.0'
   s.add_dependency 'term-ansicolor'
   s.add_dependency 'nokogiri'
   s.add_development_dependency 'rspec'

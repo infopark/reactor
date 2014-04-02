@@ -12,7 +12,7 @@ module Reactor
         base.extend(ClassMethods)
         # Common validations for all Objs
         base.class_eval do
-          validates :permalink,     :format => { :with => /^[-_$.\/a-zA-Z0-9]*$/ }
+          validates :permalink,     :format => { :with => /\A[-_$.\/a-zA-Z0-9]*\Z/ }
           validates :parent_obj_id, :numericality => { :only_integer => true }, :on => :create
           validates :name,          :presence => true, :on => :create
           validates :obj_class,     :presence => true, :on => :create

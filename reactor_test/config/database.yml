@@ -3,7 +3,7 @@ cms: &cms
   database: reactor
   username: reactoruser
   password: reactoruser
-  host: reactordev
+  host: 33.33.33.10
   reconnect: true
 
 test:

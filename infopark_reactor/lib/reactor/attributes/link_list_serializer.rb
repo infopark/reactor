@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'reactor/link/temporary_link'
-require 'infopark_rails_connector'
+require 'infopark_fiona_connector'
+#require 'infopark_rails_connector'
 
 module Reactor
   module Attributes
