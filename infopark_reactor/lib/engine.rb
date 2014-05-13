@@ -24,6 +24,11 @@ module Reactor
           Rails.logger.info "Trying to log in at #{Reactor::Configuration.xml_access[:host]}:#{Reactor::Configuration.xml_access[:port]} with JSESSIONID=#{jsessionid}."
           rsession.login(jsessionid)
           Rails.logger.info %|Logged in as "#{rsession.user_name}".| if rsession.user?
+            
+        elsif (session_var = Reactor::Configuration.xml_access[:trusted_session_var]).present? && session[session_var].present?
+          Rails.logger.info "** Using trusted session var \"#{session_var}\": #{session[session_var]}"
+          rsession.login_with_session_var(session[session_var], session[:session_id])
+          Rails.logger.info %|Logged in as "#{rsession.user_name}".| if rsession.user?
         else
           rsession.destroy
         end

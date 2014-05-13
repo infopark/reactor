@@ -15,6 +15,13 @@ class Reactor::Session
       self.user_name = authenticate(session_id)
     end
   end
+  
+  def login_with_session_var(login, session_id)
+    if !logged_in?(session_id)
+      self.user_name = login
+      self.session_id = session_id
+    end
+  end
 
   def destroy
     self.session_id = self.user_name = nil
