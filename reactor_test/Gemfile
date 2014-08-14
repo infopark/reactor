@@ -1,34 +1,10 @@
-source 'https://rubygems.org'
-
-# gem 'mysql2'
-gem 'mysql'
-
-gem 'infopark_rails_connector', '6.8.0.beta.63.67d2581'
-gem "rails", "3.0.13"
-
-# gem "infopark_rails_connector", "6.8.0.beta.200.475.e6438f7"
-# gem "infopark_fiona_connector", "6.8.0.beta.200.475.e6438f7"
-# gem 'rails', '3.1.3'
-
-# gem "infopark_rails_connector"
-# gem "infopark_fiona_connector"
-# gem 'rails', '3.2.12'
-
-# Hack for appraisal
-if __FILE__ !~ /Gemfile^/
-  path = '/Users/tomasz/Projects/reactor/'
-else
-  path = path = ::File.expand_path('../../', __FILE__)
-end
-
-gem 'infopark_rails_connector_meta',  :path => ::File.join(path, 'infopark_rails_connector_meta')
-gem 'infopark_reactor_migrations',    :path => ::File.join(path, 'infopark_reactor_migrations')
-gem 'infopark_reactor',               :path => ::File.join(path, 'infopark_reactor')
-
-# gem 'infopark_rails_connector_meta',  :path => '../infopark_rails_connector_meta'
-# gem 'infopark_reactor_migrations',    :path => '../infopark_reactor_migrations'
-# gem 'infopark_reactor',               :path => '../infopark_reactor'
-
-gem 'rspec-rails'
-gem "appraisal"
-# gem 'ruby-debug'
+source "https://rubygems.org"
+gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
+gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
+gem "infopark_reactor", :path=>"../infopark_reactor"
+gem "rspec-rails", "~> 2.0"
+gem "infopark_rails_connector", "6.9.1.3.22208381"
+gem "infopark_fiona_connector", "6.9.1.3.22208381"
+gem "mysql2"
+gem "rails", "3.2.19"
+gem "nokogiri", "< 1.6.0"

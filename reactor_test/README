@@ -18,10 +18,5 @@
 
 #TEST ALL SUPPORTED VERSIONS:
 
-    bundle exec rake appraisal:install
-    bundle exec rake appraisal spec
-
-#WARNING!
-
-Running appraisal requires changes to Gemfile, as the path to gems is hardcoded.
+    ./use-config.rb -e "bundle exec rake spec"
 
