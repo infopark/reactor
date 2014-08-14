@@ -12,16 +12,11 @@ Read the `README` files for the gems, if that doesn't help - ask.
 
 Following versions of `infopark_rails_connector` and `rails` are currently supported:
 
-     |  infopark_rails_connector   |  rails   |  infopark_fiona_connector   |
-     |-----------------------------|----------|-----------------------------|
-     |  6.8.0.beta.63.67d2581      |  3.0.19  |                             |
-     |  6.8.0.beta.97.da30a7c      |  3.0.19  |                             |
-     |  6.8.0.beta.200.121.856b3bf |  3.0.19  |  6.8.0.beta.200.121.856b3bf |
-     |  6.8.0.beta.200.165.bf42591 |  3.1.10  |  6.8.0.beta.200.165.bf42591 |
-     |  6.8.0.beta.200.475.e6438f7 |  3.1.10  |  6.8.0.beta.200.475.e6438f7 |
-     |  6.8.0.beta.200.621.4c8e1b0 |  3.1.10  |  6.8.0.beta.200.621.4c8e1b0 |
-     |  6.8.0.beta.200.761.8cc6da0 |  3.2.11  |  6.8.0.beta.200.761.8cc6da0 |
-     |  6.8.0.539.93842523         |  3.2.12  |  6.8.0.539.93842523         |
-     |  6.8.3.174.51542603         |  3.2.13  |  6.8.3.174.51542603         | 
+| ruby version | rails version | `rails_connector` version | `fiona_connector` version |
+|:------------:|:-------------:|:-------------------------:|:-------------------------:|
+|  1.9.3-p547  |     3.2.19    |      6.9.1.3.22208381     |      6.9.1.3.22208381     |
+|  2.0.0-p481  |     3.2.19    |      6.9.1.3.22208381     |      6.9.1.3.22208381     |
+|     2.1.1    |     4.0.3     |           *none*          |        7.0.0.beta1        |
+|     2.1.2    |     4.0.8     |           *none*          |        7.0.0.beta1        |
 
-Fiona versions: 6.8.0, 6.7.3 and 6.7.2 are supported.
+Fiona versions: 6.10.0, 6.9.0, 6.8.0, 6.7.3 and 6.7.2 are supported.

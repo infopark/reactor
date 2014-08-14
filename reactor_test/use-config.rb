@@ -5,8 +5,8 @@ require 'ostruct'
 require 'pp'
 
 $CONFIGS = {
-  'ruby2.1.1+Rails4.0.8+infopark_fiona_connector-beta' => {
-    '.ruby-version' => '2.1.1',
+  'ruby2.1.2+Rails4.0.8+infopark_fiona_connector-beta' => {
+    '.ruby-version' => '2.1.2',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
@@ -33,8 +33,23 @@ gem "nokogiri", "< 1.6.0"
 gem "rails", "4.0.3"
     EOGEMFILE
   },
-  'ruby2.0.0-p353+Rails3.2.19+infopark_fiona_connector-6.9.1.3.22208381' => {
-    '.ruby-version' => '2.0.0-p353',
+  'ruby2.0.0-p481+Rails3.2.19+infopark_fiona_connector-6.9.1.3.22208381' => {
+    '.ruby-version' => '2.0.0-p481',
+    'Gemfile' => <<-EOGEMFILE
+source "https://rubygems.org"
+gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
+gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
+gem "infopark_reactor", :path=>"../infopark_reactor"
+gem "rspec-rails", "~> 2.0"
+gem "infopark_rails_connector", "6.9.1.3.22208381"
+gem "infopark_fiona_connector", "6.9.1.3.22208381"
+gem "mysql2"
+gem "rails", "3.2.19"
+gem "nokogiri", "< 1.6.0"
+    EOGEMFILE
+  },
+  'ruby1.9.3-p547+Rails3.2.19+infopark_fiona_connector-6.9.1.3.22208381' => {
+    '.ruby-version' => '1.9.3-p547',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
@@ -50,7 +65,7 @@ gem "nokogiri", "< 1.6.0"
   }
 }
 
-$DEFAULT = 'ruby2.0.0-p353+Rails3.2.17+infopark_fiona_connector-6.9.1.3.22208381'
+$DEFUALT = 'ruby2.1.2+Rails4.0.8+infopark_fiona_connector-beta'
 
 $DAMN_YOU_RBENV = lambda {|command| "bash -c 'eval \"$(rbenv init -)\"; rbenv shell $(cat .ruby-version); #{command}'" }
 
@@ -89,7 +104,6 @@ class CmdLine
           ConfigSetter.new(config).set!
           system($DAMN_YOU_RBENV.call(task))
         end
-        ConfigSetter.new($CONFIGS[$DEFAULT]).set!
         exit
       end
 

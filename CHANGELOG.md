@@ -1,3 +1,6 @@
+## 1.9.0 beta
+* support for rails 4.0.x
+
 ## 1.8.4
 * Fixed a bug in handling of external links (falsely recognized as internal links)
 
