@@ -10,8 +10,18 @@ module RailsConnector
 
     has_many :news, :class_name => 'News', :foreign_key => 'channel_name'
 
-    has_many :active_news, :class_name => 'News', :foreign_key => 'channel_name',
-      :conditions => ['valid_from <= :now AND valid_until >= :now', {:now => Time.now.to_s(:number)}]
+    if ::Rails::VERSION::MAJOR == 4
+
+      has_many :active_news, 
+        lambda { where(['valid_from <= :now AND valid_until >= :now', {:now => Time.now.to_s(:number)}]) },
+        :class_name => 'News', :foreign_key => 'channel_name'
+
+    elsif ::Rails::VERSION::MAJOR == 3
+
+      has_many :active_news, :class_name => 'News', :foreign_key => 'channel_name',
+        :conditions => ['valid_from <= :now AND valid_until >= :now', {:now => Time.now.to_s(:number)}]
+
+    end
 
     has_many :objects, :through => :news
 

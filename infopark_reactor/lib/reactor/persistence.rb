@@ -423,7 +423,11 @@ module Reactor
       end
 
       if Reactor.rails4_0?
-        alias_method :create_record, :create
+        if Reactor.rails4_0_ge6?
+          alias_method :_create_record, :create
+        else
+          alias_method :create_record, :create
+        end
       end
 
       def update
@@ -435,7 +439,11 @@ module Reactor
       end
 
       if Reactor.rails4_0?
-        alias_method :update_record, :update
+        if Reactor.rails4_0_ge6?
+          alias_method :_update_record, :update
+        else
+          alias_method :update_record, :update
+        end
       end
 
       def ignore_attributes(attributes)
@@ -503,6 +511,11 @@ module Reactor
               subclass
             end
           end
+        end
+
+        if Reactor.rails4_0_ge6?
+          alias_method :subclass_from_attributes, :subclass_from_attrs
+          remove_method :subclass_from_attrs
         end
       end
 
