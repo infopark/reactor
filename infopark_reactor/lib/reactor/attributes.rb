@@ -105,7 +105,7 @@ module Reactor
         end
       end
 
-      [:main_content, :contentType].each do |attribute|
+      [:contentType].each do |attribute|
         writers << attribute.to_sym
         writers << attribute.to_s.underscore.to_sym
       end
@@ -268,13 +268,11 @@ module Reactor
       end
 
       def resolve_attribute_alias(key)
-        key = :body if key == :main_content
         key
       end
 
       def key_to_attr(key)
         @__attribute_map ||= {
-          :main_content     => :blob,
           :body             => :blob,
           :valid_until      => :validUntil,
           :valid_from       => :validFrom,
@@ -337,7 +335,7 @@ module Reactor
       def path=(*args) ; super ; end
 
       def attribute_type(attr)
-        return :html if [:body, :blob, :main_content].include?(attr.to_sym)
+        return :html if [:body, :blob].include?(attr.to_sym)
         return :date if [:valid_from, :valid_until, :last_changed].include?(attr.to_sym)
         return :string if [:name, :title, :obj_class, :permalink].include?(attr.to_sym)
         return :multienum if [:channels].include?(attr.to_sym)
