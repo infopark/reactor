@@ -13,7 +13,13 @@ module Reactor
         
         case anything
         when Hash
-          link_data = anything
+          if anything["obj_id"] 
+            link_data[:target] = Obj.find(anything["obj_id"].to_i).path
+          else
+            link_data = anything
+          end
+        when Fixnum
+          link_data[:target] = Obj.find(anything).path
         else
           link_data[:target] = anything
         end
