@@ -125,12 +125,12 @@ module Reactor
 
       # Returns true if given user (or current user, if none given) has 'read' permission
       def read?(user = nil)
-        granted?(user, :read)
+        granted?(user, :root) || granted?(user, :read)
       end
 
       # Returns true if given user (or current user, if none given) has 'write' permission
       def write?(user = nil)
-        granted?(user, :write)
+        granted?(user, :root) || granted?(user, :write)
       end
 
       # Returns true if given user (or current user, if none given) has 'root' permission
@@ -140,7 +140,7 @@ module Reactor
 
       # Returns true if given user (or current user, if none given) has 'create_children' permission
       def create_children?(user = nil)
-        granted?(user, :create_children)
+        granted?(user, :root) || granted?(user, :create_children)
       end
 
       # @see #root?
@@ -167,6 +167,7 @@ module Reactor
       # permissions depend on the state of the object)
       def release?(user = nil)
         (has_workflow? && root?(user)) || (!has_workflow? && write?(user))
+        write?(user) || root?(user)
       end
 
       # Setter to overwrite the current groups for the given +permission+ with the
