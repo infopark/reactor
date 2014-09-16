@@ -15,6 +15,7 @@ module Reactor
         enumerate(@value).each do |link_data|
           linklist << link_data
         end
+        linklist.change!
         linklist
       end
 
