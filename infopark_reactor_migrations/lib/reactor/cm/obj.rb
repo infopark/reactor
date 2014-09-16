@@ -1,4 +1,6 @@
 # -*- encoding : utf-8 -*-
+require 'reactor/cm/multi_xml_request'
+
 module Reactor
   module Cm
     class Obj
@@ -140,49 +142,55 @@ module Reactor
         end
       end
 
+      def set_mutiple(attrs)
+        attrs.each {|a,(v,o)| set(a,v,o||{}) }
+      end
+
+      def composite_save(attrs, links_to_add, links_to_remove, links_to_set, links_modified=false)
+        set_mutiple(attrs)
+
+        skip_version_creation = @attrs.empty? && links_to_remove.empty? && links_to_set.empty? && !links_modified
+
+        resp = MultiXmlRequest.execute do |reqs|
+          reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'take') } unless skip_version_creation
+          reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'edit') } unless skip_version_creation
+
+
+          reqs.mandatory {|xml| ObjSetRequest.build(xml, @obj_id, @obj_attrs) } unless @obj_attrs.empty? #important! requires different permissions
+          reqs.mandatory {|xml| ContentSetRequest.build(xml, @obj_id, @attrs, @attr_options) } unless skip_version_creation
+        end
+
+        resp.assert_success
+
+        yield(attrs, links_to_add, links_to_remove, links_to_set) if block_given?
+
+        resp = MultiXmlRequest.execute do |reqs|
+          links_to_remove.each do |link_id|
+            reqs.mandatory {|xml| LinkDeleteRequest.build(xml, link_id) }
+          end
+          links_to_add.each do |(attr, link)|
+
+            reqs.mandatory {|xml| LinkAddRequest.build(xml, @obj_id, attr, link) }
+          end
+
+          links_to_set.each do |(link_id, link)|
+            reqs.mandatory {|xml| LinkSetRequest.build(xml, link_id, link) }
+          end
+
+          reqs.optional  {|xml| ResolveRefsRequest.build(xml, @obj_id) }
+        end unless skip_version_creation
+
+        resp.assert_success
+      end
+
       def save!
-        edit! if not edited?
-        content = edited_content
-        @request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!('content', 'id', content)
-          xml.tag!("content-set") do
-            @attrs.each do |key, value|
-              if (@attr_options[key] || {})[:cdata]
-                xml.tag!(key.to_s) do
-                  xml.cdata!(value)
-                end
-              else
-                xml.value_tag!(key.to_s, value)
-              end
-            end
-          end
+        links_to_remove = @removed_links.map {|l| l.link_id}
+        links_to_add = @links.map do |attr, links|
+          links.map do |link|
+            [attr, {:destination_url => link.dest_url, :title => link.title, :target => link.target, :position => link.position}]
+          end.flatten
         end
-        response = @request.execute!
-        return response if !response.ok?
-
-        unless @obj_attrs.empty?
-          request = XmlRequest.prepare do |xml|
-            xml.where_key_tag!(base_name, 'id', @obj_id)
-            xml.set_tag!(base_name) do
-              @obj_attrs.each do |key, value|
-                xml.value_tag!(key, value)
-              end
-            end
-          end
-          response = request.execute!
-        end
-
-        return response if !response.ok?
-
-        @removed_links.each do |link|
-          link.delete!
-        end
-
-        @links.each do |attr, links|
-          links.each do |link|
-            link.save!
-          end
-        end
+        composite_save([], links_to_add, links_to_remove, [])
       end
 
 
@@ -425,6 +433,107 @@ module Reactor
         end
 
         request.execute!
+      end
+
+      class Request
+        attr_reader :xml
+
+        def initialize(xml)
+          @xml = xml
+        end
+
+        def self.build(xml, *args)
+          self.new(xml).build(*args)
+        end
+      end
+
+      class SimpleCommandRequest < Request
+        def build(obj_id, cmd_name, comment = nil)
+          xml.where_key_tag!('obj', 'id', obj_id)
+          if comment
+            xml.tag!("obj-#{cmd_name}") do
+              xml.tag!('comment', comment)
+            end
+          else
+            xml.tag!("obj-#{cmd_name}")
+          end
+        end
+      end
+
+      class ObjSetRequest < Request
+        def build(obj_id, obj_attrs)
+          xml.where_key_tag!('obj', 'id', obj_id)
+          xml.set_tag!('obj') do
+            obj_attrs.each do |key, value|
+              xml.value_tag!(key, value)
+            end
+          end
+        end
+      end
+
+      class ContentSetRequest < Request
+        def build(id, attrs, attr_options)
+          xml.tag!('content-where') do
+            xml.tag!('objectId', id.to_s)
+            xml.tag!('state', 'edited')
+          end
+          xml.tag!("content-set") do
+            attrs.each do |key, value|
+              if (attr_options[key] || {})[:cdata]
+                xml.tag!(key.to_s) do
+                  xml.cdata!(value)
+                end
+              else
+                xml.value_tag!(key.to_s, value)
+              end
+            end
+          end
+        end
+      end
+
+      class LinkDeleteRequest < Request
+        def build(link_id)
+          xml.where_key_tag!('link', 'id', link_id)
+          xml.tag!("link-delete")
+        end
+      end
+
+      class LinkAddRequest < Request
+        def build(obj_id, attr, link_data)
+          title = link_data[:title]
+          xml.tag!('content-where') do
+            xml.tag!('objectId', obj_id.to_s)
+            xml.tag!('state', 'edited')
+          end
+          xml.tag!('content-addLinkTo') do
+            xml.tag!('attribute', attr.to_s)
+            xml.tag!('destinationUrl', link_data[:destination_url].to_s)
+            xml.tag!('title', title.to_s) if title
+          end
+        end
+      end
+
+      class LinkSetRequest < Request
+        def build(link_id, link_data)
+          title = link_data[:title]
+          xml.tag!('link-where') do
+            xml.tag!('id', link_id)
+          end
+          xml.tag!('link-set') do
+            xml.tag!('destinationUrl', link_data[:destination_url].to_s)
+            xml.tag!('title', title.to_s) if title
+          end
+        end
+      end
+
+      class ResolveRefsRequest < Request
+        def build(obj_id)
+          xml.tag!('content-where') do
+            xml.tag!('objectId', obj_id.to_s)
+            xml.tag!('state', 'edited')
+          end
+          xml.tag!('content-resolveRefs')
+        end
       end
     end
   end

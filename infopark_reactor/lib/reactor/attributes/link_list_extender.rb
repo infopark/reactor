@@ -20,20 +20,38 @@ module Reactor
             Array.instance_methods(false).each do |meth|
               old = instance_method(meth)
               define_method(meth) do |*args, &block|
-                old_size = size
-                ret = old.bind(self).call(*args, &block)
-                size_changed(old_size, size) if old_size != size
-                ret
-              end if meth.to_sym != :size
+                detect_modification do
+                  old.bind(self).call(*args, &block)
+                end
+              end if meth.to_sym != :map
             end
 
             def changed?
-              @changed == true
+              @changed == true || temporary_links_present?
+            end
+
+            def change!
+              @changed = true
+            end
+
+            def original_link_ids
+              @original_link_ids ||= link_ids
             end
 
             protected
-            def size_changed(old_size, size)
-              @changed = true
+            def link_ids
+              self.map(&:id).compact
+            end
+
+            def temporary_links_present?
+              self.any? {|l| l.kind_of? Reactor::Link::TemporaryLink }
+            end
+
+            def detect_modification(&block)
+              original_link_ids
+              yield.tap do
+                @changed = @changed || original_link_ids != link_ids
+              end
             end
 
             def transform_into_link(link_data)
