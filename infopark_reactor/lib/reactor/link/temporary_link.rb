@@ -28,7 +28,7 @@ module Reactor
 
       def url=(some_target)
         @url = case some_target
-        when Obj
+        when RailsConnector::AbstractObj
           @destination_object = some_target
           some_target.path
         else
