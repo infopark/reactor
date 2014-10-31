@@ -31,6 +31,10 @@ module RailsConnector
       @blob_data['canCreateNewsItems'].to_i != 0
     end
 
+    def enabled?
+      is_enabled == 1
+    end
+
     # Returns the custom Ruby class or RailsConnector::AbstractObj.
     def ruby_class
       # this must be the same algorithm that the rest of the RailsConnector uses!
