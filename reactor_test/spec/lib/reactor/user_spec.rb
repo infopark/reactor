@@ -46,4 +46,30 @@ describe Reactor::Cm::User do
 
   end
 
+  context 'user with global permissions' do
+    before do
+      @user = Reactor::Cm::User::Internal.create('global_permissions', 'not_root_group')
+      @user.grant_global_permissions!(['permissionGlobalUserEdit', 'permissionGlobalMirrorHandling'])
+      @user.save!
+    end
+
+    after do
+      @user.delete!
+    end
+
+    subject { described_class.new('global_permissions') }
+
+    it "has global permissions" do
+      @user.global_permissions.should eq(['permissionGlobalUserEdit', 'permissionGlobalMirrorHandling'])
+      subject.global_permissions.should eq(['permissionGlobalUserEdit', 'permissionGlobalMirrorHandling'])
+    end
+  end
+
+  context 'user without global permissions' do
+    describe 'global_permissions' do
+      it 'returns global permissions' do
+        subject.global_permissions.should eq([])
+      end
+    end
+  end
 end

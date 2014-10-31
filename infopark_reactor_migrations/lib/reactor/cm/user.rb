@@ -4,6 +4,8 @@ require 'reactor/configuration'
 require 'reactor/cm/language'
 require 'reactor/tools/xml_attributes'
 
+require 'reactor/cm/permissions'
+
 module Reactor
 
   module Cm
@@ -20,6 +22,12 @@ module Reactor
         attribute :groups,        :type => :list
         attribute :real_name,     :name => :realName
 
+        include Permissions
+
+        def name
+          self.login
+        end
+
         def change_password(new_password)
           request = XmlRequest.prepare do |xml|
             xml.where_key_tag!(base_name, primary_key, primary_key_value)
@@ -35,6 +43,10 @@ module Reactor
           response.ok?
         end
 
+        def has_password?(password)
+          ::Reactor::Cm::User.new(self.login).has_password?(password)
+        end
+
         primary_key :login
 
         # Returns true if user is root, false otherwise
@@ -44,7 +56,7 @@ module Reactor
 
         # Creates a user with given login and sets its default group
         # Returns instance of the class for user with given login
-        def self.create(login, default_group)
+       def self.create(login, default_group)
           super(login, {:login => login, :defaultGroup => default_group})
         end
 
@@ -54,11 +66,24 @@ module Reactor
 
       attribute :name
       attribute :groups, :type => :list
+      attribute :global_permissions, :name => :globalPermissions, :type => :list
+
 
       primary_key 'login'
 
       def initialize(name)
         @name = name
+      end
+
+      def has_password?(password)
+        request = XmlRequest.prepare do |xml|
+          xml.where_key_tag!(base_name, self.class.primary_key, self.name)
+          xml.get_tag!(base_name) do |xml3|
+            xml3.tag!('hasPassword', :password => password)
+          end
+        end
+        response = request.execute!
+        response.xpath('//hasPassword/text()') == '1'
       end
 
       def is_root?
@@ -74,6 +99,19 @@ module Reactor
 
       def language
         Reactor::Cm::Language.get(self.name)
+      end
+
+      def global_permissions
+        xml_attribute = self.class.xml_attribute(:global_permissions)
+
+        request = XmlRequest.prepare do |xml|
+          xml.where_key_tag!(base_name, self.class.primary_key, self.name)
+          xml.get_key_tag!(base_name, xml_attribute.name)
+        end
+
+        response = request.execute!
+
+        self.class.response_handler.get(response, xml_attribute)
       end
 
       def groups
