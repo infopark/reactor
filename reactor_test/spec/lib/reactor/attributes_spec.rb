@@ -442,19 +442,6 @@ describe Reactor::Attributes do
         obj[:body].should == val
       end
     end
-
-    describe "main_content is alias for body" do
-      it "sets body when setting main_content" do
-        val = 'new body value'
-        obj.set(:main_content, val)
-        obj.body.should == val
-      end
-      it "propagates to [:body]" do
-        val = 'new body value'
-        obj.set(:main_content, val)
-        obj[:body].should == val
-      end
-    end
   end
 
   shared_examples "date attribute" do |obj, attr|
