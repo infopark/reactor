@@ -17,13 +17,13 @@ module Reactor
         link
       end
 
-      def self.create_inside(obj, attr, url, title=nil)
-        create(obj.edited_content, attr, url, title)
+      def self.create_inside(obj, attr, url, title=nil, target=nil)
+        create(obj.edited_content, attr, url, title, target)
       end
 
-      def self.create(content, attr, url, title=nil)
+      def self.create(content, attr, url, title=nil, target=nil)
         link = Link.new
-        link.send(:create, content, attr, url, title)
+        link.send(:create, content, attr, url, title, target)
         link
       end
 
@@ -105,7 +105,7 @@ module Reactor
         self
       end
 
-      def create(content, attr, url, title = nil)
+      def create(content, attr, url, title = nil, target = nil)
         request = XmlRequest.prepare do |xml|
           xml.create_tag!(base_name) do
             xml.tag!('attributeName', attr.to_s)
@@ -118,10 +118,13 @@ module Reactor
         id = response.xpath('//id/text()')
         get(id)
 
-        if !title.nil?
+        if !title.nil? || !target.nil?
           request = XmlRequest.prepare do |xml|
             xml.where_key_tag!(base_name, 'id', id)
-            xml.set_key_tag!(base_name, 'title', title)
+            xml.set_tag!(base_name) do
+              xml.value_tag!('title', title) if title
+              xml.value_tag!('target', target) if target
+            end
           end
           response = request.execute!
         end

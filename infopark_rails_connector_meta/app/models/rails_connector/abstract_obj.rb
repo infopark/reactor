@@ -8,13 +8,24 @@ module RailsConnector
   # If that fails it falls back to ::RailsConnector::BasicObj (new)
   # or ::RailsConnector::Obj (old).
   # The last case shouldn't really ever happen.
+  root_class = begin
+                 ::RailsConnector::BasicObj
+               rescue NameError
+                 ::RailsConnector::Obj
+               end
   AbstractObj = begin
-                  ::Obj
-                rescue NameError
-                  begin
-                    ::RailsConnector::BasicObj
-                  rescue NameError
-                    ::RailsConnector::Obj
+                  if ::Obj < root_class
+                    ::Obj
+                  else
+                    root_class
                   end
+                rescue NameError
+                  root_class
                 end
+
+  class AbstractObj
+    def self.compute_type(type_name)
+      try_type { type_name.constantize } || self 
+    end
+  end
 end

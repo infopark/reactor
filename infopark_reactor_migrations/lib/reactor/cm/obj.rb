@@ -71,7 +71,7 @@ module Reactor
 
       def set(key, value, options={})
         key = key.to_sym
-        value = value[0, ATTR_LENGTH_CONSTRAINT[key]] if ATTR_LENGTH_CONSTRAINT[key]
+        value = value[0, ATTR_LENGTH_CONSTRAINT[key]] if ATTR_LENGTH_CONSTRAINT[key] && value
         if OBJ_ATTRS.include?(key) then @obj_attrs[key] = value
         else
           @attrs[key] = value
@@ -124,7 +124,7 @@ module Reactor
       def set_links(attr, new_links_as_hashes)
         get_links(attr).map(&:delete!)
         new_links_as_hashes.each do |link_hash|
-          Link.create_inside(self, attr, link_hash[:destination_url], link_hash[:title])
+          Link.create_inside(self, attr, link_hash[:destination_url], link_hash[:title], link_hash[:target])
         end
       end
 

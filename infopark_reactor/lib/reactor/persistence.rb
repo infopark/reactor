@@ -181,7 +181,7 @@ module Reactor
         # AR reload
         clear_aggregation_cache
         clear_association_cache
-        fresh_object = Obj.find(self.id, options)
+        fresh_object = RailsConnector::AbstractObj.find(self.id, options)
         @attributes = fresh_object.instance_variable_get('@attributes')
         @attributes_cache = {}
         # RC reload
@@ -377,7 +377,7 @@ module Reactor
       # @param [true, false] recursive set to true to also copy the underlying subtree
       # @param [String] new_name gives the object new name
       def copy(new_parent, recursive = false, new_name = nil)
-        self.id = crul_obj.copy(Obj.path_from_anything(new_parent), recursive, new_name)
+        self.id = crul_obj.copy(RailsConnector::AbstractObj.path_from_anything(new_parent), recursive, new_name)
         #self.reload
         resolve_refs #?
         self.id
@@ -405,8 +405,7 @@ module Reactor
       end
 
       def crul_store_links_for_attribute(attr, links)
-        # FIXME: l.link_id ??
-        crul_obj.set_links(attr, links.map {|l| {:link_id => l.id, :title => l.title, :destination_url => (l.internal? ? l.destination_object.path : l.url)} })
+        crul_obj.set_links(attr, links.map {|l| {:target => l.target, :link_id => l.id, :title => l.title, :destination_url => (l.internal? ? l.destination_object.path : l.url)} })
       end
 
       def create

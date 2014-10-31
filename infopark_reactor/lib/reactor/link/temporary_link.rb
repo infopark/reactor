@@ -4,6 +4,7 @@ module Reactor
     class TemporaryLink
       attr_reader   :url
       attr_accessor :title
+      attr_accessor :target
 
       def external? ; raise TypeError, "This link needs to be persisted to gain any meaningful information" ; end
       def internal? ; false ; end
@@ -13,18 +14,15 @@ module Reactor
         
         case anything
         when Hash
-          if anything["obj_id"] 
-            link_data[:target] = Obj.find(anything["obj_id"].to_i).path
-          else
-            link_data = anything
-          end
+          link_data = anything
         when Fixnum
-          link_data[:target] = Obj.find(anything).path
+          link_data[:url] = RailsConnector::AbstractObj.find(anything).path
         else
-          link_data[:target] = anything
+          link_data[:url] = anything
         end
 
-        self.url    = link_data[:target] || link_data[:url] || link_data[:destination_object]
+        self.url    = link_data[:url] || link_data[:destination_object]
+        self.target = link_data[:target] if link_data.key?(:target)
         self.title  = link_data[:title] if link_data.key?(:title)
       end
 
@@ -39,7 +37,7 @@ module Reactor
       end
 
       def destination_object
-        @destination_object ||= Obj.find_by_path(url)
+        @destination_object ||= RailsConnector::AbstractObj.find_by_path(url)
       end
 
       def id
