@@ -10,6 +10,12 @@ module Reactor
         end
       end
 
+      def self.instance(name)
+        attr = Attribute.new
+        attr.instance_variable_set('@name', name)
+        attr
+      end
+
       def self.get(name)
         attr = Attribute.new
         attr.send(:get,name)
