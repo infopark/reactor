@@ -9,7 +9,11 @@ module Reactor
       end
 
       def phrase
-        @response.xpath('//phrase').to_s
+        r = @response.xpath('//phrase')
+        if !r.kind_of?(Array)
+          r = [r]
+        end
+        msg = r.map(&:to_s).join(" ")
       end
 
     end
