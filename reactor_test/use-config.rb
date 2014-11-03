@@ -62,6 +62,21 @@ gem "rails", "3.2.19"
 gem "nokogiri", "< 1.6.0"
     EOGEMFILE
   },
+  'ruby1.9.3-p547+Rails3.2.20+infopark_fiona_connector-6.9.4' => {
+    '.ruby-version' => '1.9.3-p547',
+    'Gemfile' => <<-EOGEMFILE
+source "https://rubygems.org"
+gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
+gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
+gem "infopark_reactor", :path=>"../infopark_reactor"
+gem "rspec-rails", "~> 2.0"
+gem "infopark_rails_connector", "6.9.4"
+gem "infopark_fiona_connector", "6.9.4"
+gem "mysql2"
+gem "rails", "3.2.20"
+gem "nokogiri", "< 1.6.0"
+    EOGEMFILE
+  },
   'ruby1.9.3-p547+Rails3.2.19+infopark_fiona_connector-6.9.1.3.22208381' => {
     '.ruby-version' => '1.9.3-p547',
     'Gemfile' => <<-EOGEMFILE
