@@ -177,7 +177,7 @@ module Reactor
       # any other reload methods (neither from RailsConnector nor from ActiveRecord)
       # but tries to mimmic their behaviour.
       def reload(options = nil)
-        Obj.uncached do
+        RailsConnector::AbstractObj.uncached do
           #super # Throws RecordNotFound when changing obj_class
           # AR reload
           clear_aggregation_cache
@@ -339,7 +339,7 @@ module Reactor
           links_to_remove.clear
           links_to_set.clear
 
-          copy = Obj.find(self.id)
+          copy = RailsConnector::AbstractObj.find(self.id)
 
           linklists.each do |linklist|
             original_link_ids = copy.__read_link(linklist).original_link_ids
