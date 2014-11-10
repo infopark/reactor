@@ -177,23 +177,25 @@ module Reactor
       # any other reload methods (neither from RailsConnector nor from ActiveRecord)
       # but tries to mimmic their behaviour.
       def reload(options = nil)
-        #super # Throws RecordNotFound when changing obj_class
-        # AR reload
-        clear_aggregation_cache
-        clear_association_cache
-        fresh_object = RailsConnector::AbstractObj.find(self.id, options)
-        @attributes = fresh_object.instance_variable_get('@attributes')
-        @attributes_cache = {}
-        # RC reload
-        @attr_values = nil
-        @attr_defs = nil
-        @attr_dict = nil
-        @obj_class_definition = nil
-        @object_with_meta_data = nil
-        # meta reload
-        @editor = nil
-        @object_with_meta_data = nil
-        self
+        Obj.uncached do
+          #super # Throws RecordNotFound when changing obj_class
+          # AR reload
+          clear_aggregation_cache
+          clear_association_cache
+          fresh_object = RailsConnector::AbstractObj.find(self.id, options)
+          @attributes = fresh_object.instance_variable_get('@attributes')
+          @attributes_cache = {}
+          # RC reload
+          @attr_values = nil
+          @attr_defs = nil
+          @attr_dict = nil
+          @obj_class_definition = nil
+          @object_with_meta_data = nil
+          # meta reload
+          @editor = nil
+          @object_with_meta_data = nil
+          self
+        end
       end
 
       # Resolves references in any of the html fields. Returns true on success,
@@ -248,6 +250,7 @@ module Reactor
       end
 
 
+=begin
       # @see [ActiveRecord::Persistence#update_attributes]
       def update_attributes(attributes, options={})
         attributes.each do |attr, value|
@@ -263,6 +266,7 @@ module Reactor
         end
         self.save!
       end
+=end
 
       # Equivalent to Obj#edited?
       def really_edited?
@@ -275,24 +279,12 @@ module Reactor
       end
 
       protected
-      def requires_resolve_refs?(field)
-        force_resolve_refs?|| field == :blob || attribute_type(field.to_s) == :html
-      end
-
-      def force_resolve_refs
-        @force_resolve_refs = true
-      end
-
       def prevent_resolve_refs
         @prevent_resolve_refs = true
       end
 
       def prevent_resolve_refs?
         @prevent_resolve_refs == true
-      end
-
-      def force_resolve_refs?
-        @force_resolve_refs == true
       end
 
       def sanitize_name
@@ -313,28 +305,11 @@ module Reactor
         end
       end
 
-      # Returns all values that will be set for crul interface
       def crul_attributes
         @__crul_attributes || {}
       end
 
-      # Takes cached values and sets the values for crul interface.
-      # Does not store them, only forwards them to underlying class.
-      def forward_crul_attributes
-        crul_attributes.each do |field, (value, options)|
-          options ||= {}
-          crul_obj.set(field, value, options) unless self.send(:attribute_type, field) == :linklist
-        end
-      end
-
-      def prepare_crul_links
-        changed_linklists.each do |link|
-          crul_set(link, self.send(:[], link.to_sym), {})
-        end
-      end
-
       def crul_obj
-        #@crul_obj ||= Reactor::Cm::Obj.get(obj_id)
         @crul_obj ||= Reactor::Cm::Obj.load(obj_id)
       end
 
@@ -343,30 +318,63 @@ module Reactor
       end
 
       def crul_obj_save
-        prepare_crul_links
-        if persisted?
-          take
-          edit
+        attrs, _ = crul_attributes.partition do |field, (value, options)|
+          self.send(:attribute_type, field) != :linklist
+        end
+        linklists = changed_linklists
+
+        new_links = {}.tap do |result|
+          linklists.map do |field|
+            result[field] = self.__read_link(field).map do |l|
+              {:link_id => l.id, :title => l.title, :destination_url => (l.internal? ? l.destination_object.path : l.url)} 
+            end
+          end
         end
 
-        forward_crul_attributes
+        links_modified = !linklists.empty?
 
-        crul_obj.save!
-        self.id = crul_obj.obj_id
+        crul_obj.composite_save(attrs, [], [], [], links_modified) do |attrs, links_to_add, links_to_remove, links_to_set|
 
-        crul_store_links
+          links_to_add.clear
+          links_to_remove.clear
+          links_to_set.clear
 
-        # TODO: REFACTOR!!!
-        possible_fields = ((self.obj_class_def.custom_attributes.keys) + [:blob, :body])
-        crul_obj.resolve_refs! if possible_fields.map {|field| requires_resolve_refs?(field) }.include?(true) && !prevent_resolve_refs?
-        #crul_obj.resolve_refs! if @force_resolve_refs == true || possible_fields.include?(:blob) || possible_fields.detect do |field|
-        #  attr = cms_attributes[field.to_s]
-        #  attr && attr.attribute_type == 'html'
-        #end
+          copy = Obj.find(self.id)
 
-        @__crul_attributes = nil
+          linklists.each do |linklist|
+            original_link_ids = copy.__read_link(linklist).original_link_ids
+            i = 0
+            common = [original_link_ids.length,
+                      new_links[linklist].length].min
 
-        true
+            # replace existing links
+            while i < common
+              link = new_links[linklist][i]
+              link[:link_id] = link_id = original_link_ids[i]
+
+              links_to_set << [link_id, link]
+              i += 1
+            end
+
+            # add appended links
+            while i < new_links[linklist].length
+              link = new_links[linklist][i]
+
+              links_to_add << [linklist, link]
+              i += 1
+            end
+
+            # remove trailing links
+            while i < original_link_ids.length
+              links_to_remove << original_link_ids[i]
+              i += 1
+            end
+          end
+        end
+      end
+
+      def __read_link(name)
+        self[name.to_sym] || RailsConnector::LinkList.new([])
       end
 
       private
@@ -391,31 +399,14 @@ module Reactor
         @crul_obj = Reactor::Cm::Obj.create(name, parent, klass)
       end
 
-      def crul_store_links
-        crul_attributes.each do |field, (value, options)|
-          if self.send(:attribute_type, field) == :linklist then
-            crul_store_links_for_attribute(field, value)
-          end
-        end
-        # self.class.send(:instance_variable_get, '@_o_allowed_attrs').each do |attr|
-        #   if self.send(:attribute_type, attr) == :linklist #&& self.send(attr).try(:changed?) then
-        #     crul_store_links_for_attribute(attr, self.send(attr))
-        #   end
-        # end
-      end
-
-      def crul_store_links_for_attribute(attr, links)
-        crul_obj.set_links(attr, links.map {|l| {:target => l.target, :link_id => l.id, :title => l.title, :destination_url => (l.internal? ? l.destination_object.path : l.url)} })
-      end
-
       def create
         run_callbacks(:create) do
           c_name  = self.name
           c_parent= self.class.path_from_anything(self.parent_obj_id)
           c_objcl = self.obj_class
           crul_obj_create(c_name, c_parent, c_objcl)
-          crul_obj_save if crul_attributes_set? || crul_links_changed?
           self.id = @crul_obj.obj_id
+          crul_obj_save if crul_attributes_set? || crul_links_changed?
           self.reload # ?
           self.id
         end
@@ -543,7 +534,6 @@ module Reactor
       end
 
       protected
-      # TODO: TESTME!!!!
       def attribute_methods_overriden?
         self.name != 'RailsConnector::AbstractObj'
       end

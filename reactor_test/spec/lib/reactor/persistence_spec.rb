@@ -13,6 +13,118 @@ end
 
 describe Reactor::Persistence do
 
+  describe 'save with custom getter' do
+    after do
+      Obj.where("path LIKE '/stupidgetter%'").each(&:destroy)
+    end
+
+    it 'works properly' do
+      o = TestClassWithCustomAttributes.create(:parent => '/', :name => 'stupidgetter')
+      o.test_attr_text = 'test1'
+      o.test_attr_linklist = [{:url => 'http://google.com'}]
+      o.save!
+      expect(o.test_attr_text).to eq('test1')
+      expect(o.test_attr_linklist.first.url).to eq('http://google.com')
+
+      o.stub(:test_attr_text) { 'hahah, no' }
+      o.stub(:test_attr_linklist) { 'whatever' }
+
+      o.test_attr_text = 'test2'
+      o.test_attr_linklist = [{:url => 'http://yahoo.com'}]
+
+      o.save!
+      expect(Obj.find(o.id).test_attr_text).to eq('test2')
+      expect(Obj.find(o.id).test_attr_linklist.first.url).to eq('http://yahoo.com')
+    end
+  end
+
+  describe 'changing obj class' do
+    after do
+      Obj.where("path LIKE '/changeobjclass%'").each(&:destroy)
+    end
+
+    it 'does not raise exception' do
+      o = TestClassWithCustomAttributes.create(:parent => '/', :name => 'changeobjclass')
+      o.obj_class = 'PlainObjClass'
+      expect { o.save! }.not_to raise_exception
+    end
+  end
+
+  describe 'setting permalink' do
+    after do
+      Obj.where("path LIKE '/setpermalink%'").each(&:destroy)
+    end
+
+    it 'does not create a working version' do
+      o = TestClassWithCustomAttributes.create(:parent => '/', :name => 'setpermalink', :test_attr_linklist => [{:url => 'http://google.com'}])
+      o.release!
+      o.permalink = 'setpermalink123'
+
+      expect(o).not_to be_edited
+
+      o.save!
+
+      expect(o).not_to be_edited
+    end
+
+    it 'does create working version when setting links' do
+      o = TestClassWithCustomAttributes.create(:parent => '/', :name => 'setpermalink', :test_attr_linklist => [{:url => 'http://google.com'}])
+      o.release!
+      o.permalink = 'setpermalink123'
+      o.test_attr_linklist = [{:url => 'http://yahoo.com'}]
+
+      expect(o).not_to be_edited
+
+      o.save!
+
+      expect(o).to be_edited
+      expect(o.test_attr_linklist.first.url).to eq('http://yahoo.com')
+      expect(o.test_attr_linklist).to have(1).link
+    end
+
+    it 'does create working version when setting content' do
+      o = TestClassWithCustomAttributes.create(:parent => '/', :name => 'setpermalink', :test_attr_html => '<a href="http://google.com">http://google.com</a>')
+
+      o.release!
+      o.permalink = 'setpermalink123'
+
+      expect(o).not_to be_edited
+
+      o.save!
+
+      expect(o).to be_edited
+
+      # this validates links
+      o.release!
+      expect(o).not_to be_edited
+    end
+  end
+
+  context "active record cache" do
+    describe "reload" do
+      before do
+        @cachex = Obj.create(:parent => '/', :name => 'cachetest', :obj_class => 'TestClassWithCustomAttributes', :body => 'a')
+      end
+      after do
+        @cachex.destroy
+      end
+
+      it "isn't affected by the cache" do
+        first_copy = @cachex
+
+        Obj.cache do
+          second_copy = Obj.find(first_copy.id)
+          first_copy.body = 'b'
+          first_copy.save!
+          second_copy.body.should eq('a')
+          second_copy.reload
+          second_copy.body.should eq('b')
+        end
+
+      end
+    end
+  end
+
   describe '#release' do
     context "valid object" do
       let(:obj) { Obj.find_by_path('/valid_object_for_release') }

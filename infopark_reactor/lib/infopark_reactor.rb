@@ -40,7 +40,6 @@ require 'reactor/streaming_upload'
 
 # require rails integration
 require 'reactor/session'
-require 'reactor/session/observers'
 require 'reactor/session/user'
 
 # require engine

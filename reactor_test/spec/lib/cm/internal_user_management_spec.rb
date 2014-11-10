@@ -63,4 +63,23 @@ describe Reactor::Cm::User::Internal do
       @user.real_name.should == 'Hans Schmidt'
     end
   end
+
+  describe "changing user's password" do
+    before do
+      if described_class.exists?('userWithPasswordToChange')
+        @user = described_class.get('userWithPasswordToChange')
+        @user.save!
+      else
+        @user = described_class.create('userWithPasswordToChange', 'not_root_group')
+      end
+    end
+    after {@user.delete!}
+
+    it "should change the password" do
+      @user.has_password?('the-password').should be_false
+      @user.change_password('the-password')
+      @user.has_password?('the-password').should be_true
+    end
+  end
+
 end

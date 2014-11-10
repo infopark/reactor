@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'net/http'
 require 'reactor/cm/xml_response'
-require 'reactor/cm/xml_request_error'
+require 'reactor/cm/xml_single_request_error'
 require 'reactor/cm/xml_markup'
 require 'reactor/tools/smart_xml_logger'
 
@@ -56,7 +56,7 @@ module Reactor
         Reactor::Cm::LOGGER.log('RESPONSE:')
         Reactor::Cm::LOGGER.log_xml(:response, res.body)
         response = XmlResponse.new(res.body)
-        raise XmlRequestError, response unless response.ok?
+        raise XmlSingleRequestError, response unless response.ok?
         response
       end
 

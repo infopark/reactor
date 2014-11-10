@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 module Reactor
   module Migrations
-    VERSION = "1.9.0.beta2"
+    VERSION = "1.10.0.beta"
   end
 end

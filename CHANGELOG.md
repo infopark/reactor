@@ -1,3 +1,11 @@
+## 1.9.1
+* Fixed caching bug in #reload
+* Faster save! (through request multiplexing)
+* Reusing link ids (reduce ID consumption)
+* Fixed handling of single log entries
+* Fixed permission handling (root permissions and release)
+* Support Rails 4.0.9
+
 ## 1.9.0 beta
 * support for rails 4.0.x
 

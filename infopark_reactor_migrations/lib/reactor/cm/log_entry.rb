@@ -17,7 +17,9 @@ module Reactor
           response = request.execute!
           
           result = []
-          response.xpath('//logEntry').each do |log_entry_node|
+          log_entries = response.xpath('//logEntry')
+          log_entries = [log_entries] unless log_entries.kind_of?(Array)
+          log_entries.each do |log_entry_node|
             dict = {}
             log_entry_node.each_element do |value_node|
               if value_node.name == 'logTime'

@@ -33,7 +33,7 @@ module RailsConnector
         obj.save!
       rescue ActiveRecord::RecordNotFound
       end
-      obj.release unless obj.keep_edited || !Obj.last.edited?
+      obj.release unless obj.keep_edited
       obj
     end
 

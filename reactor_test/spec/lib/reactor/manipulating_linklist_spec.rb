@@ -45,10 +45,27 @@ describe "Object with two links set" do
   end
 
   context "with persisting" do
+    context "released object" do
+      before do
+        @obj.release!
+      end
+
+      describe "rewriting list" do
+        it "rewrites successfully" do
+          @obj.test_attr_linklist = [{:title => 'yahoo', :url => 'http://yahoo.com' }]
+          @obj.save!
+          @obj.test_attr_linklist.should have(1).link
+          @obj.test_attr_linklist.first.url.should == 'http://yahoo.com'
+        end
+      end
+    end
+
     describe "removing a link" do
       it "should leave one link" do
         @obj.test_attr_linklist.delete_at(1)
-        @obj.save!
+        expect {
+          @obj.save!
+        }.not_to change { @obj.test_attr_linklist.first.id }
         @obj.test_attr_linklist.should have(1).things
       end
 
@@ -86,8 +103,10 @@ describe "Object with two links set" do
     describe "adding a link" do
       it "should append new link" do
         @obj.test_attr_linklist << 'http://yahoo.com'
-        @obj.test_attr_linklist.should be_changed
-        @obj.save!
+        expect {
+          @obj.test_attr_linklist.should be_changed
+          @obj.save!
+        }.not_to change { @obj.test_attr_linklist.first(2).map(&:id) }
         @obj.test_attr_linklist.last.url.should == 'http://yahoo.com'
       end
     end
@@ -95,7 +114,9 @@ describe "Object with two links set" do
     describe "adding a link with title" do
       it "should append new link" do
          @obj.test_attr_linklist << {:title => 'yahoo', :url => 'http://yahoo.com' }
-         @obj.save!
+         expect {
+           @obj.save!
+         }.not_to change { @obj.test_attr_linklist.first(2).map(&:id) }
          @obj.test_attr_linklist.last.url.should == 'http://yahoo.com'
          @obj.test_attr_linklist.last.title.should == 'yahoo'
       end
