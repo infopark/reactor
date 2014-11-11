@@ -324,7 +324,7 @@ module Reactor
         new_links = {}.tap do |result|
           linklists.map do |field|
             result[field] = self.__read_link(field).map do |l|
-              {:link_id => l.id, :title => l.title, :destination_url => (l.internal? ? l.destination_object.path : l.url)} 
+              {:link_id => l.id, :title => l.title, :destination_url => (l.internal? ? l.destination_object.path : l.url), :target => l.target}
             end
           end
         end

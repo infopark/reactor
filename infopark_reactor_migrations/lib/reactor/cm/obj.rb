@@ -501,6 +501,7 @@ module Reactor
       class LinkAddRequest < Request
         def build(obj_id, attr, link_data)
           title = link_data[:title]
+          target = link_data[:target]
           xml.tag!('content-where') do
             xml.tag!('objectId', obj_id.to_s)
             xml.tag!('state', 'edited')
@@ -509,6 +510,7 @@ module Reactor
             xml.tag!('attribute', attr.to_s)
             xml.tag!('destinationUrl', link_data[:destination_url].to_s)
             xml.tag!('title', title.to_s) if title
+            xml.tag!('target', target.to_s) if target
           end
         end
       end
@@ -516,12 +518,14 @@ module Reactor
       class LinkSetRequest < Request
         def build(link_id, link_data)
           title = link_data[:title]
+          target = link_data[:target]
           xml.tag!('link-where') do
             xml.tag!('id', link_id)
           end
           xml.tag!('link-set') do
             xml.tag!('destinationUrl', link_data[:destination_url].to_s)
             xml.tag!('title', title.to_s) if title
+            xml.tag!('target', target.to_s) if target
           end
         end
       end
