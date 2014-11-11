@@ -177,25 +177,23 @@ module Reactor
       # any other reload methods (neither from RailsConnector nor from ActiveRecord)
       # but tries to mimmic their behaviour.
       def reload(options = nil)
-        RailsConnector::AbstractObj.uncached do
-          #super # Throws RecordNotFound when changing obj_class
-          # AR reload
-          clear_aggregation_cache
-          clear_association_cache
-          fresh_object = RailsConnector::AbstractObj.find(self.id, options)
-          @attributes = fresh_object.instance_variable_get('@attributes')
-          @attributes_cache = {}
-          # RC reload
-          @attr_values = nil
-          @attr_defs = nil
-          @attr_dict = nil
-          @obj_class_definition = nil
-          @object_with_meta_data = nil
-          # meta reload
-          @editor = nil
-          @object_with_meta_data = nil
-          self
-        end
+        #super # Throws RecordNotFound when changing obj_class
+        # AR reload
+        clear_aggregation_cache
+        clear_association_cache
+        fresh_object = RailsConnector::AbstractObj.find(self.id, options)
+        @attributes = fresh_object.instance_variable_get('@attributes')
+        @attributes_cache = {}
+        # RC reload
+        @attr_values = nil
+        @attr_defs = nil
+        @attr_dict = nil
+        @obj_class_definition = nil
+        @object_with_meta_data = nil
+        # meta reload
+        @editor = nil
+        @object_with_meta_data = nil
+        self
       end
 
       # Resolves references in any of the html fields. Returns true on success,
@@ -371,6 +369,8 @@ module Reactor
             end
           end
         end
+
+        self.connection.clear_query_cache
       end
 
       def __read_link(name)
