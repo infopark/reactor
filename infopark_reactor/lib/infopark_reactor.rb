@@ -17,6 +17,10 @@ module Reactor
     ::Rails::VERSION::MAJOR == 4 && ::Rails::VERSION::MINOR == 0
   end
 
+  def self.rails4_1?
+    ::Rails::VERSION::MAJOR == 4 && ::Rails::VERSION::MINOR == 1
+  end
+
   def self.rails4_0_ge6?
     ::Rails::VERSION::MAJOR == 4 && ::Rails::VERSION::MINOR == 0 && ::Rails::VERSION::TINY >= 6
   end

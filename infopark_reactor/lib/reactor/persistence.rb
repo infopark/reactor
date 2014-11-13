@@ -231,7 +231,7 @@ module Reactor
             super(attributes)
           end
         end
-      elsif Reactor.rails3_1? || Reactor.rails3_2? || Reactor.rails4_0?
+      elsif Reactor.rails3_1? || Reactor.rails3_2? || Reactor.rails4_0? || Reactor.rails4_1?
         # It should excactly match ActiveRecord::Base.new in it's behavior
         # @see ActiveRecord::Base.new
         def initialize(attributes = nil, options={}, &block)
@@ -414,8 +414,8 @@ module Reactor
         end
       end
 
-      if Reactor.rails4_0?
-        if Reactor.rails4_0_ge6?
+      if Reactor.rails4_0? || Reactor.rails4_1?
+        if Reactor.rails4_0_ge6? || Reactor.rails4_1?
           alias_method :_create_record, :create
         else
           alias_method :create_record, :create
@@ -430,8 +430,8 @@ module Reactor
          end
       end
 
-      if Reactor.rails4_0?
-        if Reactor.rails4_0_ge6?
+      if Reactor.rails4_0? || Reactor.rails4_1?
+        if Reactor.rails4_0_ge6? || Reactor.rails4_1?
           alias_method :_update_record, :update
         else
           alias_method :update_record, :update
@@ -484,7 +484,7 @@ module Reactor
         new_name
       end
 
-      if Reactor.rails4_0?
+      if Reactor.rails4_0? || Reactor.rails4_1?
         # Detect the subclass from the inheritance column of attrs. If the inheritance column value
         # is not self or a valid subclass, raises ActiveRecord::SubclassNotFound
         # If this is a StrongParameters hash, and access to inheritance_column is not permitted,
@@ -505,7 +505,7 @@ module Reactor
           end
         end
 
-        if Reactor.rails4_0_ge6?
+        if Reactor.rails4_0_ge6? || Reactor.rails4_1?
           alias_method :subclass_from_attributes, :subclass_from_attrs
           remove_method :subclass_from_attrs
         end

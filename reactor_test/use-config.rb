@@ -5,6 +5,20 @@ require 'ostruct'
 require 'pp'
 
 $CONFIGS = {
+  'ruby2.1.2+Rails4.1.6+infopark_fiona_connector-41' => {
+    '.ruby-version' => '2.1.2',
+    'Gemfile' => <<-EOGEMFILE
+source "https://rubygems.org"
+gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
+gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
+gem "infopark_reactor", :path=>"../infopark_reactor"
+gem "rspec-rails", "~> 2.0"
+gem "infopark_fiona_connector", :git => "git@github.com:tomaszp-infopark/fiona_connector.git", :branch => 'rails4-1'
+gem "mysql2"
+gem "nokogiri", "< 1.6.0"
+gem "rails", "4.1.6"
+    EOGEMFILE
+  },
   'ruby2.1.2+Rails4.0.9+infopark_fiona_connector-beta' => {
     '.ruby-version' => '2.1.2',
     'Gemfile' => <<-EOGEMFILE
@@ -131,7 +145,7 @@ class CmdLine
       opts.on("-e", "--execute TASK", "Execute task for each configuration") do |task|
         $CONFIGS.each do |key, config|
           ConfigSetter.new(config).set!
-          system($DAMN_YOU_RBENV.call(task))
+          system($DAMN_YOU_RBENV.call(task)) || fail("Task '#{task}' on configuration #{key} returned a non-zero status.")
         end
         exit
       end

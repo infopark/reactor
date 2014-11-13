@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib", "lib/tools"]
 
-  s.add_dependency 'rails', '>= 3.0.10', '<= 4.1.0'
+  s.add_dependency 'rails', '>= 3.0.10', '<= 4.2.0'
   s.add_dependency 'infopark_reactor_migrations', '>= 1.7.2'
   #s.add_dependency 'infopark_rails_connector'
   s.add_dependency 'infopark_rails_connector_meta', '>= 1.7.2'

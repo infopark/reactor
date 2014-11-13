@@ -145,7 +145,7 @@ module Reactor
       end
 
       def destroy_objs
-        RailsConnector::AbstractObj.find_all_by_obj_class(@class_name).each(&:destroy)
+        RailsConnector::AbstractObj.where(obj_class: @class_name).each(&:destroy)
       end
 
       def destroy_obj_class

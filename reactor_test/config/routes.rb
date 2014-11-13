@@ -59,7 +59,7 @@ ReactorTest::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   #match ':controller(/:action(/:id(.:format)))'
-  if Reactor.rails4_0?
+  if Reactor.rails4_0? || Reactor.rails4_1?
     # Currently broken with fiona_connector
     # match ':controller(/:action(/:id(.:format)))', :via => :all
     get '/whatever' => "trivial#nothing"
