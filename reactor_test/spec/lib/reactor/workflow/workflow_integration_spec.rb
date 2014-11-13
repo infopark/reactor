@@ -26,10 +26,10 @@ describe 'Reactor::Workflow' do
   end
 
   it "Adam can forward the obj to Gert, Gert & Hans & Dirk can do only take or give" do
-    as('Adam') { @obj.valid_actions.should include('forward') }
-    as('Gert') { @obj.valid_actions.should include('give', 'take') }
-    as('Hans') { @obj.valid_actions.should include('give', 'take') }
-    as('Dirk') { @obj.valid_actions.should include('give', 'take') }
+    as('Adam') { expect(@obj.valid_actions).to include('forward') }
+    as('Gert') { expect(@obj.valid_actions).to include('give', 'take') }
+    as('Hans') { expect(@obj.valid_actions).to include('give', 'take') }
+    as('Dirk') { expect(@obj.valid_actions).to include('give', 'take') }
   end
 
   context "Adam forwards the obj to Gert, Gert takes it" do
@@ -40,15 +40,15 @@ describe 'Reactor::Workflow' do
 
     describe "workflow_comments" do
       it "contains the last two comments" do
-        @rc_obj.workflow_comments.first(2).map(&:text).should eq(['got it', 'continue'])
+        expect(@rc_obj.workflow_comments.first(2).map(&:text)).to eq(['got it', 'continue'])
       end
     end
 
     it "Gert can commit the obj to Hans, Adam & Hans & Dirk can do only take or give" do
-      as('Adam') { @obj.valid_actions.should include('give', 'take') }
-      as('Gert') { @obj.valid_actions.should include('commit') }
-      as('Hans') { @obj.valid_actions.should include('give', 'take') }
-      as('Dirk') { @obj.valid_actions.should include('give', 'take') }
+      as('Adam') { expect(@obj.valid_actions).to include('give', 'take') }
+      as('Gert') { expect(@obj.valid_actions).to include('commit') }
+      as('Hans') { expect(@obj.valid_actions).to include('give', 'take') }
+      as('Dirk') { expect(@obj.valid_actions).to include('give', 'take') }
     end
   end
 
@@ -60,29 +60,29 @@ describe 'Reactor::Workflow' do
 
     describe "workflow_comments" do
       it "contains the last three comments" do
-        @rc_obj.workflow_comments.first(3).map(&:text).should eq(['check', 'picking up', 'done'])
+        expect(@rc_obj.workflow_comments.first(3).map(&:text)).to eq(['check', 'picking up', 'done'])
       end
     end
 
     it "and Hans, Dirk can sign. Adam and Gert can't do anything" do
-      as('Adam') { @obj.valid_actions.should be_empty }
-      as('Gert') { @obj.valid_actions.should be_empty }
+      as('Adam') { expect(@obj.valid_actions).to be_empty }
+      as('Gert') { expect(@obj.valid_actions).to be_empty }
       #as('Dirk') { p @obj.valid_actions } # what with dirk?
-      as('Hans') { @obj.valid_actions.should include('sign') }
-      as('Dirk') { @obj.valid_actions.should include('sign') }
+      as('Hans') { expect(@obj.valid_actions).to include('sign') }
+      as('Dirk') { expect(@obj.valid_actions).to include('sign') }
     end
   end
 
   context "Reactor API" do
     it "workflow is not empty" do
-      @rc_obj.workflow.should_not be_empty
+      expect(@rc_obj.workflow).not_to be_empty
     end
 
     it "Adam can forward the obj to Gert, Gert & Hans & Dirk can do only take or give" do
-      as('Adam') { @rc_obj.workflow.should be_forward }
-      as('Gert') { @rc_obj.workflow.should be_take }
-      as('Hans') { @rc_obj.workflow.should be_take }
-      as('Dirk') { @rc_obj.workflow.should be_take }
+      as('Adam') { expect(@rc_obj.workflow).to be_forward }
+      as('Gert') { expect(@rc_obj.workflow).to be_take }
+      as('Hans') { expect(@rc_obj.workflow).to be_take }
+      as('Dirk') { expect(@rc_obj.workflow).to be_take }
     end
 
     context "Adam forwards the obj to Gert, Gert takes it" do
@@ -92,10 +92,10 @@ describe 'Reactor::Workflow' do
       end
 
       it "Gert can commit the obj to Hans, Adam & Hans & Dirk can do only take or give" do
-        as('Adam') { @rc_obj.workflow.should be_take }
-        as('Gert') { @rc_obj.workflow.should be_commit }
-        as('Hans') { @rc_obj.workflow.should be_take }
-        as('Dirk') { @rc_obj.workflow.should be_take }
+        as('Adam') { expect(@rc_obj.workflow).to be_take }
+        as('Gert') { expect(@rc_obj.workflow).to be_commit }
+        as('Hans') { expect(@rc_obj.workflow).to be_take }
+        as('Dirk') { expect(@rc_obj.workflow).to be_take }
       end
     end
 
@@ -106,10 +106,10 @@ describe 'Reactor::Workflow' do
       end
 
       it "and Hans, Dirk can sign. Adam and Gert can't do anything" do
-        as('Adam') { @rc_obj.workflow.should_not be_take }
-        as('Gert') { @rc_obj.workflow.should_not be_take }
-        as('Hans') { @rc_obj.workflow.should be_sign }
-        as('Dirk') { @rc_obj.workflow.should be_sign }
+        as('Adam') { expect(@rc_obj.workflow).not_to be_take }
+        as('Gert') { expect(@rc_obj.workflow).not_to be_take }
+        as('Hans') { expect(@rc_obj.workflow).to be_sign }
+        as('Dirk') { expect(@rc_obj.workflow).to be_sign }
       end
 
       context "Hans signs" do
@@ -119,18 +119,18 @@ describe 'Reactor::Workflow' do
 
         describe "workflow_comments" do
           it "contains the last comment" do
-            @rc_obj.workflow_comments.first.text.should eq('DONE')
+            expect(@rc_obj.workflow_comments.first.text).to eq('DONE')
           end
         end
 
         it "Dirk can release (but not sign!) and reject, others can do nothing" do
-          as('Adam') { @obj.valid_actions.should be_empty }
-          as('Gert') { @obj.valid_actions.should be_empty }
-          as('Hans') { @obj.valid_actions.should be_empty }
+          as('Adam') { expect(@obj.valid_actions).to be_empty }
+          as('Gert') { expect(@obj.valid_actions).to be_empty }
+          as('Hans') { expect(@obj.valid_actions).to be_empty }
 
-          as('Dirk') { @rc_obj.workflow.should_not be_sign }
-          as('Dirk') { @rc_obj.workflow.should be_release }
-          as('Dirk') { @rc_obj.workflow.should be_reject }
+          as('Dirk') { expect(@rc_obj.workflow).not_to be_sign }
+          as('Dirk') { expect(@rc_obj.workflow).to be_release }
+          as('Dirk') { expect(@rc_obj.workflow).to be_reject }
         end
       end
     end

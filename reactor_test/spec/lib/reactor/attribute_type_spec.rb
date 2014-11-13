@@ -7,8 +7,8 @@ unless defined?(TestClassWithCustomAttributes)
 end
 
 shared_examples "attribute type reader" do
-  it { obj.send(:attribute_type, attr).should == type }
-  it { obj.send(:attribute_type, :channels).should == :multienum }
+  it { expect(obj.send(:attribute_type, attr)).to eq(type) }
+  it { expect(obj.send(:attribute_type, :channels)).to eq(:multienum) }
 end
 
 describe "Brand new TestClassWithCustomAttributes" do

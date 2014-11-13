@@ -14,21 +14,21 @@ describe Reactor::Cm::LogEntry do
     end
 
     it "produces two log entries" do
-      @logs.should have(2).entries
+      expect(@logs.entries.size).to eq(2)
     end
 
     it "produces entries belonging to this object" do
-      @logs.each {|entry| entry['objectId'].to_i.should eq(@obj.id) }
+      @logs.each {|entry| expect(entry['objectId'].to_i).to eq(@obj.id) }
     end
 
     it "produces edit and release log" do
-      @logs.map {|entry| entry['logType']}.should eq ['action_release_obj', 'action_edit_obj']
+      expect(@logs.map {|entry| entry['logType']}).to eq ['action_release_obj', 'action_edit_obj']
     end
 
     it "each entry log is complete" do
       @logs.each do |entry|
         ['logTime', 'logText', 'logType', 'objectId', 'receiver', 'userLogin'].each do |key|
-          entry.should have_key(key)
+          expect(entry).to have_key(key)
         end
       end
     end
@@ -40,7 +40,7 @@ describe Reactor::Cm::LogEntry do
       end
 
       it "produces no entries" do
-        @logs.should be_empty
+        expect(@logs).to be_empty
       end
     end
   end

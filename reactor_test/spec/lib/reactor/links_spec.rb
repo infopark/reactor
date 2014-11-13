@@ -14,39 +14,39 @@ describe "link setting without persistence" do
     it "stores only one link" do
       obj.send(:"#{attr}=", 'http://google.com')
       #obj.send(attr).should have(1).items
-      obj.send(attr).length.should eq(1)
+      expect(obj.send(attr).length).to eq(1)
     end
 
     it "creates new linklist" do
       obj.send(:"#{attr}=", 'http://google.com')
-      obj.send(attr).should be_kind_of(RailsConnector::LinkList)
+      expect(obj.send(attr)).to be_kind_of(RailsConnector::LinkList)
     end
 
     context "(external)" do
       it "stores matching external link" do
         obj.send(:"#{attr}=", 'http://google.com')
-        obj.send(attr).first.url.should == 'http://google.com'
+        expect(obj.send(attr).first.url).to eq('http://google.com')
       end
     end
 
     context "ftp link" do
       it "stores matching external link" do
         obj.send(:"#{attr}=", 'ftp://ftp.google.com')
-        obj.send(attr).first.url.should == 'ftp://ftp.google.com'
+        expect(obj.send(attr).first.url).to eq('ftp://ftp.google.com')
       end
     end
 
     context "mailto link" do
       it "stores matching external link" do
         obj.send(:"#{attr}=", 'mailto:me@dont-write.com')
-        obj.send(attr).first.url.should == 'mailto:me@dont-write.com'
+        expect(obj.send(attr).first.url).to eq('mailto:me@dont-write.com')
       end
     end
 
     context "(internal)" do
       it "stores link to matching obj" do
         obj.send(:"#{attr}=", '/object_sure_to_exist')
-        obj.send(attr).first.destination_object.path.should == '/object_sure_to_exist'
+        expect(obj.send(attr).first.destination_object.path).to eq('/object_sure_to_exist')
       end
     end
 
@@ -54,34 +54,34 @@ describe "link setting without persistence" do
       it "stores only one link" do
         obj.send(:"#{attr}=", {:url => 'http://google.com', :title => 'Gooooooogle!'})
         #obj.send(attr).should have(1).items
-        obj.send(attr).length.should eq(1)
+        expect(obj.send(attr).length).to eq(1)
       end
 
       it "stores the title" do
         obj.send(:"#{attr}=", {:url => 'http://google.com', :title => 'Gooooooogle!'})
-        obj.send(attr).first.title.should eq('Gooooooogle!')
+        expect(obj.send(attr).first.title).to eq('Gooooooogle!')
       end
     end
 
     context "internal link with title" do
       it "stores the link" do
         obj.send(:"#{attr}=", {:destination_object => '/object_sure_to_exist', :title => 'object_sure_to_exist!!'})
-        obj.send(attr).first.destination_object.path.should == '/object_sure_to_exist'
+        expect(obj.send(attr).first.destination_object.path).to eq('/object_sure_to_exist')
       end
       it "stores the title" do
         obj.send(:"#{attr}=", {:destination_object => '/object_sure_to_exist', :title => 'object_sure_to_exist!!'})
-        obj.send(attr).first.title.should eq('object_sure_to_exist!!')
+        expect(obj.send(attr).first.title).to eq('object_sure_to_exist!!')
       end
     end
 
     context "external link with title" do
       it "stores the link" do
         obj.send(:"#{attr}=", {:url => 'http://google.com', :title => 'object_sure_to_exist!!'})
-        obj.send(attr).first.url.should == 'http://google.com'
+        expect(obj.send(attr).first.url).to eq('http://google.com')
       end
       it "stores the title" do
         obj.send(:"#{attr}=", {:url => 'http://google.com', :title => 'Gooooooogle!'})
-        obj.send(attr).first.title.should eq('Gooooooogle!')
+        expect(obj.send(attr).first.title).to eq('Gooooooogle!')
       end
     end
   end
@@ -89,40 +89,40 @@ describe "link setting without persistence" do
   describe "setting two links" do
     it "stores two links" do
       obj.send(:"#{attr}=", ['http://google.com', '/object_sure_to_exist'])
-      obj.send(attr).should have(2).items
+      expect(obj.send(attr).size).to eq(2)
     end
 
     it "stores matching first link" do
       obj.send(:"#{attr}=", ['http://google.com', '/object_sure_to_exist'])
-      obj.send(attr).first.url.should == 'http://google.com'
+      expect(obj.send(attr).first.url).to eq('http://google.com')
     end
 
     it "creates new linklist" do
       obj.send(:"#{attr}=", ['http://google.com', '/object_sure_to_exist'])
-      obj.send(attr).should be_kind_of(RailsConnector::LinkList)
+      expect(obj.send(attr)).to be_kind_of(RailsConnector::LinkList)
     end
 
     it "stores matching second link" do
       obj.send(:"#{attr}=", ['http://google.com', '/object_sure_to_exist'])
-      obj.send(attr).last.destination_object.path.should == '/object_sure_to_exist'
+      expect(obj.send(attr).last.destination_object.path).to eq('/object_sure_to_exist')
     end
 
     context "with titles" do
       before { obj.send(:"#{attr}=", [{:url => 'http://google.com', :title => 'gOOgle'}, {:destination_object => '/object_sure_to_exist', :title => 'obj!'}]) }
       it "stores two links" do
-        obj.send(attr).should have(2).items
+        expect(obj.send(attr).size).to eq(2)
       end
       it "stores matching first link" do
-        obj.send(attr).first.url.should == 'http://google.com'
+        expect(obj.send(attr).first.url).to eq('http://google.com')
       end
       it "stores matching second link" do
-        obj.send(attr).last.destination_object.path.should == '/object_sure_to_exist'
+        expect(obj.send(attr).last.destination_object.path).to eq('/object_sure_to_exist')
       end
       it "stores matching title for first link" do
-        obj.send(attr).first.title.should == 'gOOgle'
+        expect(obj.send(attr).first.title).to eq('gOOgle')
       end
       it "stores matching title for second link" do
-        obj.send(attr).last.title.should == 'obj!'
+        expect(obj.send(attr).last.title).to eq('obj!')
       end
     end
   end
@@ -139,8 +139,8 @@ describe "link persisting" do
       obj.save!
       obj_copy = Obj.find(obj.obj_id)
       link = obj_copy.send(attr).first
-      link.should be_external
-      link.url.should == 'http://google.com'
+      expect(link).to be_external
+      expect(link.url).to eq('http://google.com')
     end
   end
 
@@ -148,14 +148,14 @@ describe "link persisting" do
     it "stores only one link" do
       obj.send(:"#{attr}=", 'http://google.com')
       obj.save!
-      obj.send(attr).should have(1).item
+      expect(obj.send(attr).size).to eq(1)
     end
 
     context "(external)" do
       it "stores matching external link" do
         obj.send(:"#{attr}=", 'http://google.com')
         obj.save!
-        obj.send(attr).first.url.should == 'http://google.com'
+        expect(obj.send(attr).first.url).to eq('http://google.com')
       end
     end
 
@@ -163,7 +163,7 @@ describe "link persisting" do
       it "stores matching external link" do
         obj.send(:"#{attr}=", 'ftp://ftp.google.com')
         obj.save!
-        obj.send(attr).first.url.should == 'ftp://ftp.google.com'
+        expect(obj.send(attr).first.url).to eq('ftp://ftp.google.com')
       end
     end
 
@@ -171,7 +171,7 @@ describe "link persisting" do
       it "stores matching external link" do
         obj.send(:"#{attr}=", 'mailto:me@dont-write.com')
         obj.save!
-        obj.send(attr).first.url.should == 'mailto:me@dont-write.com'
+        expect(obj.send(attr).first.url).to eq('mailto:me@dont-write.com')
       end
     end
 
@@ -179,7 +179,7 @@ describe "link persisting" do
       it "stores link to matching obj" do
         obj.send(:"#{attr}=", '/object_sure_to_exist')
         obj.save!
-        obj.send(attr).first.destination_object.path.should == '/object_sure_to_exist'
+        expect(obj.send(attr).first.destination_object.path).to eq('/object_sure_to_exist')
       end
     end
 
@@ -187,12 +187,12 @@ describe "link persisting" do
       it "stores the link" do
         obj.send(:"#{attr}=", {:destination_object => '/object_sure_to_exist', :title => 'object_sure_to_exist!!'})
         obj.save!
-        obj.send(attr).first.destination_object.path.should == '/object_sure_to_exist'
+        expect(obj.send(attr).first.destination_object.path).to eq('/object_sure_to_exist')
       end
       it "stores the title" do
         obj.send(:"#{attr}=", {:destination_object => '/object_sure_to_exist', :title => 'object_sure_to_exist!!'})
         obj.save!
-        obj.send(attr).first.title.should eq('object_sure_to_exist!!')
+        expect(obj.send(attr).first.title).to eq('object_sure_to_exist!!')
       end
     end
 
@@ -200,12 +200,12 @@ describe "link persisting" do
       it "stores the link" do
         obj.send(:"#{attr}=", {:url => 'http://google.com', :title => 'object_sure_to_exist!!'})
         obj.save!
-        obj.send(attr).first.url.should == 'http://google.com'
+        expect(obj.send(attr).first.url).to eq('http://google.com')
       end
       it "stores the title" do
         obj.send(:"#{attr}=", {:url => 'http://google.com', :title => 'Gooooooogle!'})
         obj.save!
-        obj.send(attr).first.title.should eq('Gooooooogle!')
+        expect(obj.send(attr).first.title).to eq('Gooooooogle!')
       end
     end
   end
@@ -214,19 +214,19 @@ describe "link persisting" do
     it "stores two links" do
       obj.send(:"#{attr}=", ['http://google.com', '/object_sure_to_exist'])
       obj.save!
-      obj.send(attr).should have(2).items
+      expect(obj.send(attr).size).to eq(2)
     end
 
     it "stores matching first link" do
       obj.send(:"#{attr}=", ['http://google.com', '/object_sure_to_exist'])
       obj.save!
-      obj.send(attr).first.url.should == 'http://google.com'
+      expect(obj.send(attr).first.url).to eq('http://google.com')
     end
 
     it "stores matching second link" do
       obj.send(:"#{attr}=", ['http://google.com', '/object_sure_to_exist'])
       obj.save!
-      obj.send(attr).last.destination_object.path.should == '/object_sure_to_exist'
+      expect(obj.send(attr).last.destination_object.path).to eq('/object_sure_to_exist')
     end
 
     context "with titles" do
@@ -237,19 +237,19 @@ describe "link persisting" do
         obj.save!
       end
       it "stores two links" do
-        obj.send(attr).should have(2).items
+        expect(obj.send(attr).size).to eq(2)
       end
       it "stores matching first link" do
-        obj.send(attr).first.url.should == 'http://google.com'
+        expect(obj.send(attr).first.url).to eq('http://google.com')
       end
       it "stores matching second link" do
-        obj.send(attr).last.destination_object.path.should == '/object_sure_to_exist'
+        expect(obj.send(attr).last.destination_object.path).to eq('/object_sure_to_exist')
       end
       it "stores matching title for first link" do
-        obj.send(attr).first.title.should == 'gOOgle'
+        expect(obj.send(attr).first.title).to eq('gOOgle')
       end
       it "stores matching title for second link" do
-        obj.send(attr).last.title.should == 'obj!'
+        expect(obj.send(attr).last.title).to eq('obj!')
       end
     end
   end
@@ -265,14 +265,14 @@ describe "link overwriting" do
   end
 
   it "old link was persisted" do
-    @obj.test_attr_linklist.first.url.should == 'http://yahoo.com'
+    expect(@obj.test_attr_linklist.first.url).to eq('http://yahoo.com')
   end
 
   describe "setting new link" do
     it "stores expected link" do
       @obj.test_attr_linklist = 'http://google.com'
       @obj.save!
-      @obj.test_attr_linklist.first.url.should == 'http://google.com'
+      expect(@obj.test_attr_linklist.first.url).to eq('http://google.com')
     end
   end
 
@@ -280,8 +280,8 @@ describe "link overwriting" do
     it "stores expected link" do
       @obj.test_attr_linklist = {:url => 'http://google.com', :title => 'google?'}
       @obj.save!
-      @obj.test_attr_linklist.first.url.should == 'http://google.com'
-      @obj.test_attr_linklist.first.title.should == 'google?'
+      expect(@obj.test_attr_linklist.first.url).to eq('http://google.com')
+      expect(@obj.test_attr_linklist.first.title).to eq('google?')
     end
   end
 
@@ -307,8 +307,8 @@ describe "link default behavior" do
     end
 
     it "should return empty array as linklist" do
-      @obj.test_attr_linklist.should_not be_nil
-      @obj.test_attr_linklist.should be_kind_of(Array)
+      expect(@obj.test_attr_linklist).not_to be_nil
+      expect(@obj.test_attr_linklist).to be_kind_of(Array)
     end
   end
 
@@ -333,8 +333,8 @@ describe "link default behavior" do
     end
 
     it "should return empty array as linklist" do
-      @obj.test_attr_linklist.should_not be_nil
-      @obj.test_attr_linklist.should be_kind_of(Array)
+      expect(@obj.test_attr_linklist).not_to be_nil
+      expect(@obj.test_attr_linklist).to be_kind_of(Array)
     end
   end
 
@@ -358,8 +358,8 @@ describe "link default behavior" do
     end
 
     it "should return empty array as linklist" do
-      @obj.test_attr_linklist.should_not be_nil
-      @obj.test_attr_linklist.should be_kind_of(Array)
+      expect(@obj.test_attr_linklist).not_to be_nil
+      expect(@obj.test_attr_linklist).to be_kind_of(Array)
     end
   end
 end
@@ -380,8 +380,8 @@ describe "Reactor::Persistence" do
 
     it "returns returns a collection of linking objects" do
       super_objects = @linked.super_objects
-      super_objects.should have(1).things
-      super_objects.first.obj_id.should == @linking.obj_id
+      expect(super_objects.size).to eq(1)
+      expect(super_objects.first.obj_id).to eq(@linking.obj_id)
     end
     
   end
@@ -400,7 +400,7 @@ describe "Reactor::Persistence" do
       end
 
       it "returns true" do
-        @linked.should be_has_super_links
+        expect(@linked).to be_has_super_links
       end
     end
 
@@ -408,7 +408,7 @@ describe "Reactor::Persistence" do
       before { @notlinked = TestClassWithCustomAttributes.create(:name => 'link_testbead', :parent => '/linktestbead') }
       after { @notlinked.destroy }
       it "returns false" do
-        @notlinked.should_not be_has_super_links
+        expect(@notlinked).not_to be_has_super_links
       end
     end
   end

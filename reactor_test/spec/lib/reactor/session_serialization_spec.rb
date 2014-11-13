@@ -4,11 +4,11 @@ describe Reactor::Session do
   subject { described_class.instance }
 
   it 'has three observers' do
-    subject.count_observers.should eq(3)
+    expect(subject.count_observers).to eq(3)
   end
 
   specify 'changing name notifies observers' do
-    subject.should_receive(:notify_observers).with('non_root_user', true)
+    expect(subject).to receive(:notify_observers).with('non_root_user', true)
     subject.user_name = 'non_root_user'
   end
 
@@ -28,9 +28,9 @@ describe Reactor::Session do
     end
 
     specify do
-      @after_marshal.user_name.should eq('non_root_user')
-      @after_marshal.session_id.should eq('sssssession')
-      @after_marshal.count_observers.should eq(3)
+      expect(@after_marshal.user_name).to eq('non_root_user')
+      expect(@after_marshal.session_id).to eq('sssssession')
+      expect(@after_marshal.count_observers).to eq(3)
     end
   end
 
@@ -53,7 +53,7 @@ describe Reactor::Session do
 
       @after_marshal = Marshal.load(mashalled)
 
-      Reactor::Configuration.xml_access[:username].should eq(@after_marshal.user_name)
+      expect(Reactor::Configuration.xml_access[:username]).to eq(@after_marshal.user_name)
     end
   end
 end

@@ -8,13 +8,13 @@ describe Reactor::Cm::User do
   describe 'is_root?' do
 
     it 'returns true when the user is root' do
-      subject.is_root?.should be_true
+      expect(subject.is_root?).to be_truthy
     end
 
     it 'returns false when the user is not root' do
       user = Reactor::Cm::User.new('not_root')
 
-      user.is_root?.should be_false
+      expect(user.is_root?).to be_falsey
     end
 
   end
@@ -22,7 +22,7 @@ describe Reactor::Cm::User do
   describe 'language' do
 
     it 'returns the language code the user has set' do
-      subject.language.should eq('de')
+      expect(subject.language).to eq('de')
     end
 
   end
@@ -32,8 +32,8 @@ describe Reactor::Cm::User do
     it 'returns a collection of the groups the user is a member of' do
       groups = subject.groups
 
-      groups.should have(1).item
-      groups.should include('admins')
+      expect(groups.size).to eq(1)
+      expect(groups).to include('admins')
     end
 
   end
@@ -41,7 +41,7 @@ describe Reactor::Cm::User do
   describe 'name' do
 
     it 'returns the name of the user' do
-      subject.name.should eq('root')
+      expect(subject.name).to eq('root')
     end
 
   end
@@ -60,15 +60,15 @@ describe Reactor::Cm::User do
     subject { described_class.new('global_permissions') }
 
     it "has global permissions" do
-      @user.global_permissions.should eq(['permissionGlobalUserEdit', 'permissionGlobalMirrorHandling'])
-      subject.global_permissions.should eq(['permissionGlobalUserEdit', 'permissionGlobalMirrorHandling'])
+      expect(@user.global_permissions).to eq(['permissionGlobalUserEdit', 'permissionGlobalMirrorHandling'])
+      expect(subject.global_permissions).to eq(['permissionGlobalUserEdit', 'permissionGlobalMirrorHandling'])
     end
   end
 
   context 'user without global permissions' do
     describe 'global_permissions' do
       it 'returns global permissions' do
-        subject.global_permissions.should eq([])
+        expect(subject.global_permissions).to eq([])
       end
     end
   end

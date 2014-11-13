@@ -17,29 +17,29 @@ describe "Object with two links set" do
   context "without persisting" do
     describe "removing a link" do
       it "should leave one link" do
-        @obj.test_attr_linklist.should have(2).things
+        expect(@obj.test_attr_linklist.size).to eq(2)
         @obj.test_attr_linklist.delete_at(1)
-        @obj.test_attr_linklist.should have(1).things
+        expect(@obj.test_attr_linklist.size).to eq(1)
       end
 
       it "removes given link" do
         @obj.test_attr_linklist.delete_at(1)
-        @obj.test_attr_linklist.first.should be_external
+        expect(@obj.test_attr_linklist.first).to be_external
       end
     end
 
     describe "adding a link" do
       it "should append new link" do
         @obj.test_attr_linklist << 'http://yahoo.com'
-        @obj.test_attr_linklist.last.url.should == 'http://yahoo.com'
+        expect(@obj.test_attr_linklist.last.url).to eq('http://yahoo.com')
       end
     end
 
     describe "adding a link with title" do
       it "should append new link" do
         @obj.test_attr_linklist << {:title => 'yahoo', :url => 'http://yahoo.com' }
-        @obj.test_attr_linklist.last.url.should == 'http://yahoo.com'
-        @obj.test_attr_linklist.last.title.should == 'yahoo'
+        expect(@obj.test_attr_linklist.last.url).to eq('http://yahoo.com')
+        expect(@obj.test_attr_linklist.last.title).to eq('yahoo')
       end
     end
   end
@@ -54,8 +54,8 @@ describe "Object with two links set" do
         it "rewrites successfully" do
           @obj.test_attr_linklist = [{:title => 'yahoo', :url => 'http://yahoo.com' }]
           @obj.save!
-          @obj.test_attr_linklist.should have(1).link
-          @obj.test_attr_linklist.first.url.should == 'http://yahoo.com'
+          expect(@obj.test_attr_linklist.size).to eq(1)
+          expect(@obj.test_attr_linklist.first.url).to eq('http://yahoo.com')
         end
       end
     end
@@ -66,13 +66,13 @@ describe "Object with two links set" do
         expect {
           @obj.save!
         }.not_to change { @obj.test_attr_linklist.first.id }
-        @obj.test_attr_linklist.should have(1).things
+        expect(@obj.test_attr_linklist.size).to eq(1)
       end
 
       it "removes given link" do
         @obj.test_attr_linklist.delete_at(1)
         @obj.save!
-        @obj.test_attr_linklist.first.should be_external
+        expect(@obj.test_attr_linklist.first).to be_external
       end
     end
 
@@ -80,7 +80,7 @@ describe "Object with two links set" do
       it "should leave no links" do
         @obj.test_attr_linklist = []
         @obj.save!
-        @obj.test_attr_linklist.should have(0).things
+        expect(@obj.test_attr_linklist.size).to eq(0)
       end
     end
 
@@ -88,7 +88,7 @@ describe "Object with two links set" do
       it "should leave no links" do
         @obj.test_attr_linklist = ''
         @obj.save!
-        @obj.test_attr_linklist.should have(0).things
+        expect(@obj.test_attr_linklist.size).to eq(0)
       end
     end
 
@@ -96,7 +96,7 @@ describe "Object with two links set" do
       it "should leave no links" do
         @obj.test_attr_linklist = nil
         @obj.save!
-        @obj.test_attr_linklist.should have(0).things
+        expect(@obj.test_attr_linklist.size).to eq(0)
       end
     end
 
@@ -104,10 +104,10 @@ describe "Object with two links set" do
       it "should append new link" do
         @obj.test_attr_linklist << 'http://yahoo.com'
         expect {
-          @obj.test_attr_linklist.should be_changed
+          expect(@obj.test_attr_linklist).to be_changed
           @obj.save!
         }.not_to change { @obj.test_attr_linklist.first(2).map(&:id) }
-        @obj.test_attr_linklist.last.url.should == 'http://yahoo.com'
+        expect(@obj.test_attr_linklist.last.url).to eq('http://yahoo.com')
       end
     end
 
@@ -117,8 +117,8 @@ describe "Object with two links set" do
          expect {
            @obj.save!
          }.not_to change { @obj.test_attr_linklist.first(2).map(&:id) }
-         @obj.test_attr_linklist.last.url.should == 'http://yahoo.com'
-         @obj.test_attr_linklist.last.title.should == 'yahoo'
+         expect(@obj.test_attr_linklist.last.url).to eq('http://yahoo.com')
+         expect(@obj.test_attr_linklist.last.title).to eq('yahoo')
       end
     end
   end

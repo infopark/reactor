@@ -22,7 +22,7 @@ shared_examples "txt uploadable object" do
       it "uploads the file contents" do
         @obj.upload(@file, 'txt')
         @obj.save!
-        @obj.body.should == @data
+        expect(@obj.body).to eq(@data)
       end
     end
 
@@ -31,7 +31,7 @@ shared_examples "txt uploadable object" do
       it "uploads its contents" do
         @obj.upload(@data, 'txt')
         @obj.save!
-        @obj.body.should == @data
+        expect(@obj.body).to eq(@data)
       end
     end
   end
@@ -62,7 +62,7 @@ shared_examples "jpg uploadable object" do
         @obj.save!
         @obj.reload
         md5_after = Digest::MD5.hexdigest(@obj.body)
-        md5_before.should eq(md5_after)
+        expect(md5_before).to eq(md5_after)
       end
 
       it "persists the image" do
@@ -71,7 +71,7 @@ shared_examples "jpg uploadable object" do
         @obj.save!
         @obj = @obj.class.find(@obj.obj_id)
         md5_after = Digest::MD5.hexdigest(@obj.body)
-        md5_before.should eq(md5_after)
+        expect(md5_before).to eq(md5_after)
       end
     end
 
@@ -80,7 +80,7 @@ shared_examples "jpg uploadable object" do
       it "uploads its contents" do
         @obj.upload(@data, 'jpg')
         @obj.save!
-        Digest::MD5.hexdigest(@obj.body).should == Digest::MD5.hexdigest(@data)
+        expect(Digest::MD5.hexdigest(@obj.body)).to eq(Digest::MD5.hexdigest(@data))
       end
     end
   end
@@ -111,7 +111,7 @@ shared_examples "binary uploadable object" do
         @obj.save!
         @obj.reload
         md5_after = Digest::MD5.hexdigest(@obj.body)
-        md5_before.should eq(md5_after)
+        expect(md5_before).to eq(md5_after)
       end
 
       it "persists the file" do
@@ -120,7 +120,7 @@ shared_examples "binary uploadable object" do
         @obj.save!
         @obj = @obj.class.find(@obj.obj_id)
         md5_after = Digest::MD5.hexdigest(@obj.body)
-        md5_before.should eq(md5_after)
+        expect(md5_before).to eq(md5_after)
       end
     end
 
@@ -130,7 +130,7 @@ shared_examples "binary uploadable object" do
         @obj.upload(@data, ::File.extname(@file_name)[1..-1])
         @obj.save!
         @obj.reload
-        Digest::MD5.hexdigest(@obj.body).should == Digest::MD5.hexdigest(@data)
+        expect(Digest::MD5.hexdigest(@obj.body)).to eq(Digest::MD5.hexdigest(@data))
       end
     end
   end
@@ -144,7 +144,7 @@ shared_examples "binary uploadable object" do
 end
 
 describe "Brand new obj instance" do
-  pending
+  skip
   # it_behaves_like "uploadable object" do
   #   before {@obj = Obj.new(:name => 'uploadable_test', :parent => '/', :obj_class => 'PlainObjClass') }
   #   after { @obj.destroy }
@@ -244,7 +244,7 @@ describe '.upload' do
     obj = Obj.upload(@file, @file_ext, :name => 'uploadable_test', :parent => '/', :obj_class => 'Generic')
     md5_after = Digest::MD5.hexdigest(obj.body)
     obj.destroy
-    md5_before.should eq(md5_after)
+    expect(md5_before).to eq(md5_after)
   end
 
   it "guesses the filename" do
@@ -252,6 +252,6 @@ describe '.upload' do
     name = obj.name
     obj.destroy
 
-    name.should eq(::File.basename(@file_name, ::File.extname(@file_name)))
+    expect(name).to eq(::File.basename(@file_name, ::File.extname(@file_name)))
   end
 end

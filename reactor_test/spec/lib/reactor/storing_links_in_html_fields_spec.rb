@@ -30,8 +30,8 @@ describe "in-content link persisting" do
         it "stores an internal link" do
           obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist2">link</a> text|)
           obj.save!
-          obj.text_links.first.destination_object.path.should eq('/object_sure_to_exist2')
-          Obj.find(obj.id).send(attr).should match(/internallink:/)
+          expect(obj.text_links.first.destination_object.path).to eq('/object_sure_to_exist2')
+          expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
         end
 
 
@@ -39,8 +39,8 @@ describe "in-content link persisting" do
           it "stores an internal link" do
             obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist2">link</a> text|.html_safe)
             obj.save!
-            obj.text_links.first.destination_object.path.should eq('/object_sure_to_exist2')
-            Obj.find(obj.id).send(attr).should match(/internallink:/)
+            expect(obj.text_links.first.destination_object.path).to eq('/object_sure_to_exist2')
+            expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
           end
         end
 
@@ -48,7 +48,7 @@ describe "in-content link persisting" do
           it "stores the url" do
             obj.send(:"#{attr}=", %Q|<img src="http://www.page.com/object_sure_to_exist2"> text|.html_safe)
             obj.save!
-            obj.text_links.first.url.should eq('http://www.page.com/object_sure_to_exist2')
+            expect(obj.text_links.first.url).to eq('http://www.page.com/object_sure_to_exist2')
           end
         end
 
@@ -56,7 +56,7 @@ describe "in-content link persisting" do
           it "stores the url" do
             obj.send(:"#{attr}=", %Q|<a href="http://www.page.com/object_sure_to_exist2">link</a> text|.html_safe)
             obj.save!
-            obj.text_links.first.url.should eq('http://www.page.com/object_sure_to_exist2')
+            expect(obj.text_links.first.url).to eq('http://www.page.com/object_sure_to_exist2')
           end
         end
 
@@ -64,8 +64,8 @@ describe "in-content link persisting" do
           it "stores an internal link" do
             obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist2">|)
             obj.save!
-            obj.text_links.first.destination_object.path.should eq('/image_sure_to_exist2')
-            Obj.find(obj.id).send(attr).should match(/internallink:/)
+            expect(obj.text_links.first.destination_object.path).to eq('/image_sure_to_exist2')
+            expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
           end
         end
 
@@ -73,8 +73,8 @@ describe "in-content link persisting" do
           it "stores an internal link" do
             obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist2" />|)
             obj.save!
-            obj.text_links.first.destination_object.path.should eq('/image_sure_to_exist2')
-            Obj.find(obj.id).send(attr).should match(/internallink:/)
+            expect(obj.text_links.first.destination_object.path).to eq('/image_sure_to_exist2')
+            expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
           end
         end
       end
@@ -83,8 +83,8 @@ describe "in-content link persisting" do
         it "stores an internal link" do
           obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist">link</a> text|)
           obj.save!
-          obj.text_links.first.destination_object.permalink.should eq('object_sure_to_exist')
-          Obj.find(obj.id).send(attr).should match(/internallink:/)
+          expect(obj.text_links.first.destination_object.permalink).to eq('object_sure_to_exist')
+          expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
         end
 
 
@@ -92,8 +92,8 @@ describe "in-content link persisting" do
           it "stores an internal link" do
             obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist">link</a> text|.html_safe)
             obj.save!
-            obj.text_links.first.destination_object.permalink.should eq('object_sure_to_exist')
-            Obj.find(obj.id).send(attr).should match(/internallink:/)
+            expect(obj.text_links.first.destination_object.permalink).to eq('object_sure_to_exist')
+            expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
           end
         end
 
@@ -101,7 +101,7 @@ describe "in-content link persisting" do
           it "stores the url" do
             obj.send(:"#{attr}=", %Q|<img src="http://www.page.com/object_sure_to_exist"> text|.html_safe)
             obj.save!
-            obj.text_links.first.url.should eq('http://www.page.com/object_sure_to_exist')
+            expect(obj.text_links.first.url).to eq('http://www.page.com/object_sure_to_exist')
           end
         end
 
@@ -109,7 +109,7 @@ describe "in-content link persisting" do
           it "stores the url" do
             obj.send(:"#{attr}=", %Q|<a href="http://www.page.com/object_sure_to_exist">link</a> text|.html_safe)
             obj.save!
-            obj.text_links.first.url.should eq('http://www.page.com/object_sure_to_exist')
+            expect(obj.text_links.first.url).to eq('http://www.page.com/object_sure_to_exist')
           end
         end
       end
@@ -118,8 +118,8 @@ describe "in-content link persisting" do
         it "stores an internal link" do
           obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist">|)
           obj.save!
-          obj.text_links.first.destination_object.permalink.should eq('image_sure_to_exist')
-          Obj.find(obj.id).send(attr).should match(/internallink:/)
+          expect(obj.text_links.first.destination_object.permalink).to eq('image_sure_to_exist')
+          expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
         end
       end
 
@@ -127,8 +127,8 @@ describe "in-content link persisting" do
         it "stores an internal link" do
           obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist" />|)
           obj.save!
-          obj.text_links.first.destination_object.permalink.should eq('image_sure_to_exist')
-          Obj.find(obj.id).send(attr).should match(/internallink:/)
+          expect(obj.text_links.first.destination_object.permalink).to eq('image_sure_to_exist')
+          expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
         end
       end
 
@@ -141,16 +141,16 @@ describe "in-content link persisting" do
         it "stores an internal link" do
           obj.send(:"#{attr}=", %Q|<a href="#{@idname}">link</a> text|)
           obj.save!
-          obj.text_links.first.destination_object.permalink.should eq('object_sure_to_exist')
-          Obj.find(obj.id).send(attr).should match(/internallink:/)
+          expect(obj.text_links.first.destination_object.permalink).to eq('object_sure_to_exist')
+          expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
         end
 
         context "from html-safe string" do
           it "stores an internal link" do
             obj.send(:"#{attr}=", %Q|<a href="#{@idname}">link</a> text|.html_safe)
             obj.save!
-            obj.text_links.first.destination_object.permalink.should eq('object_sure_to_exist')
-            Obj.find(obj.id).send(attr).should match(/internallink:/)
+            expect(obj.text_links.first.destination_object.permalink).to eq('object_sure_to_exist')
+            expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
           end
         end
 
@@ -158,7 +158,7 @@ describe "in-content link persisting" do
           it "stores the url" do
             obj.send(:"#{attr}=", %Q|<img src="http://www.page.com#{@idname}"> text|.html_safe)
             obj.save!
-            obj.text_links.first.url.should eq("http://www.page.com#{@idname}")
+            expect(obj.text_links.first.url).to eq("http://www.page.com#{@idname}")
           end
         end
 
@@ -166,7 +166,7 @@ describe "in-content link persisting" do
           it "stores the url" do
             obj.send(:"#{attr}=", %Q|<a href="http://www.page.com#{@idname}">link</a> text|.html_safe)
             obj.save!
-            obj.text_links.first.url.should eq("http://www.page.com#{@idname}")
+            expect(obj.text_links.first.url).to eq("http://www.page.com#{@idname}")
           end
         end
       end
@@ -176,8 +176,8 @@ describe "in-content link persisting" do
       it "stores an internal link" do
         obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist"/>|)
         obj.save!
-        Obj.find(obj.id).send(attr).should match(/internallink:/)
-        obj.text_links.should_not be_empty
+        expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
+        expect(obj.text_links).not_to be_empty
       end
     end
 
@@ -185,8 +185,8 @@ describe "in-content link persisting" do
       it "stores an link" do
         obj.send(:"#{attr}=", %Q|<a href="/nonexistent_object">link</a> text|)
         obj.save!
-        Obj.find(obj.id).send(attr).should match(/internallink:/)
-        obj.text_links.should be_empty
+        expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
+        expect(obj.text_links).to be_empty
       end
     end
 
@@ -194,8 +194,8 @@ describe "in-content link persisting" do
       it "stores an internal link" do
         obj.send(:"#{attr}=", %Q|<img src="/nonexistent_object">|)
         obj.save!
-        Obj.find(obj.id).send(attr).should match(/internallink:/)
-        obj.text_links.should be_empty
+        expect(Obj.find(obj.id).send(attr)).to match(/internallink:/)
+        expect(obj.text_links).to be_empty
       end
     end
 
@@ -203,8 +203,8 @@ describe "in-content link persisting" do
       it "stores an external link" do
         obj.send(:"#{attr}=", %Q|<a href="http://google.com">link</a> text|)
         obj.save!
-        Obj.find(obj.id).send(attr).should match(/internallink:/) # YES! It stores external links with internallink: :-)
-        obj.text_links.should_not be_empty
+        expect(Obj.find(obj.id).send(attr)).to match(/internallink:/) # YES! It stores external links with internallink: :-)
+        expect(obj.text_links).not_to be_empty
       end
     end
   end
@@ -214,14 +214,14 @@ describe "in-content link persisting" do
       obj.send(:"#{attr}=", %Q|<a href="/object_sure_to_exist">link</a> text|)
       obj.save!
       obj.resolve_refs! # just to be extra sure, force resolve refs
-      Obj.find(obj.id).send(attr).should == %Q|<a href="/object_sure_to_exist">link</a> text|
+      expect(Obj.find(obj.id).send(attr)).to eq(%Q|<a href="/object_sure_to_exist">link</a> text|)
     end
 
     it "doesn't write any external links" do
       obj.send(:"#{attr}=", %Q|<a href="http://google.com">link</a> text|)
       obj.save!
       obj.resolve_refs! # just to be extra sure, force resolve refs
-      Obj.find(obj.id).send(attr).should == %Q|<a href="http://google.com">link</a> text|
+      expect(Obj.find(obj.id).send(attr)).to eq(%Q|<a href="http://google.com">link</a> text|)
     end
   end
 

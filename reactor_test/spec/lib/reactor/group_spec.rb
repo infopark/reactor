@@ -21,26 +21,26 @@ describe Reactor::Cm::Group do
 
 
   it 'creates a group' do
-    subject.class.should be_exists('created_group')
+    expect(subject.class).to be_exists('created_group')
   end
 
   it 'sets the real name' do
-    @group.real_name.should eq('test real name')
+    expect(@group.real_name).to eq('test real name')
   end
 
   it 'sets the owner' do
-    @group.owner.should eq('not_root')
+    expect(@group.owner).to eq('not_root')
   end
 
   it 'sets the users' do
     %w{root not_root}.each do |user|
-      @group.users.should include(user)
+      expect(@group.users).to include(user)
     end
   end
 
   it 'sets the global permissions' do
     %w{permissionGlobalUserEdit permissionGlobalMirrorHandling}.each do |name|
-      @group.global_permissions.should include(name)
+      expect(@group.global_permissions).to include(name)
     end
   end
 
@@ -49,27 +49,27 @@ describe Reactor::Cm::Group do
     it 'returns a list of all groups' do
       groups = subject.class.all
 
-      groups.should have_at_least(3).items
+      expect(groups.size).to be >= 3
 
       %w{admins not_root_group created_group}.each do |name|
-        groups.should include(name)
+        expect(groups).to include(name)
       end
     end
 
     it 'matches groups with the given term' do |name|
       groups = subject.class.all('not_root')
 
-      groups.should have(1).items
+      expect(groups.size).to eq(1)
 
       %w{not_root_group}.each do |name|
-        groups.should include(name)
+        expect(groups).to include(name)
       end
     end
 
     it 'returns an empty collection when no group can be found' do
       groups = subject.class.all('non-existing-group')
 
-      groups.should have(0).items
+      expect(groups.size).to eq(0)
     end
     
   end
@@ -77,11 +77,11 @@ describe Reactor::Cm::Group do
   describe 'exists' do
     
     it 'returns false if the group does not exist' do
-      subject.class.exists?('not_existing_group').should be_false
+      expect(subject.class.exists?('not_existing_group')).to be_falsey
     end
 
     it 'returns true if the group exists' do
-      subject.class.exists?('created_group').should be_true
+      expect(subject.class.exists?('created_group')).to be_truthy
     end
 
   end
@@ -92,7 +92,7 @@ describe Reactor::Cm::Group do
       group = subject.class.get('created_group')
 
       %w{name real_name owner users global_permissions}.each do |name|
-        group.send(name).should eq(@group.send(name))
+        expect(group.send(name)).to eq(@group.send(name))
       end
     end
 
@@ -112,10 +112,10 @@ describe Reactor::Cm::Group do
         @group.send("#{key}=", value)
       end
 
-      @group.save!.should be_true
+      expect(@group.save!).to be_truthy
 
       %w{real_name owner users global_permissions}.each do |name|
-        @group.send(name).should eq(attributes[name.to_sym])
+        expect(@group.send(name)).to eq(attributes[name.to_sym])
       end
     end
   end
@@ -125,10 +125,10 @@ describe Reactor::Cm::Group do
     it 'renames the group to the given name' do
       group = @group.rename!('renamed_created_group')
 
-      group.name.should eq('renamed_created_group')
+      expect(group.name).to eq('renamed_created_group')
 
       %w{real_name owner users global_permissions}.each do |name|
-        group.send(name).should eq(@group.send(name))
+        expect(group.send(name)).to eq(@group.send(name))
       end
 
       group.rename!('created_group')

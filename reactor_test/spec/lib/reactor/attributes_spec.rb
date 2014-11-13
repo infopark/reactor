@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe Obj do
   it "should include Reactor::Attributes::Base" do
-    Obj.should include(Reactor::Attributes::Base)
+    expect(Obj).to include(Reactor::Attributes::Base)
   end
 end
 
@@ -13,7 +13,7 @@ describe Reactor::Attributes do
   before do
     @crul_obj = double().as_null_object
     @obj = Obj.find_by_path('/test_obj_with_custom_attributes')
-    @obj.stub(:crul_obj).and_return(@crul_obj)
+    allow(@obj).to receive(:crul_obj).and_return(@crul_obj)
   end
 
   shared_examples "object with settable base attributes" do
@@ -22,48 +22,48 @@ describe Reactor::Attributes do
     describe "#name=" do
       it "sets name" do
         obj.name = "new_obj_name"
-        obj.name.should == "new_obj_name"
+        expect(obj.name).to eq("new_obj_name")
       end
 
       it "propagates the value to [:name]" do
         obj.name = "new_obj_name"
-        obj[:name].should == "new_obj_name"
+        expect(obj[:name]).to eq("new_obj_name")
       end
     end
 
     describe "#channels=" do
       it "sets channels" do
         obj.channels = ["my.simple.channel"]
-        obj.channels.should == ["my.simple.channel"]
+        expect(obj.channels).to eq(["my.simple.channel"])
       end
 
       it "propagates the value to [:channels]" do
         obj.channels = ["my.simple.channel"]
-        obj[:channels].should == ["my.simple.channel"]
+        expect(obj[:channels]).to eq(["my.simple.channel"])
       end
     end
 
     describe "#title=" do
       it "sets title" do
         obj.title = "new title"
-        obj.title.should == "new title"
+        expect(obj.title).to eq("new title")
       end
 
       it "propagates the value to [:title]" do
         obj.title = "new title"
-        obj[:title].should == "new title"
+        expect(obj[:title]).to eq("new title")
       end
     end
 
     describe "#obj_class=" do
       it "sets obj class" do
         obj.obj_class = "OtherObjClass"
-        obj.obj_class.should == "OtherObjClass"
+        expect(obj.obj_class).to eq("OtherObjClass")
       end
 
       it "propagates the value to [:obj_class]" do
         obj.obj_class = "OtherObjClass"
-        obj[:obj_class].should == "OtherObjClass"
+        expect(obj[:obj_class]).to eq("OtherObjClass")
       end
     end
 
@@ -76,12 +76,12 @@ describe Reactor::Attributes do
     describe '#permalink=' do
       it "sets permalink" do
         obj.permalink = 'new-permalink'
-        obj.permalink.should == 'new-permalink'
+        expect(obj.permalink).to eq('new-permalink')
       end
 
       it "propagates the value to [:permalink]" do
         obj.permalink = 'permalink-1234$'
-        obj[:permalink].should == 'permalink-1234$'
+        expect(obj[:permalink]).to eq('permalink-1234$')
       end
     end
 
@@ -89,13 +89,13 @@ describe Reactor::Attributes do
       it "sets valid_from" do
         t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_from = t
-        obj.valid_from.should == t
+        expect(obj.valid_from).to eq(t)
       end
 
       it "propagates the value to [:valid_from]" do
         t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_from = t
-        obj[:valid_from].should == t
+        expect(obj[:valid_from]).to eq(t)
       end
     end
 
@@ -103,13 +103,13 @@ describe Reactor::Attributes do
       it 'sets valid_until' do
         t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_until = t
-        obj.valid_until.should == t
+        expect(obj.valid_until).to eq(t)
       end
 
       it "propagates the value to [:valid_until]" do
         t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_until = t
-        obj[:valid_until].should == t
+        expect(obj[:valid_until]).to eq(t)
       end
     end
 
@@ -117,44 +117,44 @@ describe Reactor::Attributes do
       context ':name' do
         it "sets name" do
           obj.set(:name, 'new_obj_name')
-          obj.name.should == 'new_obj_name'
+          expect(obj.name).to eq('new_obj_name')
         end
         it "propagates to [:name]" do
           obj.set(:name, 'new_obj_name')
-          obj[:name].should == 'new_obj_name'
+          expect(obj[:name]).to eq('new_obj_name')
         end
       end
 
       context ":title" do
         it "sets title" do
           obj.set(:title, 'new title')
-          obj.title.should == 'new title'
+          expect(obj.title).to eq('new title')
         end
         it "propagates to [:title]" do
           obj.set(:title, 'new title')
-          obj[:title].should == 'new title'
+          expect(obj[:title]).to eq('new title')
         end
       end
 
       context ':obj_class' do
         it "sets obj class" do
           obj.set(:obj_class, 'OtherObjClass')
-          obj.obj_class.should == 'OtherObjClass'
+          expect(obj.obj_class).to eq('OtherObjClass')
         end
         it "propagates to [:obj_class]" do
           obj.set(:obj_class, 'OtherObjClass')
-          obj[:obj_class].should == 'OtherObjClass'
+          expect(obj[:obj_class]).to eq('OtherObjClass')
         end
       end
 
       context ':permalink' do
         it "sets permalink" do
           obj.set(:permalink, 'permalink1234.html')
-          obj.permalink.should == 'permalink1234.html'
+          expect(obj.permalink).to eq('permalink1234.html')
         end
         it "propagates to [:permalink]" do
           obj.set(:permalink, 'permalink1234.html')
-          obj[:permalink].should == 'permalink1234.html'
+          expect(obj[:permalink]).to eq('permalink1234.html')
         end
       end
 
@@ -162,12 +162,12 @@ describe Reactor::Attributes do
         it "sets valid from" do
           t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_from, t)
-          obj.valid_from.should == t
+          expect(obj.valid_from).to eq(t)
         end
         it "propagates to [:valid_from]" do
           t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_from, t)
-          obj[:valid_from].should == t
+          expect(obj[:valid_from]).to eq(t)
         end
       end
 
@@ -175,12 +175,12 @@ describe Reactor::Attributes do
         it "sets valid until" do
           t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_until, t)
-          obj.valid_until.should == t
+          expect(obj.valid_until).to eq(t)
         end
         it "propagates to [:valid_until]" do
           t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_until, t)
-          obj[:valid_until].should == t
+          expect(obj[:valid_until]).to eq(t)
         end
       end
     end
@@ -191,25 +191,25 @@ describe Reactor::Attributes do
 
     describe 'test_attr_linklist=' do
       it 'has the type linklist' do
-        obj.send(:attribute_type, :test_attr_linklist).should eq(:linklist)
+        expect(obj.send(:attribute_type, :test_attr_linklist)).to eq(:linklist)
       end
 
       it "sets the linklist" do
         links = ['/object_sure_to_exist', '/', 'http://google.com']
         obj.test_attr_linklist = links
         first, second, third = obj.test_attr_linklist
-        first.destination_object.path.should == links[0]
-        second.destination_object.path.should == links[1]
-        third.url.should == links[2]
+        expect(first.destination_object.path).to eq(links[0])
+        expect(second.destination_object.path).to eq(links[1])
+        expect(third.url).to eq(links[2])
       end
 
       it "propagates to [:test_attr_linklist]" do
         links = ['/object_sure_to_exist', '/', 'http://google.com']
         obj.test_attr_linklist = links
         first, second, third = obj[:test_attr_linklist]
-        first.destination_object.path.should == links[0]
-        second.destination_object.path.should == links[1]
-        third.url.should == links[2]
+        expect(first.destination_object.path).to eq(links[0])
+        expect(second.destination_object.path).to eq(links[1])
+        expect(third.url).to eq(links[2])
       end
     end
 
@@ -217,12 +217,12 @@ describe Reactor::Attributes do
       it "sets test_attr_date" do
         t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.test_attr_date = t
-        obj.test_attr_date.should == t
+        expect(obj.test_attr_date).to eq(t)
       end
       it "propagates to [:test_attr_date]" do
         t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.test_attr_date = t
-        obj[:test_attr_date].should == t
+        expect(obj[:test_attr_date]).to eq(t)
       end
     end
 
@@ -230,12 +230,12 @@ describe Reactor::Attributes do
       it 'sets test_attr_html' do
         html = '<script>alert("system hacked!");</script><b>by BillGates</b>'
         obj.test_attr_html = html
-        obj.test_attr_html.should == html
+        expect(obj.test_attr_html).to eq(html)
       end
       it "propagates to [:test_attr_html]" do
         html = '<script>alert("system hacked!");</script><b>by BillGates</b>'
         obj.test_attr_html = html
-        obj[:test_attr_html].should == html
+        expect(obj[:test_attr_html]).to eq(html)
       end
     end
 
@@ -243,13 +243,13 @@ describe Reactor::Attributes do
       it 'sets test_attr_string' do
         str = 'Gänsefüßchen oder nicht Gänsefüßchen?!'
         obj.test_attr_string = str
-        obj.test_attr_string.should == str
+        expect(obj.test_attr_string).to eq(str)
       end
 
       it 'propagates to [:test_attr_string]' do
         str = 'Gänsefüßchen oder nicht Gänsefüßchen?!'
         obj.test_attr_string = str
-        obj[:test_attr_string].should == str
+        expect(obj[:test_attr_string]).to eq(str)
       end
     end
 
@@ -257,13 +257,13 @@ describe Reactor::Attributes do
       it 'sets test_attr_text' do
         str = "Gänsefüßchen oder nicht Gänsefüßchen?!\nGänsefüßchen oder nicht Gänsefüßchen?!"
         obj.test_attr_text = str
-        obj.test_attr_text.should == str
+        expect(obj.test_attr_text).to eq(str)
       end
 
       it 'propagates to [:test_attr_text]' do
         str = "Gänsefüßchen oder nicht Gänsefüßchen?!\nGänsefüßchen oder nicht Gänsefüßchen?!"
         obj.test_attr_text = str
-        obj[:test_attr_text].should == str
+        expect(obj[:test_attr_text]).to eq(str)
       end
     end
 
@@ -271,13 +271,13 @@ describe Reactor::Attributes do
       it 'sets test_attr_enum' do
         val = 'value1'
         obj.test_attr_enum = val
-        obj.test_attr_enum.should == val
+        expect(obj.test_attr_enum).to eq(val)
       end
 
       it 'propagates to [:test_attr_enum]' do
         val = 'value2'
         obj.test_attr_enum = val
-        obj[:test_attr_enum].should == val
+        expect(obj[:test_attr_enum]).to eq(val)
       end
     end
 
@@ -285,13 +285,13 @@ describe Reactor::Attributes do
       it 'sets test_attr_multienum' do
         values = ['value1', 'value3']
         obj.test_attr_multienum = values
-        obj.test_attr_multienum.should == values
+        expect(obj.test_attr_multienum).to eq(values)
       end
 
       it 'propagates to [:test_attr_multienum]' do
         values = ['value1', 'value3']
         obj.test_attr_multienum = values
-        obj[:test_attr_multienum].should == values
+        expect(obj[:test_attr_multienum]).to eq(values)
       end
     end
 
@@ -310,12 +310,12 @@ describe Reactor::Attributes do
         it "sets test_attr_date" do
           t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:test_attr_date, t)
-          obj.test_attr_date.should == t
+          expect(obj.test_attr_date).to eq(t)
         end
         it "propagates to [:test_attr_date]" do
           t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:test_attr_date, t)
-          obj[:test_attr_date].should == t
+          expect(obj[:test_attr_date]).to eq(t)
         end
       end
 
@@ -323,12 +323,12 @@ describe Reactor::Attributes do
         it 'sets to test_attr_html' do
           html = '<script>alert("system hacked!");</script><b>by BillGates</b>'
           obj.set(:test_attr_html, html)
-          obj[:test_attr_html].should == html
+          expect(obj[:test_attr_html]).to eq(html)
         end
         it 'propagates to [:test_attr_html]' do
           html = '<script>alert("system hacked!");</script><b>by BillGates</b>'
           obj.set(:test_attr_html, html)
-          obj[:test_attr_html].should == html
+          expect(obj[:test_attr_html]).to eq(html)
         end
       end
 
@@ -336,13 +336,13 @@ describe Reactor::Attributes do
         it 'sets test_attr_string' do
           str = 'Gänsefüßchen oder nicht Gänsefüßchen?!'
           obj.set(:test_attr_string, str)
-          obj.test_attr_string.should == str
+          expect(obj.test_attr_string).to eq(str)
         end
 
         it 'propagates to [:test_attr_string]' do
           str = 'Gänsefüßchen oder nicht Gänsefüßchen?!'
           obj.set(:test_attr_string, str)
-          obj[:test_attr_string].should == str
+          expect(obj[:test_attr_string]).to eq(str)
         end
       end
 
@@ -350,13 +350,13 @@ describe Reactor::Attributes do
         it 'sets test_attr_text' do
           str = "Gänsefüßchen oder nicht Gänsefüßchen?!\nGänsefüßchen oder nicht Gänsefüßchen?!"
           obj.set(:test_attr_text, str)
-          obj.test_attr_text.should == str
+          expect(obj.test_attr_text).to eq(str)
         end
 
         it 'propagates to [:test_attr_text]' do
           str = "Gänsefüßchen oder nicht Gänsefüßchen?!\nGänsefüßchen oder nicht Gänsefüßchen?!"
           obj.set(:test_attr_text, str)
-          obj[:test_attr_text].should == str
+          expect(obj[:test_attr_text]).to eq(str)
         end
       end
 
@@ -364,13 +364,13 @@ describe Reactor::Attributes do
         it 'sets test_attr_enum' do
           val = 'value1'
           obj.set(:test_attr_enum, val)
-          obj.test_attr_enum.should == val
+          expect(obj.test_attr_enum).to eq(val)
         end
 
         it 'propagates to [:test_attr_enum]' do
           val = 'value2'
           obj.set(:test_attr_enum, val)
-          obj[:test_attr_enum].should == val
+          expect(obj[:test_attr_enum]).to eq(val)
         end
       end
 
@@ -378,13 +378,13 @@ describe Reactor::Attributes do
         it 'sets test_attr_multienum' do
           values = ['value1', 'value3']
           obj.set(:test_attr_multienum, values)
-          obj.test_attr_multienum.should == values
+          expect(obj.test_attr_multienum).to eq(values)
         end
 
         it 'propagates to [:test_attr_multienum]' do
           values = ['value1', 'value3']
           obj.set(:test_attr_multienum, values)
-          obj[:test_attr_multienum].should == values
+          expect(obj[:test_attr_multienum]).to eq(values)
         end
       end
     end
@@ -396,50 +396,50 @@ describe Reactor::Attributes do
     it 'sets body and blob (read using method calls)' do
       val = 'new body value'
       obj.body = val
-      obj.blob.should == val
+      expect(obj.blob).to eq(val)
     end
 
     it 'sets body and blob (read using [] method)' do
       val = 'new body value'
       obj.body = val
-      obj[:blob].should == val
+      expect(obj[:blob]).to eq(val)
     end
 
     it 'sets blob and body (read using method calls)' do
       val = 'new body value'
       obj.blob = val
-      obj.body.should == val
+      expect(obj.body).to eq(val)
     end
 
     it 'sets blob and body (read using [] method)' do
       val = 'new body value'
       obj.blob = val
-      obj[:body].should == val
+      expect(obj[:body]).to eq(val)
     end
 
     describe '#set' do
       it 'sets body and blob (read using method calls)' do
         val = 'new body value'
         obj.set(:body, val)
-        obj.blob.should == val
+        expect(obj.blob).to eq(val)
       end
 
       it 'sets body and blob (read using [] method)' do
         val = 'new body value'
         obj.set(:body, val)
-        obj[:blob].should == val
+        expect(obj[:blob]).to eq(val)
       end
 
       it 'sets blob and body (read using method calls)' do
         val = 'new body value'
         obj.set(:blob, val)
-        obj.body.should == val
+        expect(obj.body).to eq(val)
       end
 
       it 'sets blob and body (read using [] method)' do
         val = 'new body value'
         obj.set(:blob, val)
-        obj[:body].should == val
+        expect(obj[:body]).to eq(val)
       end
     end
   end
@@ -466,16 +466,16 @@ describe Reactor::Attributes do
       @target_name = 'abc'
       @target_id = 12345
       @target_obj = stub_obj(Obj, :path => @target_path)
-      Obj.stub(:find) do |id|
+      allow(Obj).to receive(:find) do |id|
         @target_obj if id == @target_id
       end
     end
 
     it "rewrites links with matching path and existing obj" do
-      Obj.stub(:exists?) {|id| id == @target_id}
+      allow(Obj).to receive(:exists?) {|id| id == @target_id}
       
       obj.set(attr, "<a href=\"/#{@target_id}/#{@target_name}\">link</a>")
-      obj.send(attr).should == "<a href=\"#{@target_path}\">link</a>"
+      expect(obj.send(attr)).to eq("<a href=\"#{@target_path}\">link</a>")
     end
 
     context "for objects with permalink" do
@@ -483,15 +483,15 @@ describe Reactor::Attributes do
         @obj_w_permalink_path = '/my/path/abc'
         @obj_w_permalink_permalink = 'permalink'
         @obj_w_permalink = stub_obj(Obj, :path => @obj_w_permalink_path, :permalink => @obj_w_permalink_permalink)
-        Obj.stub(:find_by_permalink) do |permalink|
+        allow(Obj).to receive(:find_by_permalink) do |permalink|
           @obj_w_permalink if permalink == @obj_w_permalink_permalink
         end
       end
 
       it "rewrites links with matching permalink and existing obj" do
-        Obj.stub(:exists?) {|options| options[:permalink] == @obj_w_permalink_permalink}
+        allow(Obj).to receive(:exists?) {|options| options[:permalink] == @obj_w_permalink_permalink}
         obj.set(attr, "<a href=\"/#{@obj_w_permalink_permalink}\">link</a>")
-        obj.send(attr).should == "<a href=\"#{@obj_w_permalink_path}\">link</a>"
+        expect(obj.send(attr)).to eq("<a href=\"#{@obj_w_permalink_path}\">link</a>")
       end
 
       context "when running under a relative root" do
@@ -500,9 +500,9 @@ describe Reactor::Attributes do
         end
 
         it "rewrites links with matching permalink and existing obj" do
-          Obj.stub(:exists?) {|options| options[:permalink] == @obj_w_permalink_permalink}
+          allow(Obj).to receive(:exists?) {|options| options[:permalink] == @obj_w_permalink_permalink}
           obj.set(attr, "<a href=\"/mpi/#{@obj_w_permalink_permalink}\">link</a>")
-          obj.send(attr).should == "<a href=\"#{@obj_w_permalink_path}\">link</a>"
+          expect(obj.send(attr)).to eq("<a href=\"#{@obj_w_permalink_path}\">link</a>")
         end
       end
     end
@@ -513,26 +513,26 @@ describe Reactor::Attributes do
       end
 
       it "rewrites links with matching path and existing obj" do
-        Obj.stub(:exists?) {|id| id == @target_id}
+        allow(Obj).to receive(:exists?) {|id| id == @target_id}
         obj.set(attr, "<a href=\"/mpi/#{@target_id}/#{@target_name}\">link</a>")
-        obj.send(attr).should == "<a href=\"#{@target_path}\">link</a>"
+        expect(obj.send(attr)).to eq("<a href=\"#{@target_path}\">link</a>")
       end
     end
 
     it "doesn't rewrite links without matching path" do
       obj.set(attr, "<a href=\"/unmatching/123/file\">link</a>")
-      obj.send(attr).should ==  "<a href=\"/unmatching/123/file\">link</a>"
+      expect(obj.send(attr)).to eq("<a href=\"/unmatching/123/file\">link</a>")
     end
 
     it "doesn't rewrite links with matching path but without matching obj" do
-      Obj.stub(:exists?) {|id| !(id == 6743)}
+      allow(Obj).to receive(:exists?) {|id| !(id == 6743)}
       obj.set(attr, "<a href=\"/6743/matching_no_obj\">link</a>")
-      obj.send(attr).should == "<a href=\"/6743/matching_no_obj\">link</a>"
+      expect(obj.send(attr)).to eq("<a href=\"/6743/matching_no_obj\">link</a>")
     end
 
     it "doesn't rewrite external links" do
       obj.set(attr, "<a href=\"http://localhost:3100/#{@target_id}/#{@target_path}\">link</a>")
-      obj.send(attr).should == "<a href=\"http://localhost:3100/#{@target_id}/#{@target_path}\">link</a>"
+      expect(obj.send(attr)).to eq("<a href=\"http://localhost:3100/#{@target_id}/#{@target_path}\">link</a>")
     end
   end
 
@@ -601,10 +601,10 @@ describe Reactor::Attributes do
     end
 
     it "isn't a link serializing attribute" do
-      Obj.stub(:exists?) {|id| id == @target_id}
+      allow(Obj).to receive(:exists?) {|id| id == @target_id}
     
       obj.set(attr, "<a href=\"/#{@target_id}/#{@target_name}\">link</a>")
-      obj.send(attr).should == "<a href=\"/#{@target_id}/#{@target_name}\">link</a>"
+      expect(obj.send(attr)).to eq("<a href=\"/#{@target_id}/#{@target_name}\">link</a>")
     end
   end
 end

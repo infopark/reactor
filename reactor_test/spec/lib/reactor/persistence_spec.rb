@@ -3,11 +3,11 @@ require 'spec_helper'
 
 describe Obj do
   it "should include Reactor::Persistence::Base" do
-    Obj.should include(Reactor::Persistence::Base)
+    expect(Obj).to include(Reactor::Persistence::Base)
   end
 
   it "should not be read-only" do
-    Obj.new.should_not be_readonly
+    expect(Obj.new).not_to be_readonly
   end
 end
 
@@ -26,8 +26,8 @@ describe Reactor::Persistence do
       expect(o.test_attr_text).to eq('test1')
       expect(o.test_attr_linklist.first.url).to eq('http://google.com')
 
-      o.stub(:test_attr_text) { 'hahah, no' }
-      o.stub(:test_attr_linklist) { 'whatever' }
+      allow(o).to receive(:test_attr_text) { 'hahah, no' }
+      allow(o).to receive(:test_attr_linklist) { 'whatever' }
 
       o.test_attr_text = 'test2'
       o.test_attr_linklist = [{:url => 'http://yahoo.com'}]
@@ -79,7 +79,7 @@ describe Reactor::Persistence do
 
       expect(o).to be_edited
       expect(o.test_attr_linklist.first.url).to eq('http://yahoo.com')
-      expect(o.test_attr_linklist).to have(1).link
+      expect(o.test_attr_linklist.size).to eq(1)
     end
 
     it 'does create working version when setting content' do
@@ -116,9 +116,9 @@ describe Reactor::Persistence do
           second_copy = Obj.find(first_copy.id)
           first_copy.body = 'b'
           first_copy.save!
-          second_copy.body.should eq('a')
+          expect(second_copy.body).to eq('a')
           second_copy.reload
-          second_copy.body.should eq('b')
+          expect(second_copy.body).to eq('b')
         end
 
       end
@@ -131,38 +131,38 @@ describe Reactor::Persistence do
       before { obj.edit! }
 
       it "returns true" do
-        obj.release.should be_true
+        expect(obj.release).to be_truthy
       end
 
       it "releases the object" do
         obj.release
-        obj.should be_released
+        expect(obj).to be_released
       end
     end
 
     context "invalid object" do
       let(:obj) { Obj.find_by_path('/invalid_object_for_release') }
-      before { obj.stub(:valid?) { false } }
+      before { allow(obj).to receive(:valid?) { false } }
 
       it "returns false" do
-        obj.release.should be_false
+        expect(obj.release).to be_falsey
       end
     end
 
     context "object without working version" do
       let(:obj) { Obj.find_by_path('/invalid_object_for_release') }
-      before { obj.stub(:edited?) { false } }
+      before { allow(obj).to receive(:edited?) { false } }
 
       it "returns false" do
-        obj.release.should be_false
+        expect(obj.release).to be_falsey
       end
     end
 
     context "user lacks permission to release the object" do
       let(:obj) { Obj.find_by_path('/invalid_object_for_release') }
-      before { obj.stub(:permission) { double(:release? => false) } }
+      before { allow(obj).to receive(:permission) { double(:release? => false) } }
       it "returns false" do
-        obj.release.should be_false
+        expect(obj.release).to be_falsey
       end
     end
   end
@@ -173,18 +173,18 @@ describe Reactor::Persistence do
       before { obj.edit! }
 
       it "returns true" do
-        obj.release!.should be_true
+        expect(obj.release!).to be_truthy
       end
 
       it "releases object" do
         obj.release!
-        obj.should be_released
+        expect(obj).to be_released
       end
     end
 
     context "invalid object" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub(:valid?) { false } }
+      before { allow(obj).to receive(:valid?) { false } }
 
       it "raises RecordInvalid exception" do
         expect { obj.release! }.to raise_exception(ActiveRecord::RecordInvalid)
@@ -193,7 +193,7 @@ describe Reactor::Persistence do
 
     context "object without working version" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub(:edited?) { false } }
+      before { allow(obj).to receive(:edited?) { false } }
 
       it "raises AlreadyReleased exception" do
         expect { obj.release! }.to raise_exception(Reactor::AlreadyReleased)
@@ -202,7 +202,7 @@ describe Reactor::Persistence do
 
     context "user lacks permission to release the object" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub(:permission) { double(:release? => false) } }
+      before { allow(obj).to receive(:permission) { double(:release? => false) } }
       it "raises NotPermitted exception" do
         expect { obj.release! }.to raise_exception(Reactor::NotPermitted)
       end
@@ -226,8 +226,8 @@ describe Reactor::Persistence do
 
         it "clears attributes" do
           @obj.send(method)
-          @obj.body.should be_blank
-          Obj.find(@obj.obj_id).body.should be_blank
+          expect(@obj.body).to be_blank
+          expect(Obj.find(@obj.obj_id).body).to be_blank
         end
       end
 
@@ -242,16 +242,16 @@ describe Reactor::Persistence do
 
         it "resets attributes" do
           @obj.send(method)
-          @obj.body.should eq('1')
+          expect(@obj.body).to eq('1')
         end
       end
 
       it "returns true" do
-        @obj.send(method).should be_true
+        expect(@obj.send(method)).to be_truthy
       end
 
       it "reloads object" do
-        @obj.should_receive(:reload)
+        expect(@obj).to receive(:reload)
         @obj.send(method)
       end
     end
@@ -296,12 +296,12 @@ describe Reactor::Persistence do
       end
 
       it "makes the user editor of the file" do
-        @obj.editor.should_not == 'root'
+        expect(@obj.editor).not_to eq('root')
         @obj.take
-        @obj.editor.should == 'root'
+        expect(@obj.editor).to eq('root')
       end
       it "returns true" do
-        @obj.take.should be_true
+        expect(@obj.take).to be_truthy
       end
     end
 
@@ -314,28 +314,28 @@ describe Reactor::Persistence do
         Reactor::Session.instance.send(:user_name=, 'root')
       end
       it "leaves the user as editor" do
-        @obj.editor.should == 'root'
+        expect(@obj.editor).to eq('root')
         @obj.take
-        @obj.editor.should == 'root'
+        expect(@obj.editor).to eq('root')
       end
       it "returns true" do
-        @obj.take.should be_true
+        expect(@obj.take).to be_truthy
       end
     end
 
     context "the object has not been edited" do
       let(:obj) {stub_model(Obj)}
-      before { obj.stub(:edited?) {false} }
+      before { allow(obj).to receive(:edited?) {false} }
       it "returns false" do
-        obj.take.should be_false
+        expect(obj.take).to be_falsey
       end
     end
 
     context "user lacks permission to edit the object" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub(:permission) { double(:take? => false) } }
+      before { allow(obj).to receive(:permission) { double(:take? => false) } }
       it "returns false" do
-        obj.take.should be_false
+        expect(obj.take).to be_falsey
       end
     end
   end
@@ -379,12 +379,12 @@ describe Reactor::Persistence do
       end
 
       it "makes the user editor of the file" do
-        @obj.editor.should_not == 'root'
+        expect(@obj.editor).not_to eq('root')
         @obj.take!
-        @obj.editor.should == 'root'
+        expect(@obj.editor).to eq('root')
       end
       it "returns true" do
-        @obj.take!.should be_true
+        expect(@obj.take!).to be_truthy
       end
     end
 
@@ -397,18 +397,18 @@ describe Reactor::Persistence do
         Reactor::Session.instance.send(:user_name=, 'root')
       end
       it "leaves the user as editor" do
-        @obj.editor.should == 'root'
+        expect(@obj.editor).to eq('root')
         @obj.take!
-        @obj.editor.should == 'root'
+        expect(@obj.editor).to eq('root')
       end
       it "returns true" do
-        @obj.take!.should be_true
+        expect(@obj.take!).to be_truthy
       end
     end
 
     context "the object has not been edited" do
       let(:obj) {stub_model(Obj)}
-      before { obj.stub(:edited?) {false} }
+      before { allow(obj).to receive(:edited?) {false} }
       it "raises NoWorkingVersion" do
         expect { obj.take! }.to raise_exception(Reactor::NoWorkingVersion)
       end
@@ -416,7 +416,7 @@ describe Reactor::Persistence do
 
     context "user lacks permission to edit the object" do
       let(:obj) { stub_model(Obj) }
-      before { obj.stub(:permission) { double(:take? => false) } }
+      before { allow(obj).to receive(:permission) { double(:take? => false) } }
       it "raises NotPermitted exception" do
         expect { obj.take! }.to raise_exception(Reactor::NotPermitted)
       end
@@ -429,12 +429,12 @@ describe Reactor::Persistence do
       before { obj.release }
 
       it "returns true" do
-        obj.edit.should be_true
+        expect(obj.edit).to be_truthy
       end
 
       it "edits object" do
         obj.edit
-        obj.should be_edited
+        expect(obj).to be_edited
       end
     end
 
@@ -443,20 +443,20 @@ describe Reactor::Persistence do
       before { obj.edit }
 
       it "returns true" do
-        obj.edit.should be_true
+        expect(obj.edit).to be_truthy
       end
 
       it "leaves object edited" do
         obj.edit
-        obj.should be_edited
+        expect(obj).to be_edited
       end
     end
 
     context "user lacks permission to release the object" do
       let(:obj) { Obj.find_by_path('/valid_object_for_edit') }
-      before { obj.stub(:permission) { double(:edit? => false) } }
+      before { allow(obj).to receive(:permission) { double(:edit? => false) } }
       it "returns false" do
-        obj.edit.should be_false
+        expect(obj.edit).to be_falsey
       end
     end
   end
@@ -467,12 +467,12 @@ describe Reactor::Persistence do
       before { obj.release }
 
       it "returns true" do
-        obj.edit!.should be_true
+        expect(obj.edit!).to be_truthy
       end
 
       it "edits object" do
         obj.edit!
-        obj.should be_edited
+        expect(obj).to be_edited
       end
     end
 
@@ -481,18 +481,18 @@ describe Reactor::Persistence do
       before { obj.edit }
 
       it "returns true" do
-        obj.edit!.should be_true
+        expect(obj.edit!).to be_truthy
       end
 
       it "leaves object edited" do
         obj.edit!
-        obj.should be_edited
+        expect(obj).to be_edited
       end
     end
 
     context "user lacks permission to release the object" do
       let(:obj) { Obj.find_by_path('/valid_object_for_edit') }
-      before { obj.stub(:permission) { double(:edit? => false) } }
+      before { allow(obj).to receive(:permission) { double(:edit? => false) } }
       it "returns false" do
         expect {obj.edit!}.to raise_exception(Reactor::NotPermitted)
       end
@@ -503,15 +503,15 @@ describe Reactor::Persistence do
     before { @obj = Obj.last }
 
     describe '#new_record?' do
-      it { @obj.new_record?.should be_false }
+      it { expect(@obj.new_record?).to be_falsey }
     end
 
     describe '#persisted?' do
-      it { @obj.persisted?.should be_true }
+      it { expect(@obj.persisted?).to be_truthy }
     end
 
     describe '#destroyed?' do
-      it { @obj.destroyed?.should be_false }
+      it { expect(@obj.destroyed?).to be_falsey }
     end
   end
 
@@ -519,15 +519,15 @@ describe Reactor::Persistence do
     before { @obj = Obj.new }
 
     describe '#new_record?' do
-      it { @obj.new_record?.should be_true }
+      it { expect(@obj.new_record?).to be_truthy }
     end
 
     describe '#persisted?' do
-      it { @obj.persisted?.should be_false }
+      it { expect(@obj.persisted?).to be_falsey }
     end
 
     describe '#destroyed?' do
-      it { @obj.destroyed?.should be_false }
+      it { expect(@obj.destroyed?).to be_falsey }
     end
   end
 
@@ -538,15 +538,15 @@ describe Reactor::Persistence do
     end
 
     describe '#new_record?' do
-      it { @obj.new_record?.should be_false }
+      it { expect(@obj.new_record?).to be_falsey }
     end
 
     describe '#persisted?' do
-      it { @obj.persisted?.should be_false }
+      it { expect(@obj.persisted?).to be_falsey }
     end
 
     describe '#destroyed?' do
-      it { @obj.destroyed?.should be_true }
+      it { expect(@obj.destroyed?).to be_truthy }
     end
   end
 
@@ -564,24 +564,24 @@ describe Reactor::Persistence do
     it "freezes the object" do
       obj = Obj.new
       obj.delete
-      obj.should be_frozen
+      expect(obj).to be_frozen
     end
 
     it "doesn't run before callback" do
       obj = CallbackedObj.new
-      obj.should_not_receive(:before_destroy_callback)
+      expect(obj).not_to receive(:before_destroy_callback)
       obj.delete
     end
 
     it "doesn't run after callback" do
       obj = CallbackedObj.new
-      obj.should_not_receive(:after_destroy_callback)
+      expect(obj).not_to receive(:after_destroy_callback)
       obj.delete
     end
 
     it "doesn't run around callback" do
       obj = CallbackedObj.new
-      obj.should_not_receive(:around_destroy_callback)
+      expect(obj).not_to receive(:around_destroy_callback)
       obj.delete
     end
 
@@ -592,7 +592,7 @@ describe Reactor::Persistence do
         obj.delete
         # Uncomment this line and comment the following in case specs are converted to VCR based ones
         #Reactor::Cm::Obj.should_not be_exists(obj_id)
-        Obj.should_not be_exists(obj_id)
+        expect(Obj).not_to be_exists(obj_id)
       end
     end
   end
@@ -611,24 +611,24 @@ describe Reactor::Persistence do
     it "freezes the object" do
       obj = Obj.new
       obj.destroy
-      obj.should be_frozen
+      expect(obj).to be_frozen
     end
 
     it "runs before callback" do
       obj = CallbackedObj.new
-      obj.should_receive(:before_destroy_callback)
+      expect(obj).to receive(:before_destroy_callback)
       obj.destroy
     end
 
     it "runs after callback" do
       obj = CallbackedObj.new
-      obj.should_receive(:after_destroy_callback)
+      expect(obj).to receive(:after_destroy_callback)
       obj.destroy
     end
 
     it "runs around callback" do
       obj = CallbackedObj.new
-      obj.should_receive(:around_destroy_callback)
+      expect(obj).to receive(:around_destroy_callback)
       obj.destroy
     end
 
@@ -639,13 +639,13 @@ describe Reactor::Persistence do
         obj.destroy
         # Uncomment this line and comment the following in case specs are converted to VCR based ones
         #Reactor::Cm::Obj.should_not be_exists(obj_id)
-        Obj.should_not be_exists(obj_id)
+        expect(Obj).not_to be_exists(obj_id)
       end
     end
   end
 
   describe '#reload' do
-    pending
+    skip
   end
 
   describe '#resolve_refs' do
@@ -654,25 +654,25 @@ describe Reactor::Persistence do
       it "resolves refs of the object" do
         obj_id = obj.id
         obj.resolve_refs
-        pending("68")
-        Reactor::Cm::Obj.get(obj_id).send(:get_content_attr_text, :blob).should match(/<a href="\.\.\/object_sure_to_exist\/index\.html">link<\/a>/)
+        skip("68")
+        expect(Reactor::Cm::Obj.get(obj_id).send(:get_content_attr_text, :blob)).to match(/<a href="\.\.\/object_sure_to_exist\/index\.html">link<\/a>/)
       end
 
       it "returns true" do
-        obj.resolve_refs.should be_true
+        expect(obj.resolve_refs).to be_truthy
       end
     end
 
     context "user lacks permissions" do
       let(:obj) {Obj.find_by_path('/object_without_resolved_refs2')}
-      before {obj.stub(:permission) {double(:write? => false)} }
+      before {allow(obj).to receive(:permission) {double(:write? => false)} }
       it "doesn't resolve refs" do
         obj_id = obj.id
         obj.resolve_refs
-        Reactor::Cm::Obj.get(obj_id).send(:get_content_attr_text, :blob).should_not match(/<a href="\.\.\/object_sure_to_exist\/index\.html">link<\/a>/)
+        expect(Reactor::Cm::Obj.get(obj_id).send(:get_content_attr_text, :blob)).not_to match(/<a href="\.\.\/object_sure_to_exist\/index\.html">link<\/a>/)
       end
       it "returns false" do
-        obj.resolve_refs.should be_false
+        expect(obj.resolve_refs).to be_falsey
       end
     end
   end
@@ -681,13 +681,13 @@ describe Reactor::Persistence do
     after { @obj.destroy }
     it "creates and object and returns (matching) Obj instance" do
       @obj = Obj.create(:name => 'creation_test', :parent => '/', :obj_class => 'PlainObjClass')
-      Obj.should be_exists(@obj.id)
-      @obj.should be_kind_of(Obj)
+      expect(Obj).to be_exists(@obj.id)
+      expect(@obj).to be_kind_of(Obj)
     end
   end
 
   describe '#save' do
-    pending
+    skip
   end
 
   describe '#save!' do
@@ -696,7 +696,7 @@ describe Reactor::Persistence do
       @obj = Obj.create(:name => 'channels_test', :parent => '/', :obj_class => 'PlainObjClass')
       @obj.channels = "my.simple.channel" # @obj.channels = ["my.simple.channel"] # is more valid!
       @obj.save!
-      Obj.find(@obj.id).channels.should eq(['my.simple.channel'])
+      expect(Obj.find(@obj.id).channels).to eq(['my.simple.channel'])
     end
   end
 
@@ -705,7 +705,7 @@ describe Reactor::Persistence do
       before { @obj = Obj.create(:parent => '/', :name => 'no_reasons_for_incomplete_state', :obj_class => 'ReleasableClass')}
       after { @obj.destroy }
       it "returns an empty collection" do
-        @obj.reasons_for_incomplete_state.should be_empty
+        expect(@obj.reasons_for_incomplete_state).to be_empty
       end
     end
 
@@ -713,8 +713,8 @@ describe Reactor::Persistence do
       before { @obj = Obj.create(:parent => '/', :name => 'with_reasons_for_incomplete_state', :obj_class => 'UnreleasableClass')}
       after { @obj.destroy }
       it "returns an empty collection" do
-        @obj.reasons_for_incomplete_state.should_not be_empty
-        @obj.reasons_for_incomplete_state.should have_at_least(1).items
+        expect(@obj.reasons_for_incomplete_state).not_to be_empty
+        expect(@obj.reasons_for_incomplete_state.size).to be >= 1
       end
     end
   end

@@ -16,8 +16,8 @@ describe 'Superlinks' do
 
   describe '#super_objects' do
     it "includes linking object" do
-      @obj.super_objects.should eq([@linking])
-      @linking.super_objects.should be_empty
+      expect(@obj.super_objects).to eq([@linking])
+      expect(@linking.super_objects).to be_empty
     end
   end
 end

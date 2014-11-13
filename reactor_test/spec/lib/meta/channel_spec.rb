@@ -19,17 +19,17 @@ describe RailsConnector::Channel do
   end
 
   it "has one object" do
-    subject.objects.should have(1).object
-    subject.objects.first.id.should == @obj.id
+    expect(subject.objects.size).to eq(1)
+    expect(subject.objects.first.id).to eq(@obj.id)
   end
 
   describe '.with_prefix' do
     it "finds channels with prefix" do
       described_class.with_prefix('my.').each do |channel|
-        channel.channel_name.should match(/^my\./)
+        expect(channel.channel_name).to match(/^my\./)
       end
 
-      described_class.with_prefix('my.').should_not be_empty
+      expect(described_class.with_prefix('my.')).not_to be_empty
     end
   end
 

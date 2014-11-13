@@ -5,33 +5,33 @@ describe "Default attribute values" do
   subject { TestClassWithCustomAttributes.new }
 
   describe 'channels' do
-    specify { subject.channels.should eq([]) }
+    specify { expect(subject.channels).to eq([]) }
   end
 
   describe 'date' do
-    specify { subject.test_attr_date.should eq(nil) }
+    specify { expect(subject.test_attr_date).to eq(nil) }
   end
 
   describe 'enum' do
-    specify { subject.test_attr_enum.should eq(nil) }
+    specify { expect(subject.test_attr_enum).to eq(nil) }
   end
 
   describe 'text' do
-    specify { subject.test_attr_text.should eq('') }
-    specify { subject.test_attr_text.should_not be_html_safe }
+    specify { expect(subject.test_attr_text).to eq('') }
+    specify { expect(subject.test_attr_text).not_to be_html_safe }
   end
 
   describe 'string' do
-    specify { subject.test_attr_string.should eq('') }
-    specify { subject.test_attr_string.should_not be_html_safe }
+    specify { expect(subject.test_attr_string).to eq('') }
+    specify { expect(subject.test_attr_string).not_to be_html_safe }
   end
 
   describe 'multienum' do
-    specify { subject.test_attr_multienum.should eq([]) }
+    specify { expect(subject.test_attr_multienum).to eq([]) }
   end
 
   describe 'html' do
-    specify { subject.test_attr_html.should eq('') }
-    specify { subject.test_attr_html.should be_html_safe }
+    specify { expect(subject.test_attr_html).to eq('') }
+    specify { expect(subject.test_attr_html).to be_html_safe }
   end
 end

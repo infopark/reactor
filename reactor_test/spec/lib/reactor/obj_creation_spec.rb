@@ -13,19 +13,19 @@ describe "Reactor::Persistence" do
     after(:all) { @obj.destroy }
 
     it "creates an obj" do
-      Obj.should be_exists(@obj.id)
+      expect(Obj).to be_exists(@obj.id)
     end
 
     it "creates an obj with similar name" do
-      @obj.name.should match(/^created_obj[0-9]*$/)
+      expect(@obj.name).to match(/^created_obj[0-9]*$/)
     end
 
     it "creates an obj with matching obj_class" do
-      @obj.obj_class.should == "TestClassWithCustomAttributes"
+      expect(@obj.obj_class).to eq("TestClassWithCustomAttributes")
     end
 
     it "creates an obj under given parent" do
-      @obj.parent.path.should == "/"
+      expect(@obj.parent.path).to eq("/")
     end
   end
 
@@ -34,19 +34,19 @@ describe "Reactor::Persistence" do
     after(:all) { @obj.destroy }
 
     it "creates an obj" do
-      Obj.should be_exists(@obj.id)
+      expect(Obj).to be_exists(@obj.id)
     end
 
     it "creates an obj with similar name" do
-      @obj.name.should match(/^created_obj[0-9]*$/)
+      expect(@obj.name).to match(/^created_obj[0-9]*$/)
     end
 
     it "creates an obj with matching obj_class" do
-      @obj.obj_class.should == "TestClassWithCustomAttributes"
+      expect(@obj.obj_class).to eq("TestClassWithCustomAttributes")
     end
 
     it "creates an obj under given parent" do
-      @obj.parent.path.should == "/"
+      expect(@obj.parent.path).to eq("/")
     end
   end
 
@@ -55,15 +55,15 @@ describe "Reactor::Persistence" do
     after(:all) { @obj.destroy }
 
     it "creates an obj with similar name" do
-      @obj.name.should match(/^created_obj[0-9]*$/)
+      expect(@obj.name).to match(/^created_obj[0-9]*$/)
     end
 
     it "creates an obj with matching obj_class" do
-      @obj.obj_class.should == "TestClassWithCustomAttributes"
+      expect(@obj.obj_class).to eq("TestClassWithCustomAttributes")
     end
 
     it "creates an obj under given parent" do
-      @obj.parent.path.should == "/"
+      expect(@obj.parent.path).to eq("/")
     end
   end
 
@@ -72,19 +72,19 @@ describe "Reactor::Persistence" do
     after(:all) { @obj.destroy }
 
     it "creates an obj" do
-      Obj.should be_exists(@obj.id)
+      expect(Obj).to be_exists(@obj.id)
     end
 
     it "creates an obj with similar name" do
-      @obj.name.should match(/^created_obj[0-9]*$/)
+      expect(@obj.name).to match(/^created_obj[0-9]*$/)
     end
 
     it "creates an obj with matching obj_class" do
-      @obj.obj_class.should == "TestClassWithCustomAttributes"
+      expect(@obj.obj_class).to eq("TestClassWithCustomAttributes")
     end
 
     it "creates an obj under given parent" do
-      @obj.parent.path.should == "/"
+      expect(@obj.parent.path).to eq("/")
     end
   end
 
@@ -93,20 +93,20 @@ describe "Reactor::Persistence" do
     after(:all) { @obj.destroy }
 
     it "creates an obj with similar name" do
-      @obj.name.should match(/^created_obj[0-9]*$/)
+      expect(@obj.name).to match(/^created_obj[0-9]*$/)
     end
 
     it "creates an obj with matching obj_class" do
-      @obj.obj_class.should == "TestClassWithCustomAttributes"
+      expect(@obj.obj_class).to eq("TestClassWithCustomAttributes")
     end
 
     it "creates an obj under given parent" do
-      @obj.parent.path.should == "/"
+      expect(@obj.parent.path).to eq("/")
     end
   end
 
   describe "Obj.create(:name, :parent, :obj_class, :custom_attributes)" do
-    pending
+    skip
   end
 
   describe "TestClassWithCustomAttributes.create(:name, :parent, :custom_attributes)" do
@@ -127,36 +127,36 @@ describe "Reactor::Persistence" do
     after(:all) { @obj.destroy }
 
     it "sets test_attr_text" do
-      @obj[:test_attr_text].should == "text"
+      expect(@obj[:test_attr_text]).to eq("text")
     end
 
     it "sets test_attr_string" do
-      @obj[:test_attr_string].should == "string"
+      expect(@obj[:test_attr_string]).to eq("string")
     end
 
     it "sets test_attr_enum" do
-      @obj[:test_attr_enum].should == "value1"
+      expect(@obj[:test_attr_enum]).to eq("value1")
     end
 
     it "sets test_attr_multienum" do
-      @obj[:test_attr_multienum].should == ["value2", "value3"]
+      expect(@obj[:test_attr_multienum]).to eq(["value2", "value3"])
     end
 
     it "sets test_attr_html" do
-      @obj[:test_attr_html].should == "<strong>html</strong>"
+      expect(@obj[:test_attr_html]).to eq("<strong>html</strong>")
     end
 
     it "sets test_attr_date" do
-      @obj[:test_attr_date].should == Time.parse("2011-10-11 15:00")
+      expect(@obj[:test_attr_date]).to eq(Time.parse("2011-10-11 15:00"))
     end
 
     it "sets test_attr_linklist" do
-      @obj[:test_attr_linklist].first.url.should == "http://google.com"
+      expect(@obj[:test_attr_linklist].first.url).to eq("http://google.com")
     end
   end
 
   describe "Obj.new(:name, :parent, :obj_class, :custom_attributes) .. #save" do
-    pending
+    skip
   end
 
   describe "TestClassWithCustomAttributes.new(:name, :parent, :custom_attributes) .. #save" do
@@ -178,31 +178,31 @@ describe "Reactor::Persistence" do
     after(:all) { @obj.destroy }
 
     it "sets test_attr_text" do
-      @obj[:test_attr_text].should == "text"
+      expect(@obj[:test_attr_text]).to eq("text")
     end
 
     it "sets test_attr_string" do
-      @obj[:test_attr_string].should == "string"
+      expect(@obj[:test_attr_string]).to eq("string")
     end
 
     it "sets test_attr_enum" do
-      @obj[:test_attr_enum].should == "value1"
+      expect(@obj[:test_attr_enum]).to eq("value1")
     end
 
     it "sets test_attr_multienum" do
-      @obj[:test_attr_multienum].should == ["value2", "value3"]
+      expect(@obj[:test_attr_multienum]).to eq(["value2", "value3"])
     end
 
     it "sets test_attr_html" do
-      @obj[:test_attr_html].should == "<strong>html</strong>"
+      expect(@obj[:test_attr_html]).to eq("<strong>html</strong>")
     end
 
     it "sets test_attr_date" do
-      @obj[:test_attr_date].should == Time.parse("2011-10-11 15:00")
+      expect(@obj[:test_attr_date]).to eq(Time.parse("2011-10-11 15:00"))
     end
 
     it "sets test_attr_linklist" do
-      @obj[:test_attr_linklist].first.url.should == "http://google.com"
+      expect(@obj[:test_attr_linklist].first.url).to eq("http://google.com")
     end
 
   end

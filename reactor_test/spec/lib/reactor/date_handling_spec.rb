@@ -11,13 +11,13 @@ describe 'Date Handling' do
       t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
       iso = t.to_iso
       @obj.test_attr_date = iso
-      @obj.test_attr_date.should == t
+      expect(@obj.test_attr_date).to eq(t)
       # check persisted value
       @obj.save!
-      @obj.test_attr_date.should == t
+      expect(@obj.test_attr_date).to eq(t)
       # check for faulty reloads
       obj = Obj.find(@obj.obj_id)
-      obj.test_attr_date.should == t
+      expect(obj.test_attr_date).to eq(t)
     end
   end
 
@@ -26,13 +26,13 @@ describe 'Date Handling' do
       str = 'Wed Aug 24 11:16:46 UTC 2011'
       t = Time.parse(str)
       @obj.test_attr_date = str
-      @obj.test_attr_date.should == t
+      expect(@obj.test_attr_date).to eq(t)
       # check persisted value
       @obj.save!
-      @obj.test_attr_date.should == t
+      expect(@obj.test_attr_date).to eq(t)
       # check for faulty reloads
       obj = Obj.find(@obj.obj_id)
-      obj.test_attr_date.should == t
+      expect(obj.test_attr_date).to eq(t)
     end
   end
 
@@ -41,13 +41,13 @@ describe 'Date Handling' do
       str = 'Wed Aug 24 11:16:46 UTC 2011'
       t = Time.parse(str)
       @obj.test_attr_date = t
-      @obj.test_attr_date.should == t
+      expect(@obj.test_attr_date).to eq(t)
       # check persisted value
       @obj.save!
-      @obj.test_attr_date.should == t
+      expect(@obj.test_attr_date).to eq(t)
       # check for faulty reloads
       obj = Obj.find(@obj.obj_id)
-      obj.test_attr_date.should == t
+      expect(obj.test_attr_date).to eq(t)
     end
   end
 
@@ -56,13 +56,13 @@ describe 'Date Handling' do
       str = 'Wed Aug 24 11:16:46 UTC 2011'
       t = Time.zone.parse(str)
       @obj.test_attr_date = t
-      @obj.test_attr_date.should == t
+      expect(@obj.test_attr_date).to eq(t)
       # check persisted value
       @obj.save!
-      @obj.test_attr_date.should == t
+      expect(@obj.test_attr_date).to eq(t)
       # check for faulty reloads
       obj = Obj.find(@obj.obj_id)
-      obj.test_attr_date.should == t
+      expect(obj.test_attr_date).to eq(t)
     end
   end
 
@@ -76,10 +76,10 @@ describe 'Date Handling' do
 
       # check persisted value
       @obj.save!
-      @obj.test_attr_date.should be_nil
+      expect(@obj.test_attr_date).to be_nil
       # check for faulty reloads
       obj = Obj.find(@obj.obj_id)
-      obj.test_attr_date.should be_nil
+      expect(obj.test_attr_date).to be_nil
     end
   end
 
@@ -93,10 +93,10 @@ describe 'Date Handling' do
 
       # check persisted value
       @obj.save!
-      @obj.test_attr_date.should be_nil
+      expect(@obj.test_attr_date).to be_nil
       # check for faulty reloads
       obj = Obj.find(@obj.obj_id)
-      obj.test_attr_date.should be_nil
+      expect(obj.test_attr_date).to be_nil
     end
   end
 

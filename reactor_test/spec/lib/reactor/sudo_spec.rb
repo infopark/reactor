@@ -14,24 +14,24 @@ describe Reactor::Sudo do
     end
 
     it "temporarily changes the user" do
-      Reactor::Configuration.xml_access[:username].should == 'root'
+      expect(Reactor::Configuration.xml_access[:username]).to eq('root')
       Reactor::Sudo.su('otherUser') do
-        Reactor::Configuration.xml_access[:username].should == 'otherUser'
+        expect(Reactor::Configuration.xml_access[:username]).to eq('otherUser')
       end
-      Reactor::Configuration.xml_access[:username].should == 'root'
+      expect(Reactor::Configuration.xml_access[:username]).to eq('root')
     end
 
     it "changes the user back even when exceptions raised" do
       begin
-        Reactor::Configuration.xml_access[:username].should == 'root'
+        expect(Reactor::Configuration.xml_access[:username]).to eq('root')
         Reactor::Sudo.su('otherUser') do
-          Reactor::Configuration.xml_access[:username].should == 'otherUser'
+          expect(Reactor::Configuration.xml_access[:username]).to eq('otherUser')
           raise RuntimeError, "I just want to be sure"
         end
       rescue => e
       end
 
-      Reactor::Configuration.xml_access[:username].should == 'root'
+      expect(Reactor::Configuration.xml_access[:username]).to eq('root')
     end
   end
 end

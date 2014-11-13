@@ -20,9 +20,9 @@ describe "Links with anchors in html fields", :type => :routing do
 
     it "link is stored properly with anchor" do
       # @obj.text_links.should_not be_empty
-      @obj.text_links.empty?.should be_false
-      @obj.text_links.first.fragment.should eq(@anchor)
-      @obj.text_links.first.search.should eq(@GET)
+      expect(@obj.text_links.empty?).to be_falsey
+      expect(@obj.text_links.first.fragment).to eq(@anchor)
+      expect(@obj.text_links.first.search).to eq(@GET)
     end
   end
 
@@ -41,8 +41,8 @@ describe "Links with anchors in html fields", :type => :routing do
 
     it "link is stored properly with anchor" do
       # @obj.text_links.should_not be_empty
-      @obj.text_links.empty?.should be_false
-      @obj.text_links.first.fragment.should eq(@anchor)
+      expect(@obj.text_links.empty?).to be_falsey
+      expect(@obj.text_links.first.fragment).to eq(@anchor)
     end
   end
 
@@ -63,9 +63,9 @@ describe "Links with anchors in html fields", :type => :routing do
 
     it "link is stored properly with anchor" do
       # @obj.text_links.should_not be_empty
-      @obj.text_links.empty?.should be_false
-      @obj.text_links.first.fragment.should eq(@anchor)
-      @obj.text_links.first.search.should eq('test=true&test2=false')
+      expect(@obj.text_links.empty?).to be_falsey
+      expect(@obj.text_links.first.fragment).to eq(@anchor)
+      expect(@obj.text_links.first.search).to eq('test=true&test2=false')
     end
   end
 end
