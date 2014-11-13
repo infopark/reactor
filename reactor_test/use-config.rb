@@ -9,8 +9,6 @@ $CONFIGS = {
     '.ruby-version' => '2.1.2',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
-gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
-gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", :git => "git@github.com:tomaszp-infopark/fiona_connector.git", :branch => 'rails4-1'
@@ -23,8 +21,6 @@ gem "rails", "4.1.6"
     '.ruby-version' => '2.1.2',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
-gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
-gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'dev'
@@ -37,8 +33,6 @@ gem "rails", "4.0.9"
     '.ruby-version' => '2.1.2',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
-gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
-gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'dev'
@@ -51,8 +45,6 @@ gem "rails", "4.0.8"
     '.ruby-version' => '2.1.1',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
-gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
-gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'top-level-fc'
@@ -65,8 +57,6 @@ gem "rails", "4.0.3"
     '.ruby-version' => '2.0.0-p481',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
-gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
-gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
 gem "infopark_rails_connector", "6.9.1.3.22208381"
@@ -80,8 +70,6 @@ gem "nokogiri", "< 1.6.0"
     '.ruby-version' => '1.9.3-p547',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
-gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
-gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
 gem "infopark_rails_connector", "6.9.4"
@@ -95,8 +83,6 @@ gem "nokogiri", "< 1.6.0"
     '.ruby-version' => '1.9.3-p547',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
-gem "infopark_rails_connector_meta", :path=>"../infopark_rails_connector_meta"
-gem "infopark_reactor_migrations", :path=>"../infopark_reactor_migrations"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
 gem "infopark_rails_connector", "6.9.1.3.22208381"

@@ -1,4 +1,0 @@
-source "http://rubygems.org"
-
-# Specify your gem's dependencies in infopark_reactor_migrations.gemspec
-gemspec

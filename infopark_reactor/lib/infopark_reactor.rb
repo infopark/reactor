@@ -25,6 +25,35 @@ module Reactor
     ::Rails::VERSION::MAJOR == 4 && ::Rails::VERSION::MINOR == 0 && ::Rails::VERSION::TINY >= 6
   end
 end
+# require config
+require 'reactor/configuration'
+
+
+# require components
+require 'reactor/cm/bridge'
+require 'reactor/cm/language'
+require 'reactor/cm/object_base'
+require 'reactor/cm/user'
+require 'reactor/cm/attribute'
+require 'reactor/cm/obj'
+require 'reactor/cm/obj_class'
+require 'reactor/cm/link'
+require 'reactor/cm/group'
+require 'reactor/cm/editorial_group'
+require 'reactor/cm/live_group'
+require 'reactor/cm/workflow'
+require 'reactor/cm/log_entry'
+require 'reactor/cm/channel'
+
+# require main class
+require 'reactor/migration'
+
+# require misc
+require 'reactor/cm/xml_request_error'
+require 'reactor/cm/missing_credentials'
+
+# require public tools
+require 'reactor/tools/uploader'
 
 # require exceptions
 require 'reactor/already_released'
@@ -41,10 +70,11 @@ require 'reactor/rc_independent'
 require 'reactor/sudo'
 require 'reactor/workflow'
 require 'reactor/streaming_upload'
+require 'reactor/rails_connector_meta'
 
 # require rails integration
 require 'reactor/session'
 require 'reactor/session/user'
 
 # require engine
-require File.expand_path('../engine', __FILE__) if defined?(Rails)
+require File.expand_path('../reactor/engine', __FILE__) if defined?(Rails)
