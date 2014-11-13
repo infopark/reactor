@@ -1,3 +1,17 @@
+## 1.11.0
+* **BREAKING CHANGE:** Merged all three gems into infopark_reactor
+* Support Rails 4.1.6
+* Correct storing links with target attribute set
+* **BREAKING CHANGE:** `main_content` no longer an alias for `body`
+
+## 1.10.0
+* Implemented password checking
+* Implemented reading of global permissions
+* Multiple errors on single request are handled correctly
+* Implement request multiplexing giving a **large** speedup for object persistance
+* Reusing and recycling of link ids prevents overconsumption of ids
+* Fix a bug in reactor session marshalling
+
 ## 1.9.1
 * Fixed caching bug in #reload
 * Faster save! (through request multiplexing)
