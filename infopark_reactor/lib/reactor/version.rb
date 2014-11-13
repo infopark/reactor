@@ -1,4 +1,4 @@
 # -*- encoding : utf-8 -*-
 module Reactor
-  VERSION = "1.10.0.beta"
+  VERSION = "1.11.0.beta"
 end
