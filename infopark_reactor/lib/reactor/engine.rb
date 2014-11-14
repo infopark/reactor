@@ -13,7 +13,12 @@ module Reactor
       end
     end
 
-    initializer "reactor.rsession" do
+    initializer "reactor.rsession" do |app|
+      if app.config.action_dispatch.cookies_serializer && app.config.action_dispatch.cookies_serializer != :marshal
+        Rails.logger.info "Cookie session serializer #{app.config.action_dispatch.cookies_serializer} unsupported. Enforcing :marshal instead."
+        app.config.action_dispatch.cookies_serializer = :marshal
+      end
+
       # FIXME: extract !
       AbstractController::Base.__send__(:define_method, :rsession) do
         self.session[:rsession] ||= Reactor::Session.instance

@@ -5,13 +5,13 @@ require 'ostruct'
 require 'pp'
 
 $CONFIGS = {
-  'ruby2.1.2+Rails4.1.6+infopark_fiona_connector-41' => {
+  'ruby2.1.2+Rails4.1.6+infopark_fiona_connector-6.10.0.beta1' => {
     '.ruby-version' => '2.1.2',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
-gem "infopark_fiona_connector", :git => "git@github.com:tomaszp-infopark/fiona_connector.git", :branch => 'rails4-1'
+gem "infopark_fiona_connector", '6.10.0.beta1'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
 gem "rails", "4.1.6"
@@ -26,7 +26,7 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'dev'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
-gem "rails", "4.0.9"
+gem "rails", "4.0.11"
     EOGEMFILE
   },
   'ruby2.1.2+Rails4.0.8+infopark_fiona_connector-beta' => {
@@ -38,7 +38,7 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'dev'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
-gem "rails", "4.0.8"
+gem "rails", "4.0.11"
     EOGEMFILE
   },
   'ruby2.1.1+Rails4.0.3+infopark_fiona_connector-beta' => {
@@ -47,10 +47,10 @@ gem "rails", "4.0.8"
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
-gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'top-level-fc'
+gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'dev'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
-gem "rails", "4.0.3"
+gem "rails", "4.0.11"
     EOGEMFILE
   },
   'ruby2.0.0-p481+Rails3.2.19+infopark_fiona_connector-6.9.1.3.22208381' => {
