@@ -10,8 +10,8 @@ module Reactor
         match = match_url
         (match[:action] == "index") &&
           (match[:controller] == "rails_connector/cms_dispatch") &&
-          ((match[:id].present? && Obj.exists?(match[:id].to_i)) ||
-          (match[:permalink].present? && Obj.exists?(:permalink => match[:permalink])))
+          ((match[:id].present? && RailsConnector::AbstractObj.exists?(match[:id].to_i)) ||
+          (match[:permalink].present? && RailsConnector::AbstractObj.exists?(:permalink => match[:permalink])))
       rescue ActionController::RoutingError
         return false
       end
@@ -20,9 +20,9 @@ module Reactor
         match = match_url
 
         if match[:permalink].present?
-          append_fragment_and_query Obj.find_by_permalink(match[:permalink]).path 
+          append_fragment_and_query RailsConnector::AbstractObj.find_by_permalink(match[:permalink]).path 
         elsif match[:id].present?
-          append_fragment_and_query Obj.find(match[:id].to_i).path
+          append_fragment_and_query RailsConnector::AbstractObj.find(match[:id].to_i).path
         end
       end
 
