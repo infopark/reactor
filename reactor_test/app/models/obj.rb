@@ -14,14 +14,5 @@ end
 
 # reopen the class and add modules
 class Obj
-  include RailsConnector::Meta
-
-  include Reactor::Legacy::Base
-  include Reactor::Attributes::Base
-  include Reactor::Persistence::Base
-  include Reactor::Validations::Base
-  include Reactor::Permission::Base
-
-  include Reactor::Workflow::Base
-  include Reactor::StreamingUpload::Base
+  include Reactor::Main
 end

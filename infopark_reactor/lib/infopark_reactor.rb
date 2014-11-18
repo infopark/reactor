@@ -61,16 +61,9 @@ require 'reactor/no_working_version'
 require 'reactor/not_permitted'
 
 # require components
-require 'reactor/attributes'
-require 'reactor/persistence'
-require 'reactor/validations'
-require 'reactor/permission'
-require 'reactor/legacy'
+require 'reactor/main'
 require 'reactor/rc_independent'
 require 'reactor/sudo'
-require 'reactor/workflow'
-require 'reactor/streaming_upload'
-require 'reactor/rails_connector_meta'
 
 # require rails integration
 require 'reactor/session'
