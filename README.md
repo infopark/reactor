@@ -221,42 +221,42 @@ The code has been deployed and run for months. It showed itself to be stable and
 
 Installation
 ============
+**config/initializers/reactor.rb:**
 
-config/initializers/reactor.rb:
-Reactor::Configuration.xml_access = {
-  :host => 'localhost', # Fiona host
-  :port => 6001, # CM http port (TCL port + 1)
-  :id => '1234', # leave it as is
-
-  :username => 'root', # default user for all requests
-  :secret => 'MYSECRET' # instance secret!
-}
+    Reactor::Configuration.xml_access = {
+      :host => 'localhost', # Fiona host
+      :port => 6001, # CM http port (TCL port + 1)
+      :id => '1234', # leave it as is
+      
+      :username => 'root', # default user for all requests
+      :secret => 'MYSECRET' # instance secret!
+    }
 
 Example
 =======
 
 > rails g cm:migration ExampleMigration
 
-edit cm/migrate/[timestamp]_example_migration.rb
-...
-  def self.up
-    create_attribute :name => "test_attribute", :type => "enum" do
-      set :values, ["value1", "value2"]
-      set :title, "test attr"
-    end
-    create_class :name => "ExampleClass", :title =>"Beispiel", :type => "publication" do
-      set :title, {"Beispielvorlage" => {:lang => :de}, "Example obj class" => {:lang => :en}}
-      take :authors, :mandatory => true # adds existing mandatory ! attribute named "authors"
-      take :contributors # adds existing attribute named "authors"
-      take :test_attribute, :preset => "value2" # we just created it!
-    end
-  end
+edit **cm/migrate/[timestamp]_example_migration.rb**
 
-  def self.down
-    delete_class :name => 'ExampleClass'
-    delete_attribute :name => 'test_attribute'
-  end
-...
+    def self.up
+      create_attribute :name => "test_attribute", :type => "enum" do
+        set :values, ["value1", "value2"]
+        set :title, "test attr"
+      end
+      create_class :name => "ExampleClass", :title =>"Beispiel", :type => "publication" do
+        set :title, {"Beispielvorlage" => {:lang => :de}, "Example obj class" => {:lang => :en}}
+        take :authors, :mandatory => true # adds existing mandatory ! attribute named "authors"
+        take :contributors # adds existing attribute named "authors"
+        take :test_attribute, :preset => "value2" # we just created it!
+      end
+    end
+    
+    def self.down
+      delete_class :name => 'ExampleClass'
+      delete_attribute :name => 'test_attribute'
+    end
+
 and finally
 
 > rake cm:migrate
