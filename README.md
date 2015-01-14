@@ -247,7 +247,7 @@ edit **cm/migrate/[timestamp]_example_migration.rb**
       create_class :name => "ExampleClass", :title =>"Beispiel", :type => "publication" do
         set :title, {"Beispielvorlage" => {:lang => :de}, "Example obj class" => {:lang => :en}}
         take :authors, :mandatory => true # adds existing mandatory ! attribute named "authors"
-        take :contributors # adds existing attribute named "authors"
+        take :contributors # adds existing attribute named "contributors"
         take :test_attribute, :preset => "value2" # we just created it!
       end
     end
