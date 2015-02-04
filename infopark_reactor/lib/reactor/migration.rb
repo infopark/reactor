@@ -9,6 +9,9 @@ require 'reactor/plans/rename_obj_class'
 require 'reactor/plans/create_attribute'
 require 'reactor/plans/delete_attribute'
 require 'reactor/plans/update_attribute'
+require 'reactor/plans/create_attribute_group'
+require 'reactor/plans/delete_attribute_group'
+require 'reactor/plans/update_attribute_group'
 require 'reactor/plans/create_group'
 require 'reactor/plans/update_group'
 require 'reactor/plans/delete_group'
@@ -29,6 +32,9 @@ module Reactor
       :create_attribute => Plans::CreateAttribute,
       :delete_attribute => Plans::DeleteAttribute,
       :update_attribute => Plans::UpdateAttribute,
+      :create_attribute_group => Plans::CreateAttributeGroup,
+      :delete_attribute_group => Plans::DeleteAttributeGroup,
+      :update_attribute_group => Plans::UpdateAttributeGroup,
       :create_group => Plans::CreateGroup,
       :delete_group => Plans::DeleteGroup,
       :update_group => Plans::UpdateGroup,

@@ -25,6 +25,11 @@ module RailsConnector
       @blob_data['titles'] || {}
     end
 
+    def attribute_groups
+      load_blob_data
+      @blob_data['attributeGroups'] || []
+    end
+
     def valid_sub_obj_classes
       load_blob_data
       @blob_data['validSubObjClasses'] || []
