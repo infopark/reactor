@@ -201,6 +201,10 @@ module Reactor
         set(:channels, value)
       end
 
+      def suppress_export=(value)
+        set(:suppress_export, value)
+      end
+
       def channels
         self[:channels] || []
       end
@@ -260,7 +264,7 @@ module Reactor
       end
 
       def builtin_attr?(attr)
-        [:channels, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :permalink, :title].include?(attr)
+        [:channels, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :suppress_export, :permalink, :title].include?(attr)
       end
 
       def allowed_attr?(attr)
@@ -277,6 +281,7 @@ module Reactor
           :valid_until      => :validUntil,
           :valid_from       => :validFrom,
           :content_type     => :contentType,
+          :suppress_export  => :suppressExport,
           :obj_class        => :objClass
         }
 
@@ -337,7 +342,7 @@ module Reactor
       def attribute_type(attr)
         return :html if [:body, :blob].include?(attr.to_sym)
         return :date if [:valid_from, :valid_until, :last_changed].include?(attr.to_sym)
-        return :string if [:name, :title, :obj_class, :permalink].include?(attr.to_sym)
+        return :string if [:name, :title, :obj_class, :permalink, :suppress_export].include?(attr.to_sym)
         return :multienum if [:channels].include?(attr.to_sym)
 
         custom_attr = self.obj_class_def.try(:custom_attributes).try(:[],attr.to_s)

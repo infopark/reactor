@@ -113,6 +113,21 @@ describe Reactor::Attributes do
       end
     end
 
+    describe '#suppress_export=' do
+      it 'sets valid_until' do
+        t = 1
+        obj.suppress_export = t
+        expect(obj.suppress_export).to eq(t)
+      end
+
+      it "propagates the value to [:suppress_export]" do
+        t = 1
+        obj.suppress_export = t
+        expect(obj[:suppress_export]).to eq(t)
+      end
+    end
+
+
     describe '#set' do
       context ':name' do
         it "sets name" do
