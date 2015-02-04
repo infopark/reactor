@@ -22,6 +22,10 @@ module Reactor
         @params[key.to_sym] = value
       end
 
+      def preset(attribute, value)
+        @preset_attrs[attribute] = value
+      end
+
       def take(attr_name, opts={})
         attr_name = attr_name.to_s
         @take_attrs << attr_name
