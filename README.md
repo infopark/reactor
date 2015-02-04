@@ -21,7 +21,7 @@ Following versions of `infopark_rails_connector`/`infopark_fiona_connector` and 
 |     2.1.2    |     4.0.11    |           *none*          |         6.10.0.beta1      |
 |     2.1.2    |     4.1.7     |           *none*          |         6.10.0.beta1      |
 
-Fiona versions: 6.10.0, 6.9.0, 6.8.0, 6.7.3 and 6.7.2 are supported.
+Fiona versions: 6.10.2, 6.10.0, 6.9.0, 6.8.0, 6.7.3 and 6.7.2 are supported.
 
 
 REACTOR
@@ -146,27 +146,8 @@ Recent versions of Rails Connector deprecated the usage of `ObjExtenions` module
 
 **app/models/obj.rb:**
 
-    require 'meta'
     class Obj < RailsConnector::BasicObj
-          include RailsConnector::Meta
-
-          include Reactor::Legacy::Base       # core module
-          include Reactor::Attributes::Base   # core module
-          include Reactor::Persistence::Base  # core module
-
-          include Reactor::Validations::Base  # optional module, 
-                                              #  enables Rails validations
-
-          include Reactor::Permission::Base   # optional module,
-                                              #  enables permission checking
-
-          include Reactor::Workflow::Base     # optional module,
-                                              #  enables workflow API
-
-          include Reactor::StreamingUpload::Base
-                                              # optional module,
-                                              #  enables streaming interface for
-                                              #  uploads (strongly recommended!)
+      include Reactor::Main
     end
 
 USING WITH OLDER RAILS CONNECTOR
@@ -244,15 +225,32 @@ edit cm/migrate/[timestamp]_example_migration.rb
       set :values, ["value1", "value2"]
       set :title, "test attr"
     end
+
     create_class :name => "ExampleClass", :title =>"Beispiel", :type => "publication" do
       set :title, {"Beispielvorlage" => {:lang => :de}, "Example obj class" => {:lang => :en}}
       take :authors, :mandatory => true # adds existing mandatory ! attribute named "authors"
       take :contributors # adds existing attribute named "authors"
       take :test_attribute, :preset => "value2" # we just created it!
+      preset :title, "Default title" # sets default value for title of any ExampleClass object
+    end
+
+    create_attribute_group :obj_class => 'ExampleClass', :name => 'my_custom_group' do
+      set :title, {'Deutscher Titel' => {:lang => :de}, 'English Title' => {:lang => :en}}
+      set :index, 0
+
+      add_attributes ['authors', 'contributors']
+    end
+
+    update_attribute_group :obj_class => 'ExampleClass', :name => 'my_custom_group' do
+      add_attributes    [ 'test_attribute' ]
+      remove_attributes [ 'contributors' ]
+
+      set :index, 1
     end
   end
 
   def self.down
+    delete_attribute_group :obj_class => 'ExampleClass', :name => 'my_custom_group' 
     delete_class :name => 'ExampleClass'
     delete_attribute :name => 'test_attribute'
   end
@@ -270,7 +268,7 @@ to revert any changes (VERSION allows you to migrate to a specific version too).
 That's all! Enjoy!
 
 
-Copyright (c) 2011 Tomasz Przedmojski, tomasz.przedmojski@infopark.de, Infopark AG
+Copyright (c) 2011-2015 Tomasz Przedmojski, tomasz.przedmojski@infopark.de, Infopark AG
 
 
 BUGS, FEATURE REQUESTS?

@@ -1,3 +1,10 @@
+## 1.12.0
+* Support for attributeGroups
+* Reading of validSubObjClasses and attributeGroups directly from database
+* Setting presets for built-in attributes
+* Ability to set `suppress_export` for any object
+* Ability to reload attribute getters and setters after manipulating obj class
+
 ## 1.11.0
 * **BREAKING CHANGE:** Merged all three gems into infopark_reactor
 * Support Rails 4.1.6
