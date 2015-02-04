@@ -50,6 +50,25 @@ describe Reactor::Persistence do
     end
   end
 
+  describe 'setting suppress_export' do
+    after do
+      Obj.where("path LIKE '/suppress%'").each(&:destroy)
+    end
+
+    it 'sets suppress_export' do
+      o1 = TestClassWithCustomAttributes.create(:parent => '/', :name => 'suppress1_')
+      expect(o1.suppress_export).to eq(0)
+      o1.update_attributes(suppress_export: 1)
+      expect(o1.suppress_export).to eq(1)
+
+
+      o2 = TestClassWithCustomAttributes.create(:parent => '/', :name => 'suppress2_', suppress_export: '1')
+      expect(o2.suppress_export).to eq(1)
+      o2.update_attributes(suppress_export: 0)
+      expect(o2.suppress_export).to eq(0)
+    end
+  end
+
   describe 'setting permalink' do
     after do
       Obj.where("path LIKE '/setpermalink%'").each(&:destroy)
