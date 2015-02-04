@@ -125,6 +125,14 @@ module Reactor
         EOC
       end
 
+      # if a handler for this obj class has been defined previously, purge its methods
+      if Reactor::AttributeHandlers.const_defined?("Handler__#{obj_class.name}")
+        mod = Reactor::AttributeHandlers.const_get("Handler__#{obj_class.name}")
+        mod.instance_methods.each do |method|
+          mod.send(:remove_method, method)
+        end
+      end
+
       Reactor.class_eval <<-EOC
         class AttributeHandlers
           module Handler__#{obj_class.name}
@@ -255,20 +263,25 @@ module Reactor
         crul_obj.set_link(key, target_path.to_s)
       end
 
+      def reload_attributes(new_obj_class=nil)
+        Reactor::AttributeHandlers.reinstall_attributes(self.singleton_class, new_obj_class || self.obj_class)
+      end
 
       protected
       attr_accessor :uploaded
-
-      def reload_attributes(new_obj_class=nil)
-        Reactor::AttributeHandlers.reinstall_attributes(self.class, new_obj_class || self.obj_class)
-      end
-
       def builtin_attr?(attr)
         [:channels, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :suppress_export, :permalink, :title].include?(attr)
       end
 
       def allowed_attr?(attr)
-        builtin_attr?(attr) || (self.class.send(:instance_variable_get,'@_o_allowed_attrs') || []).include?(key_to_attr(attr))
+        return true if builtin_attr?(attr)
+
+        custom_attrs = 
+          self.singleton_class.send(:instance_variable_get, '@_o_allowed_attrs') ||
+          self.class.send(:instance_variable_get, '@_o_allowed_attrs') ||
+          []
+
+        custom_attrs.include?(key_to_attr(attr))
       end
 
       def resolve_attribute_alias(key)
@@ -372,6 +385,13 @@ module Reactor
       def __mandatory_cms_attributes(obj_class)
         obj_class_def = RailsConnector::Meta::EagerLoader.instance.obj_class(obj_class) #RailsConnector::ObjClass.where(:obj_class_name => obj_class).first
         obj_class_def ? obj_class_def.mandatory_attribute_names(:only_custom_attributes => true) : []
+      end
+
+      def reload_attributes(new_obj_class=nil)
+        new_obj_class ||= self.name
+        raise ArgumentError, "Cannot reload attributes because obj_class is unknown, provide one as a parameter" if new_obj_class.nil?
+
+        Reactor::AttributeHandlers.reinstall_attributes(self, new_obj_class)
       end
     end
   end
