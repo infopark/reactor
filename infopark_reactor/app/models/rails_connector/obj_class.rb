@@ -25,6 +25,11 @@ module RailsConnector
       @blob_data['titles'] || {}
     end
 
+    def valid_sub_obj_classes
+      load_blob_data
+      @blob_data['validSubObjClasses'] || []
+    end
+
     # returns channel feature is_activate?
     def can_create_news_items?
       load_blob_data
