@@ -524,8 +524,8 @@ module Reactor
           end
           xml.tag!('link-set') do
             xml.tag!('destinationUrl', link_data[:destination_url].to_s)
-            xml.tag!('title', title.to_s) if title
-            xml.tag!('target', target.to_s) if target
+            xml.tag!('title', title.to_s)
+            xml.tag!('target', target.to_s)
           end
         end
       end

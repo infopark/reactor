@@ -14,6 +14,38 @@ describe "Object with two links set" do
   end
   after { @obj.destroy }
 
+  context "inconsistent titles" do
+    before do
+      @obj = TestClassWithCustomAttributes.create!(:parent => '/', :name => 'test_obj_for_linklist_manipulation',
+        :test_attr_linklist => [{:url => 'http://google.com'}, {:url => 'http://yahoo.com', :title => 'with title'}]
+      )
+    end
+
+    after do
+      @obj.destroy
+    end
+
+    describe "swap links" do
+      it "stores titles properly" do
+        expect(@obj.test_attr_linklist.first.title).to be_nil
+        expect(@obj.test_attr_linklist.first.url).to eq('http://google.com')
+
+        expect(@obj.test_attr_linklist.last.title).to eq('with title')
+        expect(@obj.test_attr_linklist.last.url).to eq('http://yahoo.com')
+
+        @obj.test_attr_linklist = [{:url => 'http://google.com'}, {:url => 'http://yahoo.com', :title => 'with title'}].reverse
+        @obj.save!
+
+
+        expect(@obj.test_attr_linklist.first.title).to eq('with title')
+        expect(@obj.test_attr_linklist.first.url).to eq('http://yahoo.com')
+
+        expect(@obj.test_attr_linklist.last.title).to be_nil
+        expect(@obj.test_attr_linklist.last.url).to eq('http://google.com')
+      end
+    end
+  end
+
   context "without persisting" do
     describe "removing a link" do
       it "should leave one link" do
