@@ -300,7 +300,12 @@ module Reactor
       end
 
       def changed_linklists
-        (self.class.send(:instance_variable_get, '@_o_allowed_attrs') || []).select do |attr|
+        custom_attrs = 
+          self.singleton_class.send(:instance_variable_get, '@_o_allowed_attrs') ||
+          self.class.send(:instance_variable_get, '@_o_allowed_attrs') ||
+          []
+
+        custom_attrs.select do |attr|
           self.send(:attribute_type, attr) == :linklist && self.send(:[],attr.to_sym).try(:changed?)
         end
       end

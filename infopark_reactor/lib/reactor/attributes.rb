@@ -264,7 +264,9 @@ module Reactor
       end
 
       def reload_attributes(new_obj_class=nil)
-        Reactor::AttributeHandlers.reinstall_attributes(self.singleton_class, new_obj_class || self.obj_class)
+        new_obj_class = new_obj_class || self.obj_class
+        RailsConnector::Meta::EagerLoader.instance.forget_obj_class(new_obj_class)
+        Reactor::AttributeHandlers.reinstall_attributes(self.singleton_class, new_obj_class)
       end
 
       protected
@@ -391,6 +393,7 @@ module Reactor
         new_obj_class ||= self.name
         raise ArgumentError, "Cannot reload attributes because obj_class is unknown, provide one as a parameter" if new_obj_class.nil?
 
+        RailsConnector::Meta::EagerLoader.instance.forget_obj_class(new_obj_class)
         Reactor::AttributeHandlers.reinstall_attributes(self, new_obj_class)
       end
     end
