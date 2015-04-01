@@ -7,6 +7,7 @@ describe "Attribute reloading" do
     end
     Reactor::Cm::ObjClass.get('ReloadedClass').delete! if RailsConnector::ObjClass.exists?(:obj_class_name => 'ReloadedClass')
     Reactor::Cm::Attribute.get('reloaded_attribute').delete! if RailsConnector::Attribute.exists?(:attribute_name => 'reloaded_attribute')
+    Reactor::Cm::Attribute.get('reloaded_attribute2').delete! if RailsConnector::Attribute.exists?(:attribute_name => 'reloaded_attribute2')
     Object.send(:remove_const, :ReloadedClass) if Object.const_defined?(:ReloadedClass)
   end
 
@@ -15,6 +16,7 @@ describe "Attribute reloading" do
 
   before do
     Reactor::Cm::Attribute.create('reloaded_attribute', 'string')
+    Reactor::Cm::Attribute.create('reloaded_attribute2', 'linklist')
     @klass = Reactor::Cm::ObjClass.create('ReloadedClass', 'publication')
 
     class ::ReloadedClass < ::Obj
@@ -119,5 +121,20 @@ describe "Attribute reloading" do
     expect { loaded2.reloaded_attribute }.not_to raise_error
     expect { loaded2.reloaded_attribute='test' }.not_to raise_error
 
+  end
+
+  specify do
+    created = ::ReloadedClass.create(name: 'reloaded_test', parent: '/')
+
+    # First add attribute
+    @klass.attributes = ['reloaded_attribute2']
+
+    created.reload_attributes
+
+    created.reloaded_attribute2 = ['http://google.com']
+
+    created.save!
+
+    expect(created.reloaded_attribute2.first.url).to eq('http://google.com')
   end
 end
