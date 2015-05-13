@@ -11,7 +11,12 @@ module Reactor
       end
 
       def set(key,value)
-        @params[key.to_sym] = value
+        key = key.to_sym
+        if key == :attributes
+          @attributes = value
+        else
+          @params[key.to_sym] = value
+        end
       end
 
       def add_attributes(attributes)
@@ -34,6 +39,11 @@ module Reactor
       def migrate_params!(attribute)
         attribute.add_attributes(@add_attributes) if @add_attributes
         attribute.remove_attributes(@remove_attributes) if @remove_attributes
+        if @attributes
+          previous_attributes = attribute.attributes
+          attribute.remove_attributes(previous_attributes)
+          attribute.add_attributes(@attributes)
+        end
         @params.each{|k,v|attribute.set(k,v)}
         attribute.save!
       end

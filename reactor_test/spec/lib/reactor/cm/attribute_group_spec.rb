@@ -65,6 +65,14 @@ describe Reactor::Cm::AttributeGroup do
       expect(group["title.de"]).to eq("Deutscher Titel")
       expect(group["title.en"]).to eq("English Title")
       expect(group["name"]).to eq('my_custom_group')
+
+      group = rc.attribute_groups[2]
+      group["attributes"]
+      expect(group["attributes"]).to eq(['test_attr_text'])
+      expect(group["title.de"]).to eq("just title")
+      expect(group["title.en"]).to eq(nil)
+      expect(group["name"]).to eq('another_group')
+
     end
   end
 
