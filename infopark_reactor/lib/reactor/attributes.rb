@@ -230,7 +230,7 @@ module Reactor
         not_formated_value = value
         formated_value = serialize_value(key, value)
         crul_set(attr, formated_value, options)
-        active_record_set(key, formated_value) if builtin_attr?(key)
+        active_record_set(key, formated_value) if active_record_attr?(key)
         rails_connector_set(key, formated_value)
         send(key)
       end
@@ -273,6 +273,10 @@ module Reactor
       attr_accessor :uploaded
       def builtin_attr?(attr)
         [:channels, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :suppress_export, :permalink, :title].include?(attr)
+      end
+
+      def active_record_attr?(attr)
+        [:valid_from, :valid_until, :name, :obj_class, :content_type, :suppress_export, :permalink].include?(attr)
       end
 
       def allowed_attr?(attr)
@@ -339,10 +343,11 @@ module Reactor
       end
 
       def active_record_set(field, value)
-        #method = :"#{field}="
-        #send(method, value) if self.respond_to? method
-        #value
-        @attributes[field.to_s] = value
+        if Reactor.rails4_2?
+          @attributes.write_from_user(field.to_s, value)
+        else
+          @attributes[field.to_s] = value
+        end
       end
 
       # Lazily sets values for crul interface. May be removed in later versions

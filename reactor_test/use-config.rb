@@ -5,6 +5,18 @@ require 'ostruct'
 require 'pp'
 
 $CONFIGS = {
+  'ruby2.2.2+Rails4.2.2+infopark_fiona_connector-7.0.1.beta2' => {
+    '.ruby-version' => '2.2.2',
+    'Gemfile' => <<-EOGEMFILE
+source "https://rubygems.org"
+gem "infopark_reactor", :path=>"../infopark_reactor"
+gem "rspec-rails", "~> 2.0"
+gem "infopark_fiona_connector", '7.0.1.beta2'
+gem "mysql2"
+gem "nokogiri"
+gem "rails", "4.2.2"
+    EOGEMFILE
+  },
   'ruby2.2.2+Rails4.1.10+infopark_fiona_connector-7.0.0' => {
     '.ruby-version' => '2.2.2',
     'Gemfile' => <<-EOGEMFILE
@@ -47,7 +59,7 @@ gem "rails", "4.1.6"
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
-gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'dev'
+gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :ref => '9c9ee921dc1b66a11e4620d1c1a688d7d4e50fdd'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
 gem "rails", "4.0.11"
@@ -59,7 +71,7 @@ gem "rails", "4.0.11"
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
-gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'dev'
+gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :ref => '9c9ee921dc1b66a11e4620d1c1a688d7d4e50fdd'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
 gem "rails", "4.0.11"
@@ -71,7 +83,7 @@ gem "rails", "4.0.11"
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
-gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :branch => 'dev'
+gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :ref => '9c9ee921dc1b66a11e4620d1c1a688d7d4e50fdd'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
 gem "rails", "4.0.11"
