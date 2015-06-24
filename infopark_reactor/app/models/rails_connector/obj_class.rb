@@ -9,8 +9,13 @@ module RailsConnector
 
     self.primary_key = :obj_class_id
 
-    has_and_belongs_to_many :custom_attributes_raw, :class_name => '::RailsConnector::Attribute',
-        :join_table => "#{table_name_prefix}obj_class_attrs"
+    if Reactor.rails4_x?
+      has_many :custom_attributes_jt, :class_name => '::RailsConnector::ObjClassAttr', :foreign_key => 'obj_class_id', :primary_key => 'obj_class_id'
+      has_many :custom_attributes_raw, :through => :custom_attributes_jt, :source => :custom_attributes_raw
+    else
+      has_and_belongs_to_many :custom_attributes_raw, :class_name => '::RailsConnector::Attribute',
+        :join_table => "reactor.#{table_name_prefix}obj_class_attrs"
+    end
 
     alias_attribute :name, :obj_class_name
 

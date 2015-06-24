@@ -10,4 +10,11 @@ test:
   <<: *cms
 
 development:
-  <<: *cms
+  #<<: *cms
+  adapter: <%= defined?(Mysql2) ? 'mysql2' : 'mysql' %>
+  database: test
+  username: root
+  password: 
+  host: localhost
+  reconnect: true
+
