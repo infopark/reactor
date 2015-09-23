@@ -10,7 +10,14 @@ class Reactor::Session
   include Observable
 
   def self.instance
-    self.new
+    self.for(Reactor::Configuration.xml_access[:username])
+  end
+
+  def self.for(user_name)
+    self.new.tap do |instance|
+      instance.instance_variable_set(:@user_name, user_name)
+      instance.send(:proper_notify_observers, user_name, false)
+    end
   end
 
   def marshal_dump
