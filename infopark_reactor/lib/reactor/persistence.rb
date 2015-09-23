@@ -481,12 +481,16 @@ module Reactor
     end
     module ClassMethods
       def sanitize_name(old_name)
-        character_map = {'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue'}
-        new_name = old_name.gsub(/[^-$a-zA-Z0-9]/) {|char| character_map[char] || '_'}.
-                    gsub(/__+/,'_').
-                    gsub(/^_+/,'').
-                    gsub(/_+$/,'')
-        new_name
+        if Reactor::Configuration.sanitize_obj_name
+          character_map = {'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue'}
+          new_name = old_name.gsub(/[^-$a-zA-Z0-9]/) {|char| character_map[char] || '_'}.
+            gsub(/__+/,'_').
+            gsub(/^_+/,'').
+            gsub(/_+$/,'')
+          new_name
+        else
+          old_name
+        end
       end
 
       if Reactor.rails4_x?
