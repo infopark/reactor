@@ -5,6 +5,8 @@ module RailsConnector
   module Meta
     class EagerLoader
       include Singleton
+      attr_reader :obj_classes
+
       def initialize
         # Rails.logger.debug "EagerLoader: I am eager to start working"
         @obj_classes = {}
