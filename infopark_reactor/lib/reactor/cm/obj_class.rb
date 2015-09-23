@@ -58,7 +58,12 @@ module Reactor
         result = [result] unless result.kind_of?(Array)
         result.map do |dictitem|
           key = dictitem.children.detect {|c| c.name == 'key'}.text
-          value = dictitem.children.detect {|c| c.name == 'value'}.text
+          raw_value = dictitem.children.detect {|c| c.name == 'value'}
+          if raw_value.children.detect {|c| c.kind_of?(::REXML::Text) }
+            value = raw_value.text
+          else
+            value = raw_value.children.map {|c| c.text }
+          end
           {key => value}
         end.inject({}, &:merge)
       end
@@ -86,7 +91,15 @@ module Reactor
                       xml.text!(key.to_s)
                     end
                     xml.tag!('value') do
-                      xml.text!(value.to_s)
+                      if value.kind_of?(Array)
+                        value.each do |item|
+                          xml.tag!('listitem') do
+                            xml.text!(item.to_s)
+                          end
+                        end
+                      else
+                        xml.text!(value.to_s)
+                      end
                     end
                   end
                 end
