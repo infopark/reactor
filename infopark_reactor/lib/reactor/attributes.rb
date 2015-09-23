@@ -41,7 +41,7 @@ module Reactor
     end
 
     def regenerate_attribute_handler(obj_class_name)
-      generate_attribute_handler(RailsConnector::ObjClass.find_by_name(obj_class_name))
+      generate_attribute_handler(RailsConnector::Meta::EagerLoader.instance.obj_class(obj_class_name))
     end
 
     protected
@@ -55,7 +55,7 @@ module Reactor
     end
 
     def generate_attribute_handlers
-      RailsConnector::ObjClass.all.each do |obj_class|
+      RailsConnector::Meta::EagerLoader.instance.obj_classes.each do |obj_class|
         # Rails.logger.debug "Reactor::AttributeHandlers: preparing obj class #{obj_class.name}"
         generate_attribute_handler(obj_class) if obj_class.name =~ /^[A-Z]/
       end
