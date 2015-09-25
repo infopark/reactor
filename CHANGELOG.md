@@ -1,3 +1,17 @@
+## 1.15.0.beta1
+* Obj name sanitization now optional
+* Dramaticaly improved start-up performance
+* Repair a bug in handling presets for multienum attributes
+
+## 1.14.0.beta2
+* Workaround for a bug in Rails > 4 when using different cms and development databases
+
+## 1.14.0.beta1
+* Support for Rails 4.2
+
+## 1.13.0
+* Support for Ruby 2.2
+
 ## 1.12.0
 * Support for attributeGroups
 * Reading of validSubObjClasses and attributeGroups directly from database
