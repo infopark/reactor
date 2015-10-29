@@ -1,3 +1,6 @@
+## 1.16.0
+* Permissions and user setting are cached for 5 minutes maximum
+
 ## 1.15.0.beta1
 * Obj name sanitization now optional
 * Dramaticaly improved start-up performance

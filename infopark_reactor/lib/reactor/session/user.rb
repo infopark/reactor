@@ -13,6 +13,10 @@ module Reactor
         @superuser= user.is_root?
       end
 
+      def to_s
+        @user_name
+      end
+
       attr_reader :user_name, :groups, :language
 
       def superuser?

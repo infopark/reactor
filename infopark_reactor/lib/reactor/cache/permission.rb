@@ -1,36 +1,34 @@
 # -*- encoding : utf-8 -*-
-require 'singleton'
 
 module Reactor
   module Cache
     class Permission
-      include Singleton
+      BACKING_CACHE_EXPIRATION = 5
 
-      def lookup(user, key, &block)
-        set(user, key, yield) unless set?(user, key)
-        get(user, key)
+      def self.instance
+        self.new
       end
 
       def initialize
-        @cache = {}
+        @@backing_storage ||= ActiveSupport::Cache::MemoryStore.new({ size: 1.megabyte })
       end
+
+      def lookup(user, key, &block)
+        cache_entry = @@backing_storage.fetch(user.to_s, :expires_in => BACKING_CACHE_EXPIRATION.minutes) do
+          {key => block.call}
+        end
+        if cache_entry.key?(key)
+          cache_entry[key]
+        else
+          result = block.call
+          @@backing_storage.write(user.to_s, cache_entry.merge({key => result}), :expires_in => BACKING_CACHE_EXPIRATION.minutes)
+          result
+        end
+      end
+
 
       def invalidate(user)
-        @cache[user] = {}
-      end
-
-      protected
-      def set?(user, key)
-        @cache.key?(user) && @cache[user].include?(key)
-      end
-
-      def set(user, key, value)
-        @cache[user] ||= {}
-        @cache[user][key] = value
-      end
-
-      def get(user, key)
-        @cache[user][key]
+        @@backing_storage.delete(user.to_s)
       end
     end
   end
