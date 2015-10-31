@@ -105,6 +105,11 @@ module RailsConnector
       end
     end
 
+    def committed?
+      load_meta_details 
+      !@object_with_meta_data.committed_cont_id.nil?
+    end
+
     private
 
     # Load the objects details from the `objects' tables.

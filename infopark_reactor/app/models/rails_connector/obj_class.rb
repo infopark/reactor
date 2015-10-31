@@ -14,7 +14,7 @@ module RailsConnector
       has_many :custom_attributes_raw, :through => :custom_attributes_jt, :source => :custom_attributes_raw
     else
       has_and_belongs_to_many :custom_attributes_raw, :class_name => '::RailsConnector::Attribute',
-        :join_table => "reactor.#{table_name_prefix}obj_class_attrs"
+        :join_table => "#{table_name_prefix}obj_class_attrs"
     end
 
     alias_attribute :name, :obj_class_name

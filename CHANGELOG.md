@@ -1,3 +1,7 @@
+## 1.17.0
+* Unbreak reactor for rails 3.x
+* Implement #committed? method on objs
+
 ## 1.16.0
 * Permissions and user setting are cached for 5 minutes maximum
 
