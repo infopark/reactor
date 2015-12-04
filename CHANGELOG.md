@@ -1,3 +1,6 @@
+## 1.18.0
+* Catch and log errors when querying permission allow service even when the CM is offline
+
 ## 1.17.0
 * Unbreak reactor for rails 3.x
 * Implement #committed? method on objs

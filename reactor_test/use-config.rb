@@ -5,8 +5,8 @@ require 'ostruct'
 require 'pp'
 
 $CONFIGS = {
-  'ruby2.2.2+Rails4.2.2+infopark_fiona_connector-7.0.1.beta2' => {
-    '.ruby-version' => '2.2.2',
+  'ruby2.2.3+Rails4.2.5+infopark_fiona_connector-7.0.1.beta2' => {
+    '.ruby-version' => '2.2.3',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
@@ -113,6 +113,7 @@ gem "infopark_fiona_connector", "6.9.4"
 gem "mysql2"
 gem "rails", "3.2.20"
 gem "nokogiri", "< 1.6.0"
+gem "tins", "< 1.3" # any newer version is incompatible with ruby 1.9
     EOGEMFILE
   },
   'ruby1.9.3-p547+Rails3.2.19+infopark_fiona_connector-6.9.1.3.22208381' => {
@@ -126,6 +127,7 @@ gem "infopark_fiona_connector", "6.9.1.3.22208381"
 gem "mysql2"
 gem "rails", "3.2.19"
 gem "nokogiri", "< 1.6.0"
+gem "tins", "< 1.3" # any newer version is incompatible with ruby 1.9
     EOGEMFILE
   }
 }

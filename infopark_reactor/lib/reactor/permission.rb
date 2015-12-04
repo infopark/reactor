@@ -221,6 +221,11 @@ module Reactor
         cache.lookup(user, "#{obj.id}:#{permission}") do
           lookup.superuser?(user) || lookup.send("#{permission}?", user)
         end
+      rescue Reactor::Cm::MissingCredentials
+        raise
+      rescue => e
+        Rails.logger.error("Error looking up #{user}'s permission for #{permission} operation on #{obj.path} :\n#{e.message}")
+        false
       end
 
       # A table with all available permissions and their identifier.
