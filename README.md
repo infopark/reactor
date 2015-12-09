@@ -72,7 +72,7 @@ Yes, that is nice, you say, but what if I also wan't to set a link title? No pro
 
     some_obj.link_list_attr = {:url => 'http://google.com', :title => 'title of my link'}
     some_obj.link_list_attr = {:destination_object => Obj.last, :title => 'title of my link'}
-    some_obj.link_list_attr = {:destination_object => '/path/to/obj', :title => 'title of my link'}
+    some_obj.link_list_attr = {:destination_object => '/path/to/obj', :title => 'title of my link', :fragment => 'anchor', :search =>'some=get&parameters=true'}
 
 This also works for multiple links:
 

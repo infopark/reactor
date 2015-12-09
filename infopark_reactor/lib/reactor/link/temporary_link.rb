@@ -22,6 +22,12 @@ module Reactor
         end
 
         self.url    = link_data[:url] || link_data[:destination_object]
+        if link_data[:search]
+          self.url = "#{self.url}?#{link_data[:search]}"
+        end
+        if link_data[:fragment]
+          self.url = "#{self.url}##{link_data[:fragment]}"
+        end
         self.target = link_data[:target] if link_data.key?(:target)
         self.title  = link_data[:title] if link_data.key?(:title)
       end

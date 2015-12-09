@@ -1,3 +1,6 @@
+## 1.19.0
+* Add support for fragment and search for internal links in linklists
+
 ## 1.18.0
 * Catch and log errors when querying permission allow service even when the CM is offline
 

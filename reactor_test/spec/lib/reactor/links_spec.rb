@@ -36,6 +36,13 @@ describe "link setting without persistence" do
       end
     end
 
+    context "external link with fragment and search" do
+      it "stores matching external link" do
+        obj.send(:"#{attr}=", 'http://google.com?search#fragment')
+        expect(obj.send(attr).first.url).to eq('http://google.com?search#fragment')
+      end
+    end
+
     context "mailto link" do
       it "stores matching external link" do
         obj.send(:"#{attr}=", 'mailto:me@dont-write.com')
@@ -153,9 +160,9 @@ describe "link persisting" do
 
     context "(external)" do
       it "stores matching external link" do
-        obj.send(:"#{attr}=", 'http://google.com')
+        obj.send(:"#{attr}=", 'http://google.com?search#fragment')
         obj.save!
-        expect(obj.send(attr).first.url).to eq('http://google.com')
+        expect(obj.send(attr).first.url).to eq('http://google.com?search#fragment')
       end
     end
 
@@ -180,6 +187,16 @@ describe "link persisting" do
         obj.send(:"#{attr}=", '/object_sure_to_exist')
         obj.save!
         expect(obj.send(attr).first.destination_object.path).to eq('/object_sure_to_exist')
+      end
+    end
+
+    context "internal link with search and fragment" do
+      it "stores link to matching obj" do
+        obj.send(:"#{attr}=", {:destination_object => '/object_sure_to_exist', :search => 'search', :fragment => 'fragment'})
+        obj.save!
+        expect(obj.send(attr).first.destination_object.path).to eq('/object_sure_to_exist')
+        expect(obj.send(attr).first.search).to eq('search')
+        expect(obj.send(attr).first.fragment).to eq('fragment')
       end
     end
 
