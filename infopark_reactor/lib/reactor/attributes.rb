@@ -197,6 +197,14 @@ module Reactor
         set(:body, value)
       end
 
+      def blob
+        if attr_dict.respond_to?(:blob)
+          attr_dict.send :blob
+        else
+          nil
+        end
+      end
+
       def blob=(value)
         set(:blob, value)
       end
@@ -230,9 +238,14 @@ module Reactor
         not_formated_value = value
         formated_value = serialize_value(key, value)
         crul_set(attr, formated_value, options)
+
+        __send__(:attribute_will_change!, key)
+
         active_record_set(key, formated_value) if active_record_attr?(key)
         rails_connector_set(key, formated_value)
-        send(key)
+
+        # return new value
+        __send__(key)
       end
 
 
@@ -346,6 +359,7 @@ module Reactor
         if Reactor.rails4_2?
           @attributes.write_from_user(field.to_s, value)
         else
+          @attributes_cache.delete(field.to_s)
           @attributes[field.to_s] = value
         end
       end

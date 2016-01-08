@@ -1,3 +1,8 @@
+## 1.20.0
+* Workaround for caching problems in subsequent requests
+* Proper handling of ActiveModel::Dirty attributes
+* Fix for usemap html attribute
+
 ## 1.19.0
 * Add support for fragment and search for internal links in linklists
 

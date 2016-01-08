@@ -142,14 +142,41 @@ module Reactor
         end
       end
 
-      def set_mutiple(attrs)
+      def set_multiple(attrs)
         attrs.each {|a,(v,o)| set(a,v,o||{}) }
       end
 
       def composite_save(attrs, links_to_add, links_to_remove, links_to_set, links_modified=false)
-        set_mutiple(attrs)
+        set_multiple(attrs)
 
         skip_version_creation = @attrs.empty? && links_to_remove.empty? && links_to_set.empty? && !links_modified
+
+        # The save procedure consists of following steps:
+        # First request (assign attributes):
+        #  a. Execute take to assign the edited content to the current user
+        #  b. Execute edit to create an edited content if there is none present
+        #  c. Set object attributes (name, permalink, etc.)
+        #  d. Set content attributes (title, body etc. + custom attributes)
+        #  e. Resolve all links in *html* attributes
+        # Second request (overwrite linklists):
+        #  f. Remove superflous links
+        #  g. Overwrite existing links
+        #  h. Add missing links
+        #
+        # Second request is optional and only happens if linklists
+        # have been changed.
+        #
+        # Steps a,b,d,e,f,g,h are optional and are skipped if only
+        # object attributes have been supplied.
+        #
+        # It can happen that the second request is received by
+        # a different CM slave than the first request. If additionaly
+        # the slave has invalid cache (for example when the cache
+        # invalidate command has not yet been fully propagated among
+        # slaves), then race condition can occur.
+        # It is therefore extremely important for the second request
+        # to be resistant against invalid cache, otherwise then
+        # save operation aborts.
 
         resp = MultiXmlRequest.execute do |reqs|
           reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'take') } unless skip_version_creation
@@ -158,6 +185,7 @@ module Reactor
 
           reqs.mandatory {|xml| ObjSetRequest.build(xml, @obj_id, @obj_attrs) } unless @obj_attrs.empty? #important! requires different permissions
           reqs.mandatory {|xml| ContentSetRequest.build(xml, @obj_id, @attrs, @attr_options) } unless skip_version_creation
+          reqs.mandatory  {|xml| ResolveRefsRequest.build(xml, @obj_id) } unless skip_version_creation
         end
 
         resp.assert_success
@@ -165,20 +193,21 @@ module Reactor
         yield(attrs, links_to_add, links_to_remove, links_to_set) if block_given?
 
         resp = MultiXmlRequest.execute do |reqs|
+          reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'take') }
+          reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'edit') }
+
           links_to_remove.each do |link_id|
             reqs.mandatory {|xml| LinkDeleteRequest.build(xml, link_id) }
-          end
-          links_to_add.each do |(attr, link)|
-
-            reqs.mandatory {|xml| LinkAddRequest.build(xml, @obj_id, attr, link) }
           end
 
           links_to_set.each do |(link_id, link)|
             reqs.mandatory {|xml| LinkSetRequest.build(xml, link_id, link) }
           end
 
-          reqs.optional  {|xml| ResolveRefsRequest.build(xml, @obj_id) }
-        end unless skip_version_creation
+          links_to_add.each do |(attr, link)|
+            reqs.mandatory {|xml| LinkAddRequest.build(xml, @obj_id, attr, link) }
+          end
+        end unless skip_version_creation || (links_to_remove.empty? && links_to_add.empty? && links_to_set.empty?)
 
         resp.assert_success
       end

@@ -5,8 +5,8 @@ require 'ostruct'
 require 'pp'
 
 $CONFIGS = {
-  'ruby2.2.3+Rails4.2.5+infopark_fiona_connector-7.0.1.beta2' => {
-    '.ruby-version' => '2.2.3',
+  'ruby2.2.4+Rails4.2.5+infopark_fiona_connector-7.0.1.beta2' => {
+    '.ruby-version' => '2.2.4',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
@@ -14,11 +14,11 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", '7.0.1.beta2'
 gem "mysql2"
 gem "nokogiri"
-gem "rails", "4.2.2"
+gem "rails", "4.2.5"
     EOGEMFILE
   },
-  'ruby2.2.2+Rails4.1.10+infopark_fiona_connector-7.0.0' => {
-    '.ruby-version' => '2.2.2',
+  'ruby2.2.4+Rails4.1.14+infopark_fiona_connector-7.0.0' => {
+    '.ruby-version' => '2.2.4',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
@@ -26,11 +26,11 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", '7.0.0'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
-gem "rails", "4.1.10"
+gem "rails", "4.1.14"
     EOGEMFILE
   },
-  'ruby2.1.5+Rails4.1.10+infopark_fiona_connector-7.0.0' => {
-    '.ruby-version' => '2.1.5',
+  'ruby2.1.8+Rails4.1.14+infopark_fiona_connector-7.0.0' => {
+    '.ruby-version' => '2.1.8',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
@@ -38,11 +38,11 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", '7.0.0'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
-gem "rails", "4.1.10"
+gem "rails", "4.1.14"
     EOGEMFILE
   },
-  'ruby2.1.2+Rails4.1.6+infopark_fiona_connector-6.10.0.beta1' => {
-    '.ruby-version' => '2.1.2',
+  'ruby2.1.8+Rails4.1.14+infopark_fiona_connector-6.10.0.beta1' => {
+    '.ruby-version' => '2.1.8',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
@@ -50,11 +50,11 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", '6.10.0.beta1'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
-gem "rails", "4.1.6"
+gem "rails", "4.1.14"
     EOGEMFILE
   },
-  'ruby2.1.2+Rails4.0.9+infopark_fiona_connector-beta' => {
-    '.ruby-version' => '2.1.2',
+  'ruby2.1.8+Rails4.0.13+infopark_fiona_connector-beta' => {
+    '.ruby-version' => '2.1.8',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
@@ -62,35 +62,11 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :ref => '9c9ee921dc1b66a11e4620d1c1a688d7d4e50fdd'
 gem "mysql2"
 gem "nokogiri", "< 1.6.0"
-gem "rails", "4.0.11"
+gem "rails", "4.0.13"
     EOGEMFILE
   },
-  'ruby2.1.2+Rails4.0.8+infopark_fiona_connector-beta' => {
-    '.ruby-version' => '2.1.2',
-    'Gemfile' => <<-EOGEMFILE
-source "https://rubygems.org"
-gem "infopark_reactor", :path=>"../infopark_reactor"
-gem "rspec-rails", "~> 2.0"
-gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :ref => '9c9ee921dc1b66a11e4620d1c1a688d7d4e50fdd'
-gem "mysql2"
-gem "nokogiri", "< 1.6.0"
-gem "rails", "4.0.11"
-    EOGEMFILE
-  },
-  'ruby2.1.1+Rails4.0.3+infopark_fiona_connector-beta' => {
-    '.ruby-version' => '2.1.1',
-    'Gemfile' => <<-EOGEMFILE
-source "https://rubygems.org"
-gem "infopark_reactor", :path=>"../infopark_reactor"
-gem "rspec-rails", "~> 2.0"
-gem "infopark_fiona_connector", :git => "git@github.com:infopark/fiona_connector.git", :ref => '9c9ee921dc1b66a11e4620d1c1a688d7d4e50fdd'
-gem "mysql2"
-gem "nokogiri", "< 1.6.0"
-gem "rails", "4.0.11"
-    EOGEMFILE
-  },
-  'ruby2.0.0-p481+Rails3.2.19+infopark_fiona_connector-6.9.1.3.22208381' => {
-    '.ruby-version' => '2.0.0-p481',
+  'ruby2.0.0-p648+Rails3.2.22+infopark_fiona_connector-6.9.1.3.22208381' => {
+    '.ruby-version' => '2.0.0-p648',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
@@ -98,11 +74,11 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_rails_connector", "6.9.1.3.22208381"
 gem "infopark_fiona_connector", "6.9.1.3.22208381"
 gem "mysql2"
-gem "rails", "3.2.19"
+gem "rails", "3.2.22"
 gem "nokogiri", "< 1.6.0"
     EOGEMFILE
   },
-  'ruby1.9.3-p547+Rails3.2.20+infopark_fiona_connector-6.9.4' => {
+  'ruby1.9.3-p547+Rails3.2.22+infopark_fiona_connector-6.9.4' => {
     '.ruby-version' => '1.9.3-p547',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
@@ -111,12 +87,12 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_rails_connector", "6.9.4"
 gem "infopark_fiona_connector", "6.9.4"
 gem "mysql2"
-gem "rails", "3.2.20"
+gem "rails", "3.2.22"
 gem "nokogiri", "< 1.6.0"
 gem "tins", "< 1.3" # any newer version is incompatible with ruby 1.9
     EOGEMFILE
   },
-  'ruby1.9.3-p547+Rails3.2.19+infopark_fiona_connector-6.9.1.3.22208381' => {
+  'ruby1.9.3-p547+Rails3.2.12+infopark_fiona_connector-6.9.1.3.22208381' => {
     '.ruby-version' => '1.9.3-p547',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
@@ -125,7 +101,7 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_rails_connector", "6.9.1.3.22208381"
 gem "infopark_fiona_connector", "6.9.1.3.22208381"
 gem "mysql2"
-gem "rails", "3.2.19"
+gem "rails", "3.2.22"
 gem "nokogiri", "< 1.6.0"
 gem "tins", "< 1.3" # any newer version is incompatible with ruby 1.9
     EOGEMFILE

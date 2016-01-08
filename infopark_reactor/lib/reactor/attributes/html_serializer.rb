@@ -14,7 +14,7 @@ module Reactor
 
       private
       def serialize_html
-        link_expressions = [/(href|src)\s*=\s*"([^"]*)"/, /(href|src)\s*=\s*'([^']*)'/]
+        link_expressions = [/(href|src|usemap)\s*=\s*"([^"]*)"/, /(href|src|usemap)\s*=\s*'([^']*)'/]
         link_expressions.each do |expr|
           @value.gsub!(expr) do |string|
             link = Reactor::Support::LinkMatcher.new($2)

@@ -288,7 +288,12 @@ module Reactor
       end
 
       def sanitize_name
-        self.name = self.class.send(:sanitize_name, self.name)
+        return unless self.name.present?
+
+        sanitized_name = self.class.send(:sanitize_name, self.name)
+        if sanitized_name != self.name
+          self.name = sanitized_name
+        end
       end
 
       def crul_attributes_set?

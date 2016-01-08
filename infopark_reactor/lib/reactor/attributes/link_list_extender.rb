@@ -16,6 +16,10 @@ module Reactor
               super(transform_into_link(link_data))
             end
 
+            def []=(idx, value)
+              super(idx, transform_into_link(value))
+            end
+
             # install #size_changed callback
             Array.instance_methods(false).each do |meth|
               old = instance_method(meth)

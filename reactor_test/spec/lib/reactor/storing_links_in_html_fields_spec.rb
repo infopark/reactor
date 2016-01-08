@@ -181,6 +181,24 @@ describe "in-content link persisting" do
       end
     end
 
+    context "usemap attribute" do
+      it "is handled correctly" do
+        obj.send(:"#{attr}=", %Q|<img src="/image_sure_to_exist" usemap="#thismap">|)
+        obj.save!
+
+        expect(Obj.find(obj.id).send(attr)).to match(/<img src="internallink:[^"]*" usemap="internallink:[^"]*">/)
+        expect(obj.reasons_for_incomplete_state).to be_empty
+        expect(obj.text_links.size).to eq(2)
+
+        obj.send(:"#{attr}=", %Q|<img src="/#{Obj.find_by_path('/image_sure_to_exist').id}/image.jpg" usemap="/#{obj.id}/thispage#thismap">|)
+        obj.save!
+
+        expect(Obj.find(obj.id).send(attr)).to match(/<img src="internallink:[^"]*" usemap="internallink:[^"]*">/)
+        expect(obj.reasons_for_incomplete_state).to be_empty
+        expect(obj.text_links.size).to eq(2)
+      end
+    end
+
     context "given a link to nonexistent obj" do
       it "stores an link" do
         obj.send(:"#{attr}=", %Q|<a href="/nonexistent_object">link</a> text|)
@@ -264,4 +282,5 @@ describe "in-content link persisting" do
       after { obj.destroy }
     end
   end
+
 end
