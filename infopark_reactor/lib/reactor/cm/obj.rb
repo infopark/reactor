@@ -151,33 +151,55 @@ module Reactor
 
         skip_version_creation = @attrs.empty? && links_to_remove.empty? && links_to_set.empty? && !links_modified
 
-        # The save procedure consists of following steps:
-        # First request (assign attributes):
-        #  a. Execute take to assign the edited content to the current user
-        #  b. Execute edit to create an edited content if there is none present
-        #  c. Set object attributes (name, permalink, etc.)
-        #  d. Set content attributes (title, body etc. + custom attributes)
-        #  e. Resolve all links in *html* attributes
-        # Second request (overwrite linklists):
-        #  f. Remove superflous links
-        #  g. Overwrite existing links
-        #  h. Add missing links
+        # The save procedure consists of two multiplexed CM requests.
+        # Each request combines multiple operations for better performance.
         #
-        # Second request is optional and only happens if linklists
-        # have been changed.
+        # It is necessary to split the procedure into two request because
+        # of the linklist handling. For objects with only released content
+        # the edit operation copies all links (and generates new ids).
+        # Only the new links from the edited content can be manipulated.
+        # Thus it is neccessary after perform a read of links after the
+        # edit operation.
         #
-        # Steps a,b,d,e,f,g,h are optional and are skipped if only
-        # object attributes have been supplied.
+        # The second request may seem strange and redundant, but has very
+        # important reasons for being structured the way it is.
+        # The CM in all versions (as of this moment <= 7.0.1) contains
+        # multiple race conditions regarding slave workers and the CRUL
+        # interface.
         #
-        # It can happen that the second request is received by
-        # a different CM slave than the first request. If additionaly
-        # the slave has invalid cache (for example when the cache
-        # invalidate command has not yet been fully propagated among
-        # slaves), then race condition can occur.
-        # It is therefore extremely important for the second request
-        # to be resistant against invalid cache, otherwise then
-        # save operation aborts.
-
+        # It is possible that the two requests are processed by two different
+        # slave workers which have an invalid cache. Without careful
+        # programing it may lead to unexpected results and/or data loss.
+        # The reason behind it is simple: the cache invalidate requests
+        # are distributed asynchronously between workers.
+        #
+        # It is impossible to ensure that the two requests are processed
+        # by the same worker: a worker may get killed at any time, without
+        # warning (producing errors on keep-alive connections). Furthermore
+        # the workers regularly kill themselves (after X processed requests)
+        # to contain memory leaks.
+        #
+        # Following cases are especially important to handle correctly:
+        # Let Slave 1 be the worker receiving the first request and Slave 2
+        # be the worker receiving the second request. Let Object be the
+        # object on which the save operation is performed.
+        #
+        # 1. If the Object contains only released version, then Slave 2
+        # may be unaware of the newly created edited version by the time
+        # the second request is being processed. Thefore all operations
+        # involving indirect content references for example adding links
+        # (obj where ... editedContent addLinkTo) would get rejected
+        # by the Slave 2.
+        #
+        # 2. If the Object contains an edited version, then Slave 2 may
+        # be unaware of the changes perfomed on it, change of editor for
+        # example, and can reject valid requests. The more dramatic
+        # scenario involves Slave 2 persisting its invalid cached content
+        # which would result in a data loss.
+        #
+        # The requests have been thus crafted to deal with those problems.
+        # The solution is based on the precise source-code level knowledge
+        # of the CM internals.
         resp = MultiXmlRequest.execute do |reqs|
           reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'take') } unless skip_version_creation
           reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'edit') } unless skip_version_creation
