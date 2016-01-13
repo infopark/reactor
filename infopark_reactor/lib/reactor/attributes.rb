@@ -103,7 +103,16 @@ module Reactor
             end
           EOC
         end
+
+        # active model dirty tracking
+        attribute_methods << <<-EOC
+        def #{attribute}_changed?
+          attribute_changed?(:#{attribute})
+        end
+        EOC
       end
+
+
 
       [:contentType].each do |attribute|
         writers << attribute.to_sym
@@ -225,6 +234,18 @@ module Reactor
         self[:channels] || []
       end
 
+      def body_changed?
+        attribute_changed?(:body)
+      end
+
+      def title_changed?
+        attribute_changed?(:title)
+      end
+
+      def channels_changed?
+        attribute_changed?(:channels)
+      end
+
       # Sets given attribute, to given value. Converts values if neccessary
       # @see [Reactor::Attributes]
       # @note options are passed to underlying xml interface, but as of now have no effect
@@ -239,8 +260,7 @@ module Reactor
         formated_value = serialize_value(key, value)
         crul_set(attr, formated_value, options)
 
-        __send__(:attribute_will_change!, key)
-
+        __track_dirty_attribute(key)
         active_record_set(key, formated_value) if active_record_attr?(key)
         rails_connector_set(key, formated_value)
 
@@ -355,12 +375,27 @@ module Reactor
         attribute_type(attr) == :linklist
       end
 
-      def active_record_set(field, value)
-        if Reactor.rails4_2?
+      if Reactor.rails4_2?
+        def active_record_set(field, value)
           @attributes.write_from_user(field.to_s, value)
-        else
+        end
+      else
+        def active_record_set(field, value)
           @attributes_cache.delete(field.to_s)
           @attributes[field.to_s] = value
+        end
+      end
+
+      if Reactor.rails4_2? || Reactor.rails4_1?
+        def __track_dirty_attribute(key)
+          __send__(:attribute_will_change!, key.to_s)
+        end
+      else
+        def __track_dirty_attribute(key)
+          # in rails versions <= Rails 4.0 sometimes the first option
+          # and sometimes the second option is used
+          __send__(:attribute_will_change!, key.to_s)
+          __send__(:attribute_will_change!, key.to_sym)
         end
       end
 

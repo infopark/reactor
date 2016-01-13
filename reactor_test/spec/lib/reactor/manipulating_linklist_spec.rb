@@ -14,6 +14,8 @@ describe "Object with two links set" do
   end
   after { @obj.destroy }
 
+  after(:all) { Obj.where('path LIKE "/test_obj_for_linklist_manipulation%"').each(&:destroy) }
+
   context "inconsistent titles" do
     before do
       @obj = TestClassWithCustomAttributes.create!(:parent => '/', :name => 'test_obj_for_linklist_manipulation',

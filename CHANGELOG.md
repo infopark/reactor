@@ -1,3 +1,7 @@
+## 1.20.1
+* Better support for ActiveModel::Dirty attributes in all rails versions
+* Support for +attr_name+_changed? for content attributes in all versions
+
 ## 1.20.0
 * Workaround for caching problems in subsequent requests
 * Proper handling of ActiveModel::Dirty attributes

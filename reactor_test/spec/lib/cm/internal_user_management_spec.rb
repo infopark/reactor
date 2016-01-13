@@ -27,6 +27,9 @@ describe Reactor::Cm::User::Internal do
     before do
       described_class.delete!('userToCreate') if described_class.exists?('userToCreate')
     end
+    after do
+      described_class.delete!('userToCreate') if described_class.exists?('userToCreate')
+    end
     it "creates a user" do
       expect(described_class).not_to be_exists('userToCreate')
       described_class.create('userToCreate', 'not_root_group')

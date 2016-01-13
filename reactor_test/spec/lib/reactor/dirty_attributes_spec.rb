@@ -2,19 +2,20 @@ require 'spec_helper'
 
 shared_examples "dirty attribute tracking" do |attribute, old_value, new_value, default_value|
 
-  it "tracks changes" do
+  it "tracks changes of #{attribute}" do
     expect {
       subject.__send__(:"#{attribute}=", new_value)
     }.to change{subject.__send__(attribute)}.from(old_value).to(new_value)
 
-    expect(subject.changed.map(&:to_s)).to include(attribute.to_s)
+    expect(subject.changed).to include(attribute.to_s)
+    expect(subject.__send__(:"#{attribute}_changed?")).to be_true
     expect(subject.changed_attributes[attribute]).to eq(default_value)
   end
 end
 
 shared_examples "dirty attribute tracking with persistance" do |attribute, old_value, new_value, default_value|
 
-  it "tracks changes" do
+  it "tracks changes of #{attribute}" do
     expect {
       subject.__send__(:"#{attribute}=", new_value)
       subject.save!
