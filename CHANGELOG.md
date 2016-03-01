@@ -1,4 +1,7 @@
 ## 1.20.1
+* Strip empty search and anchors from links
+
+## 1.20.1
 * Better support for ActiveModel::Dirty attributes in all rails versions
 * Support for +attr_name+_changed? for content attributes in all versions
 
