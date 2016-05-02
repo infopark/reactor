@@ -1,4 +1,7 @@
 # -*- encoding : utf-8 -*-
+require 'reactor/attributes/link_list_from_accessor'
+require 'reactor/attributes/link_list_from_attr_values'
+
 module Reactor
   module Persistence
     # Provides API for writing into the Content Manager.
@@ -249,25 +252,6 @@ module Reactor
         raise RuntimeError, "Unsupported Rails version!"
       end
 
-
-=begin
-      # @see [ActiveRecord::Persistence#update_attributes]
-      def update_attributes(attributes, options={})
-        attributes.each do |attr, value|
-          self.send(:"#{attr}=", value)
-        end
-        self.save
-      end
-
-      # @see [ActiveRecord::Persistence#update_attributes!]
-      def update_attributes!(attributes, options={})
-        attributes.each do |attr, value|
-          self.send(:"#{attr}=", value)
-        end
-        self.save!
-      end
-=end
-
       # Equivalent to Obj#edited?
       def really_edited?
         self.edited?
@@ -335,7 +319,7 @@ module Reactor
 
         new_links = {}.tap do |result|
           linklists.map do |field|
-            result[field] = self.__read_link(field).map do |l|
+            result[field] = Reactor::Attributes::LinkListFromAccessor.new(self, field).call.map do |l|
               {:link_id => l.id, :title => l.title, :destination_url => (l.internal? ? l.destination_object.path : l.url), :target => l.target}
             end
           end
@@ -352,7 +336,7 @@ module Reactor
           copy = RailsConnector::AbstractObj.uncached { RailsConnector::AbstractObj.find(self.id) }
 
           linklists.each do |linklist|
-            original_link_ids = copy.__read_link(linklist).original_link_ids
+            original_link_ids = Reactor::Attributes::LinkListFromAttrValues.new(copy, linklist).call.map(&:id)
             i = 0
             common = [original_link_ids.length,
                       new_links[linklist].length].min
@@ -383,10 +367,6 @@ module Reactor
         end
 
         self.class.connection.clear_query_cache
-      end
-
-      def __read_link(name)
-        self[name.to_sym] || RailsConnector::LinkList.new([])
       end
 
       private
