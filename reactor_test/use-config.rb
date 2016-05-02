@@ -5,6 +5,18 @@ require 'ostruct'
 require 'pp'
 
 $CONFIGS = {
+  'ruby2.2.5+Rails4.2.6+infopark_fiona_connector-7.0.1' => {
+    '.ruby-version' => '2.2.5',
+    'Gemfile' => <<-EOGEMFILE
+source "https://rubygems.org"
+gem "infopark_reactor", :path=>"../infopark_reactor"
+gem "rspec-rails", "~> 2.0"
+gem "infopark_fiona_connector", '7.0.1'
+gem "mysql2"
+gem "nokogiri"
+gem "rails", "4.2.6"
+    EOGEMFILE
+  },
   'ruby2.2.4+Rails4.2.5+infopark_fiona_connector-7.0.1.beta2' => {
     '.ruby-version' => '2.2.4',
     'Gemfile' => <<-EOGEMFILE

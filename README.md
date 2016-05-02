@@ -20,6 +20,7 @@ Following versions of `infopark_rails_connector`/`infopark_fiona_connector` and 
 |     2.1.8    |     4.1.14    |           *none*          |          7.0.0            |
 |     2.2.4    |     4.1.14    |           *none*          |          7.0.0            |
 |     2.2.4    |     4.2.5     |           *none*          |          7.0.1.beta2      |
+|     2.2.5    |     4.2.6     |           *none*          |          7.0.1            |
 
 Fiona versions: 7.0.1, 7.0.0, 6.10.2, 6.10.0, 6.9.0, 6.8.0, 6.7.3 and 6.7.2 are supported.
 
