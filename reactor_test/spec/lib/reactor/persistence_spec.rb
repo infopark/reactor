@@ -737,4 +737,49 @@ describe Reactor::Persistence do
       end
     end
   end
+
+  describe "Moving an object" do
+    before do
+      @source = TestClassWithCustomAttributes.create(name: 'move_source', parent: '/')
+      @target = TestClassWithCustomAttributes.create(name: 'move_target', parent: '/')
+    end
+
+    after do
+      Obj.where('path LIKE "%move_source%"').all.each(&:destroy)
+      Obj.where('path LIKE "%move_target%"').all.each(&:destroy)
+    end
+
+    it "works via setter" do
+      @source.parent = @target
+      @source.save!
+
+      expect(@source.parent).to eq(@target)
+      expect(Obj.find(@source.id).parent).to eq(@target)
+    end
+
+    it "works via update_attributes" do
+      @source.update_attributes!(parent: @target)
+
+      expect(@source.parent).to eq(@target)
+      expect(Obj.find(@source.id).parent).to eq(@target)
+    end
+
+    it "works with paths" do
+      @source.parent = @target.path
+      @source.save!
+
+      expect(@source.parent).to eq(@target)
+      expect(Obj.find(@source.id).parent).to eq(@target)
+    end
+
+    it "works for released objects" do
+      @source.release!
+      @source.parent = @target
+      @source.save!
+
+      expect(@source.parent).to eq(@target)
+      expect(Obj.find(@source.id).parent).to eq(@target)
+      expect(@source).to be_released
+    end
+  end
 end

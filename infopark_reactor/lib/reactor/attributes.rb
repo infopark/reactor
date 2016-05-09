@@ -305,7 +305,7 @@ module Reactor
       protected
       attr_accessor :uploaded
       def builtin_attr?(attr)
-        [:channels, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :suppress_export, :permalink, :title].include?(attr)
+        [:channels, :parent, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :suppress_export, :permalink, :title].include?(attr)
       end
 
       def active_record_attr?(attr)

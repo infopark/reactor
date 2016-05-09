@@ -1,4 +1,10 @@
-## 1.20.1
+## 1.20.4
+* Restore object moving through parent setting
+
+## 1.20.3
+* Invalid links and links to deactived objects can now be overwritten
+
+## 1.20.2
 * Strip empty search and anchors from links
 
 ## 1.20.1

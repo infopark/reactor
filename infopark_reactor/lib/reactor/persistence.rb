@@ -446,7 +446,9 @@ module Reactor
       end
 
       def set_parent(parent_something)
-        self.parent_obj_id = self.class.obj_id_from_anything(parent_something)
+        parent_obj = self.class.obj_from_anything(parent_something)
+        self.parent_obj_id = parent_obj.id
+        crul_set(:parent, parent_obj.path, {}) if persisted?
       end
 
       def set_obj_class(obj_class)
