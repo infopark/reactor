@@ -122,3 +122,8 @@ without(Reactor::Cm::ObjClass.exists?(VALIDATION_CLASS)) do
   Reactor::Cm::ObjClass.create(VALIDATION_CLASS, 'publication')
 end
 Reactor::Cm::ObjClass.get(VALIDATION_CLASS).attributes = [VALIDATION_LINK_ATTR]
+
+
+klass = Reactor::Cm::ObjClass.create('image', 'image') rescue nil
+Obj.upload(File.open(Rails.root + 'spec/fixtures/53b01fb15ffe3a9e83675a3c80d639c6.jpg', 'r'), 'jpg', parent: '/', name: 'image_sure_to_exist', obj_class: 'image').release!
+Obj.upload(File.open(Rails.root + 'spec/fixtures/53b01fb15ffe3a9e83675a3c80d639c6.jpg', 'r'), 'jpg', parent: '/', name: 'image_sure_to_exist2', obj_class: 'image').release!
