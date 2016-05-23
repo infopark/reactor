@@ -1,3 +1,6 @@
+## 1.21.0
+* Reactor controller removed
+
 ## 1.20.4
 * Restore object moving through parent setting
 
