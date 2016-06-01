@@ -77,7 +77,7 @@ gem "nokogiri", "< 1.6.0"
 gem "rails", "4.0.13"
     EOGEMFILE
   },
-  'ruby2.0.0-p648+Rails3.2.22+infopark_fiona_connector-6.9.1.3.22208381' => {
+  'ruby2.0.0-p648+Rails3.2.22.2+infopark_fiona_connector-6.9.1.3.22208381' => {
     '.ruby-version' => '2.0.0-p648',
     'Gemfile' => <<-EOGEMFILE
 source "https://rubygems.org"
@@ -86,7 +86,7 @@ gem "rspec-rails", "~> 2.0"
 gem "infopark_rails_connector", "6.9.1.3.22208381"
 gem "infopark_fiona_connector", "6.9.1.3.22208381"
 gem "mysql2"
-gem "rails", "3.2.22"
+gem "rails", "3.2.22.2"
 gem "nokogiri", "< 1.6.0"
     EOGEMFILE
   },

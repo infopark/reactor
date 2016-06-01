@@ -1,3 +1,6 @@
+## 1.22.0
+* Add special handling for custom date attributes in newly instantiated objects
+
 ## 1.21.0
 * Reactor controller removed
 

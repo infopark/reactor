@@ -262,7 +262,7 @@ module Reactor
 
         __track_dirty_attribute(key)
         active_record_set(key, formated_value) if active_record_attr?(key)
-        rails_connector_set(key, formated_value)
+        rails_connector_set(key, formated_value, not_formated_value)
 
         # return new value
         __send__(key)
@@ -355,16 +355,22 @@ module Reactor
         end
       end
 
-      def rails_connector_set(field, value)
+      def rails_connector_set(field, value, supplied_value)
         field = :blob if field.to_sym == :body
         field = field.to_sym
-        # invalidate RC attribute cache
-        # send(:attr_dict).instance_variable_get('@attr_cache')[field] = nil
-        # # set new value for attr_dict
-        # send(:attr_dict).send(:blob_dict)[field] = value
-        if cached_value?(field, value)
+
+        case attribute_type(field)
+        when :linklist
           send(:attr_dict).instance_variable_get('@attr_cache')[field] = value
-          send(:attr_dict).send(:blob_dict)[field] = :dirt_hack
+          send(:attr_dict).send(:blob_dict)[field] = :special_linklist_handling_is_broken
+        when :date
+          if supplied_value.nil? || supplied_value.kind_of?(String)
+            parsed_value = Time.from_iso(value) rescue nil
+          else
+            parsed_value = supplied_value
+          end
+          send(:attr_dict).instance_variable_get('@attr_cache')[field] = parsed_value
+          send(:attr_dict).send(:blob_dict)[field] = value
         else
           send(:attr_dict).instance_variable_get('@attr_cache')[field] = nil
           send(:attr_dict).send(:blob_dict)[field] = value
