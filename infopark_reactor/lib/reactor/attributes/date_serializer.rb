@@ -13,7 +13,7 @@ module Reactor
       private
       def serialize_date
         if @value.is_a?(Time)
-          @value.utc.to_iso
+          @value.dup.utc.to_iso
         elsif @value.is_a?(String)
           if iso_format?(@value)
             @value

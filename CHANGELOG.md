@@ -1,3 +1,6 @@
+## 1.22.1
+* Workaround for a very suble bug in .utc changing the time object in place
+
 ## 1.22.0
 * Add special handling for custom date attributes in newly instantiated objects
 

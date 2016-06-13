@@ -365,7 +365,7 @@ module Reactor
           send(:attr_dict).send(:blob_dict)[field] = :special_linklist_handling_is_broken
         when :date
           if supplied_value.nil? || supplied_value.kind_of?(String)
-            parsed_value = Time.from_iso(value) rescue nil
+            parsed_value = Time.from_iso(value).in_time_zone rescue nil
           else
             parsed_value = supplied_value
           end

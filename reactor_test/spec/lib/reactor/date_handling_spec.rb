@@ -126,13 +126,20 @@ describe 'Date Handling' do
     before    { @obj = TestClassWithCustomAttributes.new(:name => 'date_test', :parent => '/') }
     after     { @obj.destroy if @obj.persisted? }
 
+    context "with different time zone" do 
+      specify "handling time zones" do
+        t1 = Time.new(2015, 2, 2)
+
+        expect(TestClassWithCustomAttributes.new(test_attr_date: t1).test_attr_date).not_to be_utc
+      end
+    end
+
     include_examples "date handling"
   end
 
   specify do
     o = TestClassWithCustomAttributes.new
     t = Time.now
-    # we dont have enough precision
     o.test_attr_date = t
     o.test_attr_date
     expect(o.test_attr_date).to eql(t)
