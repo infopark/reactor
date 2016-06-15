@@ -1,7 +1,7 @@
 PATH
   remote: ../infopark_reactor
   specs:
-    infopark_reactor (1.22.0)
+    infopark_reactor (1.22.2)
       nokogiri
       rails (>= 3.0.10, < 4.3.0)
       term-ansicolor

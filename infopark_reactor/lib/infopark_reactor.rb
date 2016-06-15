@@ -59,6 +59,7 @@ require 'reactor/migration'
 
 # require misc
 require 'reactor/cm/xml_request_error'
+require 'reactor/cm/blob_too_small_error'
 require 'reactor/cm/missing_credentials'
 
 # require public tools

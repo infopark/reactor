@@ -375,6 +375,28 @@ module Reactor
         response.xpath('//editor').text
       end
 
+      def blob_ticket_id(content='edited')
+        request = XmlRequest.prepare do |xml|
+          xml.tag!('content-where') do
+            xml.tag!('objectId', @obj_id)
+            xml.tag!('state', content)
+          end
+          xml.tag!('content-get') do
+            xml.tag!('blob')
+          end
+        end
+        response = request.execute!
+        possible_ticket_id = response.xpath('//blob').text
+        encoding = response.xpath('//blob/@encoding').to_s
+        # blob is smaller than
+        # [systemConfig getKeys tuning.minStreamingDataLength]
+        # and thus it is returned in-line
+        if encoding != 'stream'
+          raise Reactor::Cm::BlobTooSmallError
+        end
+        possible_ticket_id
+      end
+
       def edited_content
         request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, 'id', @obj_id)

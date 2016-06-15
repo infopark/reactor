@@ -112,6 +112,11 @@ without(Reactor::Cm::Attribute.exists?(VALIDATION_LINK_ATTR)) do
   Reactor::Cm::Attribute.create(VALIDATION_LINK_ATTR, 'linklist')
 end
 
+GENERIC_CLASS = 'Resource'
+without(Reactor::Cm::ObjClass.exists?(GENERIC_CLASS)) do
+  Reactor::Cm::ObjClass.create(GENERIC_CLASS, 'generic')
+end
+
 link = Reactor::Cm::Attribute.get(VALIDATION_LINK_ATTR)
 link.set('minSize', 2)
 link.set('maxSize', 4)

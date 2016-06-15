@@ -1,3 +1,6 @@
+## 1.22.2
+* Implement reading of blob streaming ticket
+
 ## 1.22.1
 * Workaround for a very suble bug in .utc changing the time object in place
 
