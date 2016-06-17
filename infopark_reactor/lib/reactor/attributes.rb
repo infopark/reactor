@@ -309,7 +309,7 @@ module Reactor
       end
 
       def active_record_attr?(attr)
-        [:valid_from, :valid_until, :name, :obj_class, :content_type, :suppress_export, :permalink].include?(attr)
+        [:valid_from, :valid_until, :name, :obj_class, :suppress_export, :permalink].include?(attr)
       end
 
       def allowed_attr?(attr)

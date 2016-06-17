@@ -1,3 +1,6 @@
+## 1.22.3
+* Fixed a bug handling of .set(:content_type, ...)
+
 ## 1.22.2
 * Implement reading of blob streaming ticket
 
