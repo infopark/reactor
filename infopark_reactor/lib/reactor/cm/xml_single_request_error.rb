@@ -10,7 +10,7 @@ module Reactor
       end
 
       def phrase
-        result = @response.xpath('//phrase')
+        result = @response.xpath('//phrase/text()')
         result = [result] unless result.kind_of?(Array)
 
         result.map(&:to_s).join("\n")

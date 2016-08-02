@@ -1,3 +1,6 @@
+## 1.22.4
+* Fixed a bug in handling of requests with multiple error messages
+
 ## 1.22.3
 * Fixed a bug handling of .set(:content_type, ...)
 
