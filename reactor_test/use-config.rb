@@ -101,6 +101,7 @@ gem "infopark_fiona_connector", "6.9.4"
 gem "mysql2"
 gem "rails", "3.2.22"
 gem "nokogiri", "< 1.6.0"
+gem "json", "< 2.0" # any newer version is incompatible with ruby 1.9
 gem "tins", "< 1.3" # any newer version is incompatible with ruby 1.9
     EOGEMFILE
   },
@@ -115,6 +116,7 @@ gem "infopark_fiona_connector", "6.9.1.3.22208381"
 gem "mysql2"
 gem "rails", "3.2.22"
 gem "nokogiri", "< 1.6.0"
+gem "json", "< 2.0" # any newer version is incompatible with ruby 1.9
 gem "tins", "< 1.3" # any newer version is incompatible with ruby 1.9
     EOGEMFILE
   }
@@ -137,7 +139,7 @@ class ConfigSetter
         f.write(content)
       end
     end
-    system($DAMN_YOU_RBENV.call("bundle > /dev/null"))
+    system($DAMN_YOU_RBENV.call("bundle "))
   end
 end
 
@@ -156,7 +158,7 @@ class CmdLine
 
       opts.on("-e", "--execute TASK", "Execute task for each configuration") do |task|
         $CONFIGS.each do |key, config|
-          ConfigSetter.new(config).set!
+          ConfigSetter.new(config).set! || fail("Configuration #{key} broken.")
           system($DAMN_YOU_RBENV.call(task)) || fail("Task '#{task}' on configuration #{key} returned a non-zero status.")
         end
         exit
