@@ -1,3 +1,6 @@
+## 1.22.5
+* Restore functionality of Reactor::Cm::EditorialGroup
+
 ## 1.22.4
 * Fixed a bug in handling of requests with multiple error messages
 
