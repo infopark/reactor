@@ -46,7 +46,7 @@ module Reactor
 
           begin
             response = request.execute!
-            groups = ResponseHandler::String.new.get(response, '//group/name/text()')
+            groups = ResponseHandler::String.new.get(response, "//#{base_name}/name/text()")
 
             groups.is_a?(Array) ? groups : [groups]
           rescue XmlRequestError
