@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '>= 3.0.10', '< 4.3.0'
   #s.add_dependency 'infopark_rails_connector'
   s.add_dependency 'nokogiri'
-  s.add_dependency 'term-ansicolor'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'yard'

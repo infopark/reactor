@@ -1,10 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'nokogiri'
-require 'term/ansicolor'
 
 class SmartXmlLogger
-
-  include Term::ANSIColor
 
   def initialize(forward_to, method = nil)
     @logger = forward_to
@@ -47,13 +44,13 @@ class SmartXmlLogger
 
     out = ' ' * indent
 
-    attrs = node.attributes.values.map{|attr| %|#{attr.name}="#{red(attr.value)}"|}.join(' ')
+    attrs = node.attributes.values.map{|attr| %|#{attr.name}="#{(attr.value)}"|}.join(' ')
     attrs = " #{attrs}" if attrs.present?
 
-    out << "<#{green(node.name)}#{attrs}#{'/' if empty}>"
+    out << "<#{(node.name)}#{attrs}#{'/' if empty}>"
 
     if has_text
-      out << "#{red(node.text)}"
+      out << "#{(node.text)}"
     else
       out << "\n"
     end
@@ -63,7 +60,7 @@ class SmartXmlLogger
     end
 
     out << ' ' * indent unless has_text || empty
-    out << "</#{green(node.name)}>\n" unless empty
+    out << "</#{(node.name)}>\n" unless empty
     out
   end
 
