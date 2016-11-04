@@ -166,8 +166,13 @@ module Reactor
       # Returns true if given user has permissions required to release an object (the exact
       # permissions depend on the state of the object)
       def release?(user = nil)
-        (has_workflow? && root?(user)) || (!has_workflow? && write?(user))
-        write?(user) || root?(user)
+        if !has_workflow?
+          # NOTE: order matters for speed
+          write?(user) || root?(user)
+        else
+          # this is slow
+          root?(user) || (has_workflow_api? && obj.workflow.release?)
+        end
       end
 
       # Setter to overwrite the current groups for the given +permission+ with the
@@ -243,10 +248,17 @@ module Reactor
         self.class.permissions[permission]
       end
 
+      # NOTE: this method may lie, when:
+      # - object received workflow and the cached state says otherwise
+      # - the workflow api is deactivated
       def has_workflow?
         cache.lookup(:any, "#{obj.path}:workflow") do
-          RailsConnector::ObjectWithMetaData.find_by_object_id(obj.id).try(:workflow_name).present?
+          obj.workflow_name.present?
         end
+      end
+
+      def has_workflow_api?
+        obj.class < Reactor::Workflow::Base
       end
     end
 

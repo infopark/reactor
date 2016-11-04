@@ -204,6 +204,7 @@ describe Reactor::Persistence do
     context "invalid object" do
       let(:obj) { stub_model(Obj) }
       before { allow(obj).to receive(:valid?) { false } }
+      before { allow(obj).to receive(:workflow_name) { nil } }
 
       it "raises RecordInvalid exception" do
         expect { obj.release! }.to raise_exception(ActiveRecord::RecordInvalid)
@@ -213,6 +214,7 @@ describe Reactor::Persistence do
     context "object without working version" do
       let(:obj) { stub_model(Obj) }
       before { allow(obj).to receive(:edited?) { false } }
+      before { allow(obj).to receive(:workflow_name) { nil } }
 
       it "raises AlreadyReleased exception" do
         expect { obj.release! }.to raise_exception(Reactor::AlreadyReleased)

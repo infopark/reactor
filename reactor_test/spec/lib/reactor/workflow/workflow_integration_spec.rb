@@ -131,6 +131,34 @@ describe 'Reactor::Workflow' do
           as('Dirk') { expect(@rc_obj.workflow).not_to be_sign }
           as('Dirk') { expect(@rc_obj.workflow).to be_release }
           as('Dirk') { expect(@rc_obj.workflow).to be_reject }
+
+          as('Adam') { expect(@rc_obj.permission.release?).to eq(false) }
+          as('Gert') { expect(@rc_obj.permission.release?).to eq(false) }
+          as('Hans') { expect(@rc_obj.permission.release?).to eq(false) }
+
+          as('Dirk') { expect(@rc_obj.permission.release?).to eq(true) }
+        end
+
+        context "Dirk does not have permission write" do
+          before do
+            @rc_obj.permission.revoke(:write, 'Dirk_group')
+          end
+
+          it "Dirk can still release and reject" do
+            as('Adam') { expect(@obj.valid_actions).to be_empty }
+            as('Gert') { expect(@obj.valid_actions).to be_empty }
+            as('Hans') { expect(@obj.valid_actions).to be_empty }
+
+            as('Dirk') { expect(@rc_obj.workflow).not_to be_sign }
+            as('Dirk') { expect(@rc_obj.workflow).to be_release }
+            as('Dirk') { expect(@rc_obj.workflow).to be_reject }
+
+            as('Adam') { expect(@rc_obj.permission.release?).to eq(false) }
+            as('Gert') { expect(@rc_obj.permission.release?).to eq(false) }
+            as('Hans') { expect(@rc_obj.permission.release?).to eq(false) }
+
+            as('Dirk') { expect(@rc_obj.permission.release?).to eq(true) }
+          end
         end
       end
     end
