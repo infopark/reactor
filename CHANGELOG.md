@@ -1,3 +1,7 @@
+## 1.22.6
+* Corrected permission check for objects with workflow
+* Dropped term-ansicolor dependency
+
 ## 1.22.5
 * Restore functionality of Reactor::Cm::EditorialGroup
 
