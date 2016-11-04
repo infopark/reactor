@@ -1,3 +1,5 @@
+require 'reactor/session_helper'
+
 # -*- encoding : utf-8 -*-
 module Reactor
 
@@ -15,35 +17,14 @@ module Reactor
 
     initializer "reactor.rsession" do |app|
       if app.config.action_dispatch.cookies_serializer && app.config.action_dispatch.cookies_serializer != :marshal
-        Rails.logger.info "Cookie session serializer #{app.config.action_dispatch.cookies_serializer} unsupported. Enforcing :marshal instead."
-        app.config.action_dispatch.cookies_serializer = :marshal
-      end
-
-      # FIXME: extract !
-      AbstractController::Base.__send__(:define_method, :rsession) do
-        self.session[:rsession] ||= Reactor::Session.instance
+        Rails.logger.debug "Cookie session serializer #{app.config.action_dispatch.cookies_serializer} is experimental, use at your own risk. :marshal recommended instead."
+        ActionController::Base.__send__(:include, Reactor::SessionHelper::SimpleSerializer)
+      else
+        ActionController::Base.__send__(:include, Reactor::SessionHelper::MarshalSerializer)
       end
       ActionController::Base.__send__(:helper_method, :rsession)
 
-      ActionController::Base.__send__(:define_method, :rsession_auth) do
-        if RailsConnector::Configuration.mode == :editor && (jsessionid = cookies['JSESSIONID']).present?
-          # Why the gsub? It's a dirty hack! Reason: JSESSIONIDs are unescaped
-          # when read through Rails and hence all + are converted into spaces.
-          # CM Kernel though stores escaped IDs.
-          # From the possible generated characters only the + seems to be
-          # problematic.
-          # CGI.escape would be the solution, but it's deprecated
-          # URI.escape does too much
-          jsessionid.gsub!(' ','+')
-
-          Rails.logger.info "Trying to log in at #{Reactor::Configuration.xml_access[:host]}:#{Reactor::Configuration.xml_access[:port]} with JSESSIONID=#{jsessionid}."
-          rsession.login(jsessionid)
-          Rails.logger.info %|Logged in as "#{rsession.user_name}".| if rsession.user?
-        else
-          rsession.destroy
-        end
-      end
-      ActionController::Base.__send__(:before_filter, :rsession_auth)
+      ActionController::Base.__send__(:include, Reactor::SessionHelper::AuthHelper)
     end
 
   end

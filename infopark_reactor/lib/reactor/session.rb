@@ -6,43 +6,54 @@ require 'reactor/cache/user'
 require 'reactor/session/observers'
 
 class Reactor::Session
-  attr_reader :user_name, :session_id
   include Observable
+
+  USER_NAME_STATE_KEY  = 0
+  SESSION_ID_STATE_KEY = 1
 
   def self.instance
     self.for(Reactor::Configuration.xml_access[:username])
   end
 
-  def self.for(user_name)
-    self.new.tap do |instance|
-      instance.instance_variable_set(:@user_name, user_name)
-      instance.send(:proper_notify_observers, user_name, false)
+  def self.for(user_name, session_id=nil)
+    self.allocate.tap do |instance|
+      instance.load_state([user_name, session_id])
     end
   end
 
   def marshal_dump
-    [@user_name, @session_id]
+    @state.dup
   end
 
-  def marshal_load(array)
-    @user_name, @session_id = array
+  def marshal_load(state_array)
+    # NOTE: this dup is very important, because the array
+    # passed to load state is ment to modified in-place
+    self.load_state(state_array.dup)
+  end
+
+  def load_state(state_array)
+    @state = state_array
     self.add_observers
-    self.proper_notify_observers(@user_name, false)
+    self.proper_notify_observers(self.user_name, false)
   end
 
   def initialize
+    @state = []
     self.add_observers
   end
 
-
   def login(session_id)
     if !logged_in?(session_id)
-      self.user_name = authenticate(session_id)
+      self.set_user_name(self.authenticate(session_id))
     end
   end
 
   def destroy
-    self.session_id = self.user_name = nil
+    # this will notify the observers
+    self.user_name = nil
+    # this will just clean the state
+    self.set_user_name(nil)
+    self.set_session_id(nil)
   end
 
   def logged_in?(session_id)
@@ -58,13 +69,28 @@ class Reactor::Session
   end
 
   def user_name=(new_user_name)
-    @user_name = new_user_name
-    self.proper_notify_observers(@user_name, true)
-    @user_name
+    self.set_user_name(new_user_name)
+    self.proper_notify_observers(new_user_name, true)
+    new_user_name
+  end
+
+
+  def user_name
+    @state[USER_NAME_STATE_KEY]
+  end
+
+  def session_id
+    @state[SESSION_ID_STATE_KEY]
   end
 
   protected
-  attr_writer :session_id
+  def set_user_name(user_name)
+    @state[USER_NAME_STATE_KEY] = user_name
+  end
+
+  def set_session_id(session_id)
+    @state[SESSION_ID_STATE_KEY] = session_id
+  end
 
   def authenticate(session_id)
     self.session_id = session_id
