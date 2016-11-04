@@ -1,3 +1,6 @@
+## 1.23.0.beta1
+* Experimental support for :json session serialization in cookies
+
 ## 1.22.6
 * Corrected permission check for objects with workflow
 * Dropped term-ansicolor dependency
