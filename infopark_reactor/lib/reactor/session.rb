@@ -8,52 +8,44 @@ require 'reactor/session/observers'
 class Reactor::Session
   include Observable
 
-  USER_NAME_STATE_KEY  = 0
-  SESSION_ID_STATE_KEY = 1
+  class State < Struct.new(:user_name, :session_id)
+    def serialize
+      [self.user_name, self.session_id]
+    end
+
+    def self.deserialize(array)
+      self.new(*array)
+    end
+  end
+
+  def initialize(state=State.new)
+    self.initialize_and_notify(state)
+  end
+
+  def user_name
+    self.state.user_name
+  end
+
+  def session_id
+    self.state.session_id
+  end
 
   def self.instance
     self.for(Reactor::Configuration.xml_access[:username])
   end
 
-  def self.for(user_name, session_id=nil)
-    self.allocate.tap do |instance|
-      instance.load_state([user_name, session_id])
-    end
-  end
-
-  def marshal_dump
-    @state.dup
-  end
-
-  def marshal_load(state_array)
-    # NOTE: this dup is very important, because the array
-    # passed to load state is ment to modified in-place
-    self.load_state(state_array.dup)
-  end
-
-  def load_state(state_array)
-    @state = state_array
-    self.add_observers
-    self.proper_notify_observers(self.user_name, false)
-  end
-
-  def initialize
-    @state = []
-    self.add_observers
+  def self.for(user_name)
+    self.new(State.new(user_name, nil))
   end
 
   def login(session_id)
     if !logged_in?(session_id)
-      self.set_user_name(self.authenticate(session_id))
+      self.user_name = authenticate(session_id)
     end
   end
 
   def destroy
-    # this will notify the observers
-    self.user_name = nil
-    # this will just clean the state
-    self.set_user_name(nil)
-    self.set_session_id(nil)
+    self.session_id = self.user_name = nil
   end
 
   def logged_in?(session_id)
@@ -69,27 +61,25 @@ class Reactor::Session
   end
 
   def user_name=(new_user_name)
-    self.set_user_name(new_user_name)
+    self.state.user_name = new_user_name
     self.proper_notify_observers(new_user_name, true)
     new_user_name
   end
 
-
-  def user_name
-    @state[USER_NAME_STATE_KEY]
+  def marshal_dump
+    self.state.serialize
   end
 
-  def session_id
-    @state[SESSION_ID_STATE_KEY]
+  def marshal_load(array)
+    self.initialize_and_notify(State.deserialize(array))
   end
 
   protected
-  def set_user_name(user_name)
-    @state[USER_NAME_STATE_KEY] = user_name
-  end
-
-  def set_session_id(session_id)
-    @state[SESSION_ID_STATE_KEY] = session_id
+  attr_accessor :state
+  def initialize_and_notify(state)
+    self.state = state
+    self.add_observers
+    self.proper_notify_observers(self.user_name, false)
   end
 
   def authenticate(session_id)
@@ -109,5 +99,9 @@ class Reactor::Session
   def proper_notify_observers(*args)
     self.changed(true)
     self.notify_observers(*args)
+  end
+
+  def session_id=(new_session_id)
+    self.state.session_id = new_session_id
   end
 end

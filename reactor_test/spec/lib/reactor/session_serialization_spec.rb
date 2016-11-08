@@ -17,7 +17,7 @@ describe Reactor::Session do
     before do
       before_marshal = subject
       before_marshal.user_name = 'non_root_user'
-      before_marshal.send(:set_session_id, 'sssssession')
+      before_marshal.send(:session_id=, 'sssssession')
 
       mashalled = Marshal.dump(before_marshal)
 
@@ -42,7 +42,7 @@ describe Reactor::Session do
     specify do
       before_marshal = subject
       before_marshal.user_name = 'non_root_user'
-      before_marshal.send(:set_session_id, 'sssssession')
+      before_marshal.send(:session_id=, 'sssssession')
 
       mashalled = Marshal.dump(before_marshal)
 

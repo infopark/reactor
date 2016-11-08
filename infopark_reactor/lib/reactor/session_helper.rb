@@ -27,20 +27,44 @@ module Reactor
       end
     end
 
-    module MarshalSerializer
+    module RsessionHelper
       def rsession
-        self.session[:rsession] ||= Reactor::Session.instance
+        @__rsession ||= RsessionHelper.from_session(self.session)
+      end
+
+      def self.from_session(session)
+        Reactor::Session.new(
+          # This passes the very powerfull rails session object
+          SessionState.new(session)
+        )
       end
     end
 
-    module SimpleSerializer
-      def rsession
-        self.session[:rsession_simple] ||= []
+    class SessionState < Reactor::Session::State
+      USER_NAME_KEY  = "rsession$user_name"
+      SESSION_ID_KEY = "rsession$session_id"
 
-        @__rsession ||= Reactor::Session.allocate.tap do |instance|
-          instance.load_state(self.session[:rsession_simple])
-        end
+      def initialize(session)
+        self.session = session
+        super(session[USER_NAME_KEY], session[SESSION_ID_KEY])
       end
+
+      def user_name=(new_user_name)
+        # this is a little bit of magic: it will trigger
+        # the the session serialization routine, and will
+        # persist the new information after processing the request
+        self.session[USER_NAME_KEY] = new_user_name
+        new_user_name
+      end
+
+      def session_id=(new_session_id)
+        # see above
+        self.session[SESSION_ID_KEY] = new_session_id
+        new_session_id
+      end
+
+      protected
+      attr_accessor :session
     end
   end
 end
