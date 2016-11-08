@@ -3,6 +3,8 @@ ReactorTest::Application.routes.draw do
   controller 'test' do
     get 'test' => :test, :as => :update_ll
   end
+
+  resource :login, only: [:show, :create]
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
