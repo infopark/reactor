@@ -1,3 +1,6 @@
+## 1.23.0.beta2
+* Replaced session handling code to support any session serialization method
+
 ## 1.23.0.beta1
 * Experimental support for :json session serialization in cookies
 
