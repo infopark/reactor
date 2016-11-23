@@ -1,8 +1,5 @@
-## 1.23.0.beta2
-* Replaced session handling code to support any session serialization method
-
-## 1.23.0.beta1
-* Experimental support for :json session serialization in cookies
+## 1.23.0
+* Replaced session handling code to support any session serialization method (for example json)
 
 ## 1.22.6
 * Corrected permission check for objects with workflow
