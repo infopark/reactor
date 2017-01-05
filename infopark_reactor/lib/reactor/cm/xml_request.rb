@@ -18,6 +18,8 @@ module Reactor
     LOGGER.configure(:response, :xpath => 'cm-payload/cm-response/*', :start_indent => 2)
 
     class XmlRequest
+      cattr_accessor :timeout
+      self.timeout = 60
 
       def self.token(login, instance_secret)
         Digest::MD5.hexdigest(login + instance_secret)
@@ -47,6 +49,7 @@ module Reactor
         payload = @xml
 
         res = Net::HTTP.new(access[:host], access[:port]).start do |http|
+          http.read_timeout = self.class.timeout
           req = Net::HTTP::Post.new('/xml')
           Reactor::Cm::LOGGER.log('REQUEST:')
           Reactor::Cm::LOGGER.log_xml(:request, payload)

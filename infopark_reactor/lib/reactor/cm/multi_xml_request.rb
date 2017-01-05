@@ -9,6 +9,9 @@ module Reactor
   module Cm
 
     class MultiXmlRequest
+      def self.timeout
+        Reactor::Cm::XmlRequest.timeout
+      end
 
       def self.token(login, instance_secret)
         Digest::MD5.hexdigest(login + instance_secret)
@@ -55,6 +58,7 @@ module Reactor
         payload = xml
 
         res = Net::HTTP.new(access[:host], access[:port]).start do |http|
+          http.read_timeout = self.class.timeout
           req = Net::HTTP::Post.new('/xml')
           req.body = payload
           http.request(req)

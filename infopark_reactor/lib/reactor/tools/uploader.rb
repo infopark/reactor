@@ -75,8 +75,7 @@ module Reactor
 
         response, ticket_id = nil, nil
         Net::HTTP.start(self.class.streaming_host, self.class.streaming_port) do |http|
-          http.read_timeout = 60
-          #http.set_debug_output $stderr
+          http.read_timeout = Reactor::Cm::XmlRequest.timeout
           response = http.request(request)
           ticket_id = response.body
         end
