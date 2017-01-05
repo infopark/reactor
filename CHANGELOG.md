@@ -1,3 +1,6 @@
+## 1.23.1
+* Add Reactor::Cm::XmlRequest.timeout parameter
+
 ## 1.23.0
 * Replaced session handling code to support any session serialization method (for example json)
 
