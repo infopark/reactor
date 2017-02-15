@@ -67,7 +67,7 @@ module Reactor
       attribute :name
       attribute :groups, :type => :list
       attribute :global_permissions, :name => :globalPermissions, :type => :list
-
+      attribute :email
 
       primary_key 'login'
 
@@ -116,6 +116,19 @@ module Reactor
 
       def groups
         xml_attribute = self.class.xml_attribute(:groups)
+
+        request = XmlRequest.prepare do |xml|
+          xml.where_key_tag!(base_name, self.class.primary_key, self.name)
+          xml.get_key_tag!(base_name, xml_attribute.name)
+        end
+
+        response = request.execute!
+
+        self.class.response_handler.get(response, xml_attribute)
+      end
+
+      def email
+        xml_attribute = self.class.xml_attribute(:email)
 
         request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, self.class.primary_key, self.name)

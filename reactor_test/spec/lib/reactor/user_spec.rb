@@ -38,6 +38,14 @@ describe Reactor::Cm::User do
 
   end
 
+  describe 'email' do
+
+    it 'returns the email of the user' do
+      expect(subject.email).to eql "root@ladygaga.com"
+    end
+
+  end
+
   describe 'name' do
 
     it 'returns the name of the user' do
