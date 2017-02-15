@@ -39,9 +39,10 @@ describe Reactor::Cm::User do
   end
 
   describe 'email' do
+    let(:user_with_email) { described_class.new('spresley') }
 
     it 'returns the email of the user' do
-      expect(subject.email).to eql "root@ladygaga.com"
+      expect(user_with_email.email).to eql "spresley@infopark"
     end
 
   end

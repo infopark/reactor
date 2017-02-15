@@ -11,13 +11,14 @@ module Reactor
         @groups   = user.groups
         @language = user.language
         @superuser= user.is_root?
+        @email    = user.email
       end
 
       def to_s
         @user_name
       end
 
-      attr_reader :user_name, :groups, :language
+      attr_reader :user_name, :groups, :language, :email
 
       def superuser?
         @superuser == true

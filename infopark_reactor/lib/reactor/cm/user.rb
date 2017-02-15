@@ -21,6 +21,7 @@ module Reactor
         attribute :default_group, :name => :defaultGroup
         attribute :groups,        :type => :list
         attribute :real_name,     :name => :realName
+        attribute :email
 
         include Permissions
 

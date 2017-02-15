@@ -1,3 +1,6 @@
+## 1.24.0
+* Add email attribute to user handling classes
+
 ## 1.23.1
 * Add Reactor::Cm::XmlRequest.timeout parameter
 
