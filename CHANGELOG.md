@@ -1,3 +1,6 @@
+## 1.24.1
+* Low level user and group handling classes return nil for unset string attributes
+
 ## 1.24.0
 * Add email attribute to user handling classes
 

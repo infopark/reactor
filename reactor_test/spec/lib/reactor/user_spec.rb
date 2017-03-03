@@ -40,9 +40,14 @@ describe Reactor::Cm::User do
 
   describe 'email' do
     let(:user_with_email) { described_class.new('spresley') }
+    let(:user_without_email) { described_class.new('not_root') }
 
     it 'returns the email of the user' do
       expect(user_with_email.email).to eql "spresley@infopark"
+    end
+
+    it 'returns nil for when email missing' do
+      expect(user_without_email.email).to eql(nil)
     end
 
   end

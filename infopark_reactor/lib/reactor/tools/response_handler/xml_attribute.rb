@@ -22,7 +22,12 @@ module Reactor
 
       # Extracts a string value with the given +name+ and returns a string.
       def extract_string(name)
-        self.response.xpath("//#{name}/text()").to_s
+        result = self.response.xpath("//#{name}/text()")
+        if result.kind_of?(Array)
+          return result.first
+        else
+          return result.to_s
+        end
       end
 
       # Extracts a list value with the given +name+ and returns an array of strings.
