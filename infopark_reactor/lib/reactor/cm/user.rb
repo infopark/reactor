@@ -3,6 +3,7 @@ require 'reactor/cm/object_base'
 require 'reactor/configuration'
 require 'reactor/cm/language'
 require 'reactor/tools/xml_attributes'
+require 'reactor/tools/where_query'
 
 require 'reactor/cm/permissions'
 
@@ -64,21 +65,32 @@ module Reactor
       end
 
       include XmlAttributes
+      extend WhereQuery
 
-      attribute :name
+      attribute :login
       attribute :groups, :type => :list
       attribute :global_permissions, :name => :globalPermissions, :type => :list
       attribute :email
+      attribute :default_group, :name => :defaultGroup
+      attribute :real_name, :name => :realName
 
       primary_key 'login'
 
-      def initialize(name)
-        @name = name
+      def initialize(name = nil)
+        @login = name
+      end
+
+      def name
+        self.login
+      end
+
+      def self.all(match = nil)
+        self.where("userText", match)
       end
 
       def has_password?(password)
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, self.class.primary_key, self.name)
+          xml.where_key_tag!(base_name, self.class.primary_key, self.login)
           xml.get_tag!(base_name) do |xml3|
             xml3.tag!('hasPassword', :password => password)
           end
@@ -89,7 +101,7 @@ module Reactor
 
       def is_root?
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, self.class.primary_key, self.name)
+          xml.where_key_tag!(base_name, self.class.primary_key, self.login)
           xml.get_key_tag!(base_name, 'isSuperUser')
         end
 
@@ -99,14 +111,14 @@ module Reactor
       end
 
       def language
-        Reactor::Cm::Language.get(self.name)
+        Reactor::Cm::Language.get(self.login)
       end
 
       def global_permissions
         xml_attribute = self.class.xml_attribute(:global_permissions)
 
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, self.class.primary_key, self.name)
+          xml.where_key_tag!(base_name, self.class.primary_key, self.login)
           xml.get_key_tag!(base_name, xml_attribute.name)
         end
 
@@ -119,7 +131,7 @@ module Reactor
         xml_attribute = self.class.xml_attribute(:groups)
 
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, self.class.primary_key, self.name)
+          xml.where_key_tag!(base_name, self.class.primary_key, self.login)
           xml.get_key_tag!(base_name, xml_attribute.name)
         end
 
@@ -132,7 +144,7 @@ module Reactor
         xml_attribute = self.class.xml_attribute(:email)
 
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, self.class.primary_key, self.name)
+          xml.where_key_tag!(base_name, self.class.primary_key, self.login)
           xml.get_key_tag!(base_name, xml_attribute.name)
         end
 
@@ -143,6 +155,11 @@ module Reactor
 
       protected
       def base_name
+        self.class.base_name
+        
+      end
+
+      def self.base_name
         'userProxy'
       end
 

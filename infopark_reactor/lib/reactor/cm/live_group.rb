@@ -13,6 +13,10 @@ module Reactor
 
       # Overwritten method from +Group+.
       def base_name
+        self.class.base_name
+      end
+
+      def self.base_name
         'secondaryGroupProxy'
       end
 

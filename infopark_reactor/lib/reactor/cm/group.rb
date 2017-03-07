@@ -3,7 +3,8 @@ require 'reactor/cm/xml_request'
 require 'reactor/cm/xml_response'
 require 'reactor/cm/xml_request_error'
 require 'reactor/tools/xml_attributes'
-require 'reactor/tools/response_handler/string'
+require 'reactor/tools/response_handler/xml_attribute'
+require 'reactor/tools/where_query'
 
 require 'reactor/cm/permissions'
 
@@ -19,6 +20,7 @@ module Reactor
     class Group
 
       include XmlAttributes
+      extend WhereQuery
 
       class << self
 
@@ -34,25 +36,8 @@ module Reactor
         end
 
         # Returns all known group names as an array of strings.
-        def all(match = '')
-          object = new
-
-          base_name = object.send(:base_name)
-
-          request = XmlRequest.prepare do |xml|
-            xml.where_key_tag!(base_name, 'groupText', match)
-            xml.get_key_tag!(base_name, 'name')
-          end
-
-          begin
-            response = request.execute!
-            groups = ResponseHandler::String.new.get(response, "//#{base_name}/name/text()")
-
-            groups.is_a?(Array) ? groups : [groups]
-          rescue XmlRequestError
-            []
-          end
-
+        def all(match = nil)
+          self.where("groupText", match)
         end
 
         # See @get.
@@ -173,6 +158,10 @@ module Reactor
       # account. Use +EditorialGroup+ to work on editorial groups and +LiveGroup+ to work on live
       # groups.
       def base_name
+        self.class.base_name
+      end
+
+      def self.base_name
         'group'
       end
 

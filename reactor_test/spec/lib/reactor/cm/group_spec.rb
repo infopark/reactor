@@ -20,7 +20,7 @@ describe 'Reactor groups' do
   end
 
   specify do
-    expect(Reactor::Cm::Group.all).to include('testingGroup')
+    expect(Reactor::Cm::Group.all.map(&:name)).to include('testingGroup')
   end
 
   describe 'Group proxy' do
@@ -35,7 +35,7 @@ describe 'Reactor groups' do
     end
 
     specify do
-      expect(Reactor::Cm::EditorialGroup.all).to include('testingGroup')
+      expect(Reactor::Cm::EditorialGroup.all.map(&:name)).to include('testingGroup')
     end
   end
 end

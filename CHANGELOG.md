@@ -1,3 +1,7 @@
+## 1.25.0
+* Implement Reactor::Cm::User.all API
+* Change Reactor::Cm::Group.all to return an array for instances
+
 ## 1.24.1
 * Low level user and group handling classes return nil for unset string attributes
 

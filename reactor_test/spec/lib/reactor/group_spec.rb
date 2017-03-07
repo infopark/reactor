@@ -47,7 +47,7 @@ describe Reactor::Cm::Group do
   describe 'all' do
     
     it 'returns a list of all groups' do
-      groups = subject.class.all
+      groups = subject.class.all.map(&:name)
 
       expect(groups.size).to be >= 3
 
@@ -57,7 +57,7 @@ describe Reactor::Cm::Group do
     end
 
     it 'matches groups with the given term' do |name|
-      groups = subject.class.all('not_root')
+      groups = subject.class.all('not_root').map(&:name)
 
       expect(groups.size).to eq(1)
 

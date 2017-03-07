@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'reactor/tools/response_handler/xml_attribute'
+require 'reactor/tools/xpath_extractor'
 require 'rexml/document'
 
 module Reactor
@@ -15,13 +16,11 @@ module Reactor
         @xml_str = xml
         @xml = REXML::Document.new(xml)
         @handler = Reactor::ResponseHandler::XmlAttribute.new
+        @xpath = Reactor::XPathExtractor.new(@xml)
       end
 
       def xpath(expr)
-        arr = REXML::XPath.match(@xml, expr)
-
-        return arr.first if arr.length == 1
-        return arr
+        @xpath.match(expr)
       end
 
       def ok?
