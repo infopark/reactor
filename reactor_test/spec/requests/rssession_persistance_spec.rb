@@ -4,7 +4,9 @@ describe "RSession persistance" do
   [:marshal, :hybrid, :json].each do |serialization_scheme|
     context "with #{serialization_scheme} cookie serialization" do
       before do
-        Rails.application.config.action_dispatch.cookies_serializer = :serialization_scheme
+        Rails.application.config.action_dispatch.cookies_serializer = serialization_scheme
+        # disable standard JSESSION cookie handling
+        allow_any_instance_of(LoginsController).to receive(:rsession_auth)
       end
 
       it "returns empty response without user" do

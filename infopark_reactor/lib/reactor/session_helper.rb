@@ -50,6 +50,7 @@ module Reactor
       end
 
       def user_name=(new_user_name)
+        super
         # this is a little bit of magic: it will trigger
         # the the session serialization routine, and will
         # persist the new information after processing the request
@@ -58,6 +59,7 @@ module Reactor
       end
 
       def session_id=(new_session_id)
+        super
         # see above
         self.session[SESSION_ID_KEY] = new_session_id
         new_session_id

@@ -1,3 +1,6 @@
+## 1.25.1
+* Fix a bug in rsession handling which may appear in exotic configurations
+
 ## 1.25.0
 * Implement Reactor::Cm::User.all API
 * Change Reactor::Cm::Group.all to return an array for instances
