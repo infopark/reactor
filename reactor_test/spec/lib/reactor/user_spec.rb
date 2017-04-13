@@ -39,17 +39,56 @@ describe Reactor::Cm::User do
   end
 
   describe 'email' do
-    let(:user_with_email) { described_class.new('spresley') }
-    let(:user_without_email) { described_class.new('not_root') }
+    let(:user_with_email) { described_class.where(:login, 'spresley')[0] }
+    let(:user_without_email) { described_class.where(:login, 'not_root')[0] }
 
     it 'returns the email of the user' do
       expect(user_with_email.email).to eql "spresley@infopark"
     end
 
-    it 'returns nil for when email missing' do
+    it 'returns nil for when email is missing' do
       expect(user_without_email.email).to eql(nil)
     end
 
+    context "with lazy interface" do
+      let(:user_with_email) { described_class.new('spresley') }
+      let(:user_without_email) { described_class.new('not_root') }
+
+      it 'returns the email of the user' do
+        expect(user_with_email.email).to eql "spresley@infopark"
+      end
+
+      it 'returns nil for when email is missing' do
+        expect(user_without_email.email).to eql(nil)
+      end
+    end
+
+  end
+
+  describe 'real_name' do
+    let(:user_with_real_name) { described_class.where(:login, 'spresley')[0] }
+    let(:user_without_real_name) { described_class.where(:login, 'not_root')[0] }
+
+    it 'returns the real name of the user' do
+      expect(user_with_real_name.real_name).to eql "Spresley Presley"
+    end
+
+    it "returns nil for when real name is missing" do
+      expect(user_without_real_name.real_name).to eql(nil)
+    end
+
+    context "with lazy interface" do
+      let(:user_with_real_name) { described_class.new('spresley') }
+      let(:user_without_real_name) { described_class.new('not_root') }
+
+      it 'returns the real name of the user' do
+        expect(user_with_real_name.real_name).to eql "Spresley Presley"
+      end
+
+      it "returns nil for when real name is missing" do
+        expect(user_without_real_name.real_name).to eql(nil)
+      end
+    end
   end
 
   describe 'name' do

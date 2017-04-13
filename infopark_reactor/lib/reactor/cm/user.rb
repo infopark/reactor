@@ -115,6 +115,9 @@ module Reactor
       end
 
       def global_permissions
+        val = self.instance_variable_get(:@global_permissions)
+        return val unless val.nil?
+
         xml_attribute = self.class.xml_attribute(:global_permissions)
 
         request = XmlRequest.prepare do |xml|
@@ -128,6 +131,9 @@ module Reactor
       end
 
       def groups
+        val = self.instance_variable_get(:@groups)
+        return val unless val.nil?
+
         xml_attribute = self.class.xml_attribute(:groups)
 
         request = XmlRequest.prepare do |xml|
@@ -141,7 +147,26 @@ module Reactor
       end
 
       def email
+        val = self.instance_variable_get(:@email)
+        return val unless val.nil?
+
         xml_attribute = self.class.xml_attribute(:email)
+
+        request = XmlRequest.prepare do |xml|
+          xml.where_key_tag!(base_name, self.class.primary_key, self.login)
+          xml.get_key_tag!(base_name, xml_attribute.name)
+        end
+
+        response = request.execute!
+
+        self.class.response_handler.get(response, xml_attribute)
+      end
+
+      def real_name
+        val = self.instance_variable_get(:@real_name)
+        return val unless val.nil?
+
+        xml_attribute = self.class.xml_attribute(:real_name)
 
         request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, self.class.primary_key, self.login)

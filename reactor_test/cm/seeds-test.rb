@@ -136,5 +136,6 @@ Obj.upload(File.open(Rails.root + 'spec/fixtures/53b01fb15ffe3a9e83675a3c80d639c
 unless Reactor::Cm::User::Internal.exists?('spresley')
   user = Reactor::Cm::User::Internal.create('spresley', 'not_root_group')
   user.email = 'spresley@infopark'
+  user.real_name = 'Spresley Presley'
   user.save!
 end

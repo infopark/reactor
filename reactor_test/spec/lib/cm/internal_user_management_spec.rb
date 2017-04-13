@@ -64,6 +64,7 @@ describe Reactor::Cm::User::Internal do
       @user.save!
       @user.reload
       expect(@user.real_name).to eq('Hans Schmidt')
+      expect(described_class.get(@user.login).real_name).to eq('Hans Schmidt')
     end
   end
 

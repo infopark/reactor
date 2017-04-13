@@ -1,3 +1,6 @@
+## 1.25.2
+* Fix a bug in handling of camelCased user and group attributes
+
 ## 1.25.1
 * Fix a bug in rsession handling which may appear in exotic configurations
 

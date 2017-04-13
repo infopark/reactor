@@ -25,7 +25,9 @@ module Reactor
         values = self.response_handler.multiple(elem, self.attributes.values)
         instance  = self.new
         values.each do |name, value|
-          instance.instance_variable_set(:"@#{name}", value)
+          pair = self.attributes.find {|n, a| a.name.to_sym == name.to_sym }
+          attribute = pair[0]
+          instance.send(:"#{attribute}=", value)
         end
         instance
       end
