@@ -12,6 +12,10 @@ describe Reactor::Cm::Job do
       described_class.exists?(job_name).should be_true
     end
 
+    it 'is readable directly from the database' do
+      expect(RailsConnector::Job.exists?(job_name: job_name)).to be_true
+    end
+
     it 'does not raise exception when getting created job' do
       expect { described_class.get(job_name) }.not_to raise_exception
     end
@@ -37,6 +41,22 @@ describe Reactor::Cm::Job do
         it "sets #{attribute}" do
           subject.send(attribute).should eq(attributes[attribute])
         end
+      end
+
+      it "stores title in the database" do
+        job = RailsConnector::Job.find_by_job_name(job_name)
+        expect(job.title).to eq(attributes[:title])
+      end
+
+      it "stores comment in the database" do
+        job = RailsConnector::Job.find_by_job_name(job_name)
+        expect(job.job_comment).to eq(attributes[:comment])
+
+      end
+
+      it "stores is_active in the database" do
+        job = RailsConnector::Job.find_by_job_name(job_name)
+        expect(job.is_active).to eq(attributes[:is_active].to_i)
       end
 
       it "sets schedule" do
