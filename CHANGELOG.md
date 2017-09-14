@@ -1,3 +1,6 @@
+## 1.26.0
+* Implement Jobs API
+
 ## 1.25.2
 * Fix a bug in handling of camelCased user and group attributes
 
