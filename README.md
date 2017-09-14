@@ -3,9 +3,6 @@ Just put this in your `Gemfile`:
     
     gem "infopark_reactor"
 
-# How to get help #
-Read the `README` files for the gems, if that doesn't help - ask.
-
 # Supported versions #
 
 Following versions of `infopark_rails_connector`/`infopark_fiona_connector` and `rails` are currently supported:
@@ -112,7 +109,6 @@ KNOWN BUGS/ISSUES
 Awesome! What is missing/WHAT I NEED TO BE AWARE OF:
 
 - When setting a `linklist` all links are overwritten. Don't do it like 10 million times if you don't want to risk reaching billion ids.
-- Therefore link operations are slow. 
 - Link position cannot be directly manipulated (it is implicit through array order)
 - Validations are implemented completely in Rails, there is no call to CM, so all you TCL validation callbacks aren't executed
 - You can change the `obj_class` of an obj, but after save you should get yourself a new instance, otherwise many things are simply broken
@@ -274,7 +270,7 @@ to revert any changes (VERSION allows you to migrate to a specific version too).
 That's all! Enjoy!
 
 
-Copyright (c) 2011-2015 Tomasz Przedmojski, tomasz.przedmojski@infopark.de, Infopark AG
+Copyright (c) 2011-2017 Tomasz Przedmojski, tomasz.przedmojski@infopark.de, Infopark AG
 
 
 BUGS, FEATURE REQUESTS?
