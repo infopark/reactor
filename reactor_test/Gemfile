@@ -1,10 +1,11 @@
 source "https://rubygems.org"
 gem "infopark_reactor", :path=>"../infopark_reactor"
 gem "rspec-rails", "~> 2.0"
-gem "infopark_rails_connector", "6.9.1.3.22208381"
-gem "infopark_fiona_connector", "6.9.1.3.22208381"
-gem "mysql2"
-gem "rails", "3.2.22"
-gem "nokogiri", "< 1.6.0"
-gem "json", "< 2.0" # any newer version is incompatible with ruby 1.9
-gem "tins", "< 1.3" # any newer version is incompatible with ruby 1.9
+# gem "infopark_rails_connector", "6.9.1.3.22208381"
+gem "infopark_fiona_connector", '7.0.1' #, "6.9.1.3.22208381"
+gem 'mysql_blob_streaming', '2.2.1'
+gem "mysql2", '0.3.16'
+gem 'rails', '4.2.8'
+#gem "nokogiri" #, "< 1.6.0"
+#gem "json" #, "< 2.0" # any newer version is incompatible with ruby 1.9
+#gem "tins" #, "< 1.3" # any newer version is incompatible with ruby 1.9
