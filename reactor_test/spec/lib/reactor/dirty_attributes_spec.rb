@@ -8,7 +8,7 @@ shared_examples "dirty attribute tracking" do |attribute, old_value, new_value, 
     }.to change{subject.__send__(attribute)}.from(old_value).to(new_value)
 
     expect(subject.changed).to include(attribute.to_s)
-    expect(subject.__send__(:"#{attribute}_changed?")).to be_true
+    expect(subject.__send__(:"#{attribute}_changed?")).to be_truthy
     expect(subject.changed_attributes[attribute]).to eq(default_value)
   end
 end
@@ -111,40 +111,40 @@ describe "Dirty attribute tracking" do
 
     context "when changing built-in attribute" do
       it "does not change irrevelant attributes" do
-        expect(subject.__send__(:attribute_changed?, :name)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :title)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_true
+        expect(subject.__send__(:attribute_changed?, :name)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :title)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_truthy
 
         subject.name = 'testtest'
-        expect(subject.__send__(:attribute_changed?, :name)).to be_true
-        expect(subject.__send__(:attribute_changed?, :title)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_true
+        expect(subject.__send__(:attribute_changed?, :name)).to be_truthy
+        expect(subject.__send__(:attribute_changed?, :title)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_truthy
       end
     end
 
     context "when changing built-in content attribute" do
       it "does not change irrevelant attributes" do
-        expect(subject.__send__(:attribute_changed?, :name)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :title)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_true
+        expect(subject.__send__(:attribute_changed?, :name)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :title)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_truthy
 
         subject.title = 'testtest'
-        expect(subject.__send__(:attribute_changed?, :name)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :title)).to be_true
-        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_true
+        expect(subject.__send__(:attribute_changed?, :name)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :title)).to be_truthy
+        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_truthy
       end
     end
 
     context "when content attribute" do
       it "does not change irrevelant attributes" do
-        expect(subject.__send__(:attribute_changed?, :name)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :title)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_true
+        expect(subject.__send__(:attribute_changed?, :name)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :title)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :test_attr_string)).not_to be_truthy
 
         subject.test_attr_string = 'testtest'
-        expect(subject.__send__(:attribute_changed?, :name)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :title)).not_to be_true
-        expect(subject.__send__(:attribute_changed?, :test_attr_string)).to be_true
+        expect(subject.__send__(:attribute_changed?, :name)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :title)).not_to be_truthy
+        expect(subject.__send__(:attribute_changed?, :test_attr_string)).to be_truthy
       end
     end
   end

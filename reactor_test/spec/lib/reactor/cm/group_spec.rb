@@ -12,8 +12,8 @@ describe 'Reactor groups' do
   subject { Reactor::Cm::Group.get('testingGroup') }
 
   specify do
-    expect(subject.user?('root')).to be_false
-    expect(subject.user?('not_root')).to be_true
+    expect(subject.user?('root')).to be_falsey
+    expect(subject.user?('not_root')).to be_truthy
     expect(subject.name).to eq('testingGroup')
     expect(subject.owner).to eq('root')
     expect(subject.display_title).to eq('THE REAL NAME OF THE TESTING GROUP')
@@ -27,8 +27,8 @@ describe 'Reactor groups' do
     subject { Reactor::Cm::EditorialGroup.get('testingGroup') }
 
     specify do
-      expect(subject.user?('root')).to be_false
-      expect(subject.user?('not_root')).to be_true
+      expect(subject.user?('root')).to be_falsey
+      expect(subject.user?('not_root')).to be_truthy
       expect(subject.name).to eq('testingGroup')
       expect(subject.owner).to eq('root')
       expect(subject.display_title).to eq('THE REAL NAME OF THE TESTING GROUP')

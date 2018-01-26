@@ -9,11 +9,11 @@ describe Reactor::Cm::Job do
     after  { described_class.delete!(job_name) }
 
     it 'creates a job with given name' do
-      described_class.exists?(job_name).should be_true
+      described_class.exists?(job_name).should be_truthy
     end
 
     it 'is readable directly from the database' do
-      expect(RailsConnector::Job.exists?(job_name: job_name)).to be_true
+      expect(RailsConnector::Job.exists?(job_name: job_name)).to be_truthy
     end
 
     it 'does not raise exception when getting created job' do

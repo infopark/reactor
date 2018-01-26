@@ -14,7 +14,7 @@ describe Reactor::Cm::AttributeGroup do
   describe '.create' do
     it "creates an attribute group in CMS" do
       instance = described_class.create(*ok)
-      expect(described_class.exists?(pk)).to be_true
+      expect(described_class.exists?(pk)).to be_truthy
       expect(instance.obj_class).to eq(ok.first)
       expect(instance.name).to eq(ok.last)
       instance.title = {'This is only a test' => {lang: 'de'}, 'English' => {lang: 'en'}}
