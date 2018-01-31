@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Invalid links" do
+describe "Invalid links", focus: true do
   before do
     @container  = Obj.create!(name: 'linking_deactivated_objects', parent: '/', obj_class: 'PlainObjClass')
     @source     = TestClassWithCustomAttributes.create!(name: 'source', parent: @container, test_attr_linklist: [{title: "", destination: "/this/really/has/to/look/like/a/path/but/must/not/point/to/an/obj"}])
@@ -23,8 +23,9 @@ describe "Invalid links" do
     expect(@source.attr_values["test_attr_linklist"].length).to eq(1)
 
     @source.update_attributes!(test_attr_linklist: [{title: "", destination_object: @new_target.path}])
+    @source.resolve_refs!
 
-    expect(@source.test_attr_linklist.length).to eq(1)
+    expect(Obj.find(@source.id).test_attr_linklist.length).to eq(1)
     expect(@source.attr_values["test_attr_linklist"].length).to eq(1)
 
     @source.reload

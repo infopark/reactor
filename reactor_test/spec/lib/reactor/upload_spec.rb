@@ -39,7 +39,7 @@ shared_examples "txt uploadable object" do
   context "for disallowed file extension" do
     it "raises an exception" do
       @obj.upload('Hai', 'xxx')
-      expect {@obj.save!}.to raise_exception
+      expect {@obj.save!}.to raise_exception(Reactor::Cm::XmlMultiRequestError)
     end
   end
 end
@@ -88,7 +88,7 @@ shared_examples "jpg uploadable object" do
   context "for disallowed file extension" do
     it "raises an exception" do
       @obj.upload('Hai', 'xxx')
-      expect {@obj.save!}.to raise_exception
+      expect {@obj.save!}.to raise_exception(Reactor::Cm::XmlMultiRequestError)
     end
   end
 end
@@ -138,7 +138,7 @@ shared_examples "binary uploadable object" do
   context "for disallowed file extension" do
     it "raises an exception" do
       @obj.upload('Hai', 'xxx')
-      expect {@obj.save!}.to raise_exception
+      expect {@obj.save!}.to raise_exception(Reactor::Cm::XmlMultiRequestError)
     end
   end
 end

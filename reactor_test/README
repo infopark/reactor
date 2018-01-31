@@ -20,3 +20,23 @@
 
     ./use-config.rb -e "bundle exec rake spec"
 
+
+
+Create DB:
+```
+  CREATE DATABASE reactor_cms;
+  GRANT ALL PRIVILEGES ON reactor_cms.* TO 'reactor'@'%' IDENTIFIED BY 'reactor' WITH GRANT OPTION;
+  FLUSH PRIVILEGES;
+```
+Clean up defaut installation :
+
+```
+  foreach obj [obj list] {catch {removeSubtree $obj}}
+
+  foreach objClass [objClass list] {catch {objClass withName $objClass delete}}
+  foreach attr [attribute list] {catch {attribute withName $attr delete}}
+
+  objClass withName Homepage set attributes [list]
+
+  foreach attr [attribute list] {catch {attribute withName $attr delete}}
+```
