@@ -1,5 +1,3 @@
-require 'reactor/session_helper'
-
 # -*- encoding : utf-8 -*-
 module Reactor
 

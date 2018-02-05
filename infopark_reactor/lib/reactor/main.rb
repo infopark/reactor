@@ -1,12 +1,3 @@
-require 'reactor/rails_connector_meta'
-require 'reactor/legacy'
-require 'reactor/attributes'
-require 'reactor/persistence'
-require 'reactor/validations'
-require 'reactor/permission'
-require 'reactor/workflow'
-require 'reactor/streaming_upload'
-
 module Reactor
   module Main
     def self.included(base)

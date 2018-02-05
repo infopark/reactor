@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 # @author Anton Mezin
+#  TODO: ?????
 module RailsConnector
   class Channel < AbstractModel
     self.primary_key = "channel_name"
@@ -12,7 +13,7 @@ module RailsConnector
 
     if ::Rails::VERSION::MAJOR == 4
 
-      has_many :active_news, 
+      has_many :active_news,
         lambda { where(['valid_from <= :now AND valid_until >= :now', {:now => Time.now.to_s(:number)}]) },
         :class_name => 'News', :foreign_key => 'channel_name'
 

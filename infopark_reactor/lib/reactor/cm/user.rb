@@ -181,7 +181,7 @@ module Reactor
       protected
       def base_name
         self.class.base_name
-        
+
       end
 
       def self.base_name
