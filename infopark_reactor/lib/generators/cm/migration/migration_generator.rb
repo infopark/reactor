@@ -9,7 +9,7 @@ module Cm
 
       source_root File.expand_path('../templates', __FILE__)
       def create_migration_file
-        if Reactor.rails4_x?
+        if Reactor.rails4_x? || Reactor.rails5_x?
           migration_template "template.rb", "cm/migrate/#{file_name}.rb"
         else
           migration_template "template.rb", "cm/migrate/#{file_name}"

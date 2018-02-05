@@ -32,6 +32,10 @@ module Reactor
   def self.rails4_0_ge6?
     ::Rails::VERSION::MAJOR == 4 && ::Rails::VERSION::MINOR == 0 && ::Rails::VERSION::TINY >= 6
   end
+
+  def self.rails5_x?
+    ::Rails::VERSION::MAJOR == 5 && [0,1,2].include?(::Rails::VERSION::MINOR)
+  end
 end
 # require config
 require 'reactor/configuration'

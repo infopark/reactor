@@ -63,3 +63,4 @@ Or use empty dump of cms
   ./CM -restore ~/empty_cms
   ./CM -unrailsify
   ./CM -railsify
+  

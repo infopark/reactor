@@ -23,7 +23,11 @@ module Reactor
       end
 
       def self.included(base)
-        base.__send__(:before_filter, :rsession_auth)
+        if Reactor.rails5_x?
+          base.__send__(:before_action, :rsession_auth)
+        else
+          base.__send__(:before_filter, :rsession_auth)
+        end
       end
     end
 

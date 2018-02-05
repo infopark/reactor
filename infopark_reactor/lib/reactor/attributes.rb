@@ -197,7 +197,7 @@ module Reactor
       def permalink=(value)
         set(:permalink, value)
       end
-      
+
       def name=(value)
         set(:name, value)
       end
@@ -315,7 +315,7 @@ module Reactor
       def allowed_attr?(attr)
         return true if builtin_attr?(attr)
 
-        custom_attrs = 
+        custom_attrs =
           self.singleton_class.send(:instance_variable_get, '@_o_allowed_attrs') ||
           self.class.send(:instance_variable_get, '@_o_allowed_attrs') ||
           []
@@ -381,7 +381,7 @@ module Reactor
         attribute_type(attr) == :linklist
       end
 
-      if Reactor.rails4_2?
+      if Reactor.rails4_2? || Reactor.rails5_x?
         def active_record_set(field, value)
           @attributes.write_from_user(field.to_s, value)
         end
@@ -392,7 +392,7 @@ module Reactor
         end
       end
 
-      if Reactor.rails4_2? || Reactor.rails4_1?
+      if Reactor.rails4_2? || Reactor.rails4_1? || Reactor.rails5_x?
         def __track_dirty_attribute(key)
           __send__(:attribute_will_change!, key.to_s)
         end

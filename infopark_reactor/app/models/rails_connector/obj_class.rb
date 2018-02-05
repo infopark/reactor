@@ -9,7 +9,7 @@ module RailsConnector
 
     self.primary_key = :obj_class_id
 
-    if Reactor.rails4_x?
+    if Reactor.rails4_x? || Reactor.rails5_x?
       has_many :custom_attributes_jt, :class_name => '::RailsConnector::ObjClassAttr', :foreign_key => 'obj_class_id', :primary_key => 'obj_class_id'
       has_many :custom_attributes_raw, :through => :custom_attributes_jt, :source => :custom_attributes_raw
     else
