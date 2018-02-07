@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Invalid links", focus: true do
+describe "Invalid links", focus: false do
   before do
     @container  = Obj.create!(name: 'linking_deactivated_objects', parent: '/', obj_class: 'PlainObjClass')
     @source     = TestClassWithCustomAttributes.create!(name: 'source', parent: @container, test_attr_linklist: [{title: "", destination: "/this/really/has/to/look/like/a/path/but/must/not/point/to/an/obj"}])

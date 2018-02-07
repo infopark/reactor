@@ -25,7 +25,7 @@ shared_examples "dirty attribute tracking with persistance" do |attribute, old_v
   end
 end
 
-describe "Dirty attribute tracking" do
+describe "Dirty attribute tracking", focus: true do
   after(:all) { Obj.where('path LIKE "/dirty_attr_check%"').each(&:destroy) }
 
   context "with new instance" do

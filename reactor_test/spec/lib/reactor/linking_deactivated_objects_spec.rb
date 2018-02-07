@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Linking deactivated objects", focus: true do
+describe "Linking deactivated objects", focus: false do
   before do
     @container  = Obj.create!(name: 'linking_deactivated_objects', parent: '/', obj_class: 'PlainObjClass')
     @target     = TestClassWithCustomAttributes.create!(name: 'target', parent: @container)

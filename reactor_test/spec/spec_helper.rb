@@ -50,6 +50,7 @@ RSpec.configure do |config|
   # end
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
+  config.full_backtrace = true
 end
 
 # VCR.config do |c|

@@ -223,7 +223,7 @@ module Reactor
         attribute_type(attr) == :linklist
       end
 
-      if Reactor.rails4_2? || Reactor.rails5_x?
+      if Reactor.rails4_2?
         def active_record_set(field, value)
           @attributes.write_from_user(field.to_s, value)
         end
@@ -234,7 +234,7 @@ module Reactor
         end
       end
 
-      if Reactor.rails4_2? || Reactor.rails4_1? || Reactor.rails5_x?
+      if Reactor.rails4_2? || Reactor.rails4_1?
         def __track_dirty_attribute(key)
           __send__(:attribute_will_change!, key.to_s)
         end

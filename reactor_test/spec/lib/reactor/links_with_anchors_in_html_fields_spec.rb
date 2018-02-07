@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 # :type => :routing is required for cms_id_path to work
-describe "Links with anchors in html fields", type: :routing, focus: true do
+describe "Links with anchors in html fields", type: :routing, focus: false do
 
   context "RailsConnector links with GET parameters" do
     before do

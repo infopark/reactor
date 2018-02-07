@@ -41,6 +41,7 @@ require 'rails_connector/meta/eager_loader'
 # require components
 require 'reactor/rails_connector_meta'
 require 'reactor/legacy'
+# require 'rails_5/reactor/attribute_handlers'
 require 'rails_5/reactor/attributes'
 
 require 'rails_5/reactor/persistence'

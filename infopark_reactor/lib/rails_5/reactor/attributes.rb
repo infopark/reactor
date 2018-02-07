@@ -1,4 +1,10 @@
 # -*- encoding : utf-8 -*-
+require 'rails_5/reactor/type/enum'
+require 'rails_5/reactor/type/html'
+require 'rails_5/reactor/type/linklist'
+require 'rails_5/reactor/type/markdown'
+require 'rails_5/reactor/type/multienum'
+
 require 'reactor/attributes/date_serializer'
 require 'reactor/attributes/html_serializer'
 require 'reactor/attributes/link_list_serializer'
@@ -36,7 +42,10 @@ module Reactor
 
     def install(klass, obj_class)
       if obj_class_known?(obj_class)
-        klass.send(:include, handler_module(obj_class))
+        c = handler_module(obj_class)
+        puts c.inspect
+        #klass.send(:include, handler_module(obj_class))
+        klass.send(:include, c)
       end
     end
 
@@ -65,13 +74,41 @@ module Reactor
       # Rails.logger.debug "Reactor::AttributeHandlers: generating handler for #{obj_class.name}"
       attribute_methods = []
       writers = []
+      custom_attibutes = []
 
       obj_class.custom_attributes.each do |attribute, attribute_data|
+        puts "---- set custom_attributes for #{obj_class.name} : #{attribute}"
+        puts "---- #{attribute_data.inspect}"
+        # custom_attibutes << "base.send(attribute :#{attribute}"
+        type = case attribute_data.attribute_type.to_sym
+        when :string
+          "ActiveRecord::Type::String.new"
+        when :html
+          "Reactor::Type::Html.new"
+        when :text
+          "ActiveRecord::Type::String.new"
+        when :markdown
+          "Reactor::Type::Markdown.new"
+        when :linklist
+          "Reactor::Type::Linklist.new"
+        when :date
+          "ActiveRecord::Type::DateTime.new"
+        when :enum
+          "Reactor::Type::Enum.new"
+        when :multienum
+          "Reactor::Type::Multienum.new"
+        end
+        custom_attibutes << "base.send(:define_attribute, :#{attribute}, #{type})"
+
         writers << attribute.to_sym
         writers << attribute.to_s.underscore.to_sym
 
         # Custom attribute readers: prevent unwanted nils
         case attribute_data.attribute_type.to_sym
+        # when :string
+        #   attribute_methods << <<-EOC
+        #     attribute :#{attribute}, :string
+        #   EOC
         when :html
           attribute_methods << <<-EOC
             def #{attribute}
@@ -141,14 +178,17 @@ module Reactor
           mod.send(:remove_method, method)
         end
       end
-
-      Reactor.class_eval <<-EOC
+      t = <<-EOC
         class AttributeHandlers
           module Handler__#{obj_class.name}
+
             def self.included(base)
               # store allowed attributes
+              puts base.inspect
               allowed_attrs = %w|#{writers * ' '}|.map(&:to_sym)
               base.send(:instance_variable_set, '@_o_allowed_attrs', allowed_attrs)
+              #{custom_attibutes.join("\n")}
+              puts "load attrs "
             end
 
             # attribute readers and writers
@@ -161,6 +201,8 @@ module Reactor
           end
         end
       EOC
+      puts t
+      Reactor.class_eval t
 
       handler_module(obj_class.name)
       # "Reactor::AttributeHandlers::Handler__#{obj_class.name}"

@@ -1,16 +1,16 @@
 PATH
   remote: ../../fiona_connector
   specs:
-    infopark_fiona_connector (7.0.1)
+    infopark_fiona_connector (7.0.1.5.1.4)
       activerecord (~> 5.0)
       helpful_configuration (~> 0.1.0)
-      jquery-rails
+      jquery-rails (~> 4.3)
       json (~> 1.8)
-      maruku
+      maruku (~> 0.7)
       mime-types (~> 3.1)
       mysql_blob_streaming (~> 2.2)
       rails (~> 5.0)
-      rake
+      rake (~> 12.3)
       rsolr (~> 2.1.0s)
 
 PATH
