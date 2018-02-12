@@ -1,12 +1,16 @@
 # -*- encoding : utf-8 -*-
 def with(object)
-  puts "SEED with #{object}"
+  puts "SEED with #{object.inspect}"
   yield(object) if block_given? && !object.nil?
 end
 
 def without(dont_run_block)
   yield if block_given? && !dont_run_block
 end
+
+# %x( docker exec -it fiona7_reactor /fiona/CMS-Fiona-7.0.1/instance/default/bin/CM -restore /fiona/empty_cms )
+# %x( docker exec -it fiona7_reactor /fiona/CMS-Fiona-7.0.1/instance/default/bin/CM -unrailsify )
+# %x( docker exec -it fiona7_reactor /fiona/CMS-Fiona-7.0.1/instance/default/bin/CM -railsify )
 
 klass_name = "TestClassWithCustomAttributes"
 klass = Reactor::Cm::ObjClass.create(klass_name, 'publication') rescue nil

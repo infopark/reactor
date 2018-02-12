@@ -6,6 +6,8 @@ module Reactor
     class Obj
       attr_reader :obj_id
       OBJ_ATTRS = [:permalink, :objClass, :workflowName, :name, :suppressExport, :parent]
+      PREDEFINED_ATTRS = [:blob, :body, :channels, :contentType, :objClass, :title, :validFrom, :validUntil]
+
       ATTR_LENGTH_CONSTRAINT = {:name => 250, :title => 250}
 
       def self.create(name, parent, objClass)
@@ -321,7 +323,7 @@ module Reactor
           end
           xml.tag!('content-resolveRefs')
         end
-        response = request.execute!
+        request.execute!
       end
 
       def path
@@ -364,7 +366,7 @@ module Reactor
           xml.get_key_tag!('content', 'workflowComment')
         end
         response = request.execute!
-        result = response.xpath('//workflowComment/*').map {|x| x.text.to_s}.first
+        response.xpath('//workflowComment/*').map {|x| x.text.to_s}.first
       end
 
       def editor
@@ -412,7 +414,7 @@ module Reactor
 
       protected
       def simple_command(cmd_name, comment=nil)
-        @request = XmlRequest.prepare do |xml|
+        request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, 'id', @obj_id)
           if comment
             xml.tag!("#{base_name}-#{cmd_name}") do
@@ -422,7 +424,7 @@ module Reactor
             xml.tag!("#{base_name}-#{cmd_name}")
           end
         end
-        response = @request.execute!
+        request.execute!
       end
 
       def base_name
@@ -469,7 +471,7 @@ module Reactor
       end
 
       def create(parent, objClass)
-        @request = XmlRequest.prepare do |xml|
+        request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, 'path', parent)
           xml.create_tag!(base_name) do
             xml.tag!('objClass') do
@@ -480,7 +482,7 @@ module Reactor
             end
           end
         end
-        response = @request.execute!
+        response = request.execute!
         @obj_id = self.class.extract_id(response)
         response
       end
@@ -489,11 +491,11 @@ module Reactor
         key = (/^\// =~ path_or_id.to_s) ? 'path' : 'id'
         value = path_or_id
 
-        @request = XmlRequest.prepare do |xml|
+        request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, key.to_s, value.to_s)
           xml.get_key_tag!(base_name, 'id')
         end
-        response = @request.execute!
+        response = request.execute!
         @obj_id = self.class.extract_id(response)
         response
       end

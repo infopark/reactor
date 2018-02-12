@@ -237,7 +237,9 @@ module Reactor
 
       # Equivalent to Obj#edited?
       def really_edited?
-        self.edited?
+        # check if really edited with curl request
+        crul_obj.edited?
+        # self.edited?
       end
 
       # Returns an array of errors

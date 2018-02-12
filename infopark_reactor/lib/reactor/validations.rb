@@ -8,7 +8,7 @@ module Reactor
   # @todo link validations?
   module Validations
     module Base
-     def self.included(base)
+      def self.included(base)
         base.extend(ClassMethods)
         # Common validations for all Objs
         base.class_eval do
@@ -45,7 +45,7 @@ module Reactor
           length_hash = {}
           length_hash[:minimum] = attr.min_size if attr.min_size && "linklist" != attr.attribute_type # CMS ignores minimum for linklists.
           length_hash[:maximum] = attr.max_size if attr.max_size
-        
+
           subclass.send(:validates, attr.attribute_name.to_sym, :length => length_hash, :on => :release) unless length_hash.empty?
         end
 

@@ -1,4 +1,5 @@
 # -*- encoding : utf-8 -*-
+require 'rails_5/reactor/type/string'
 require 'rails_5/reactor/type/enum'
 require 'rails_5/reactor/type/html'
 require 'rails_5/reactor/type/linklist'
@@ -43,9 +44,12 @@ module Reactor
     def install(klass, obj_class)
       if obj_class_known?(obj_class)
         c = handler_module(obj_class)
-        puts c.inspect
+        # puts c.inspect
         #klass.send(:include, handler_module(obj_class))
         klass.send(:include, c)
+        # puts "========================="
+        # puts klass.inspect
+        # puts "========================="
       end
     end
 
@@ -74,12 +78,9 @@ module Reactor
       # Rails.logger.debug "Reactor::AttributeHandlers: generating handler for #{obj_class.name}"
       attribute_methods = []
       writers = []
-      custom_attibutes = []
+      custom_attributes = []
 
       obj_class.custom_attributes.each do |attribute, attribute_data|
-        puts "---- set custom_attributes for #{obj_class.name} : #{attribute}"
-        puts "---- #{attribute_data.inspect}"
-        # custom_attibutes << "base.send(attribute :#{attribute}"
         type = case attribute_data.attribute_type.to_sym
         when :string
           "ActiveRecord::Type::String.new"
@@ -98,17 +99,14 @@ module Reactor
         when :multienum
           "Reactor::Type::Multienum.new"
         end
-        custom_attibutes << "base.send(:define_attribute, :#{attribute}, #{type})"
+
+        custom_attributes << "base.send(:define_attribute, '#{attribute}', #{type})"
 
         writers << attribute.to_sym
         writers << attribute.to_s.underscore.to_sym
 
         # Custom attribute readers: prevent unwanted nils
         case attribute_data.attribute_type.to_sym
-        # when :string
-        #   attribute_methods << <<-EOC
-        #     attribute :#{attribute}, :string
-        #   EOC
         when :html
           attribute_methods << <<-EOC
             def #{attribute}
@@ -141,22 +139,9 @@ module Reactor
           EOC
         end
 
-        # active model dirty tracking
-        attribute_methods << <<-EOC
-        def #{attribute}_changed?
-          attribute_changed?(:#{attribute})
-        end
-        EOC
       end
 
-
-
-      [:contentType].each do |attribute|
-        writers << attribute.to_sym
-        writers << attribute.to_s.underscore.to_sym
-      end
-
-      Reactor::Cm::Obj::OBJ_ATTRS.each do |attribute|
+      Reactor::Cm::Obj::PREDEFINED_ATTRS.each do |attribute|
         writers << attribute.to_sym
         writers << attribute.to_s.underscore.to_sym
       end
@@ -166,6 +151,7 @@ module Reactor
       writers.each do |attribute|
         attribute_methods << <<-EOC
           def #{attribute}=(value)
+            super
             set(:#{attribute},value)
           end
         EOC
@@ -178,20 +164,19 @@ module Reactor
           mod.send(:remove_method, method)
         end
       end
-      t = <<-EOC
+      Reactor.class_eval <<-EOC
         class AttributeHandlers
           module Handler__#{obj_class.name}
 
             def self.included(base)
               # store allowed attributes
-              puts base.inspect
               allowed_attrs = %w|#{writers * ' '}|.map(&:to_sym)
               base.send(:instance_variable_set, '@_o_allowed_attrs', allowed_attrs)
-              #{custom_attibutes.join("\n")}
-              puts "load attrs "
+              #{%w(body blob title channels).map{|item| "base.send(:define_attribute, '#{item}', ActiveRecord::Type::String.new)"}.join("\n")}
+
+              #{custom_attributes.join("\n")}
             end
 
-            # attribute readers and writers
             #{attribute_methods.join("\n")}
 
             # parent-setting handling
@@ -201,8 +186,6 @@ module Reactor
           end
         end
       EOC
-      puts t
-      Reactor.class_eval t
 
       handler_module(obj_class.name)
       # "Reactor::AttributeHandlers::Handler__#{obj_class.name}"
@@ -222,29 +205,42 @@ module Reactor
       def self.included(base)
         base.extend(ClassMethods)
         Reactor::Attributes::LinkListExtender.extend_linklist!
+        base.send(:define_attribute, "body", ActiveRecord::Type::String.new)
+        base.send(:define_attribute, "blob", ActiveRecord::Type::String.new)
+        base.send(:define_attribute, "title", Reactor::Type::String.new)
+        base.send(:define_attribute, "channels", ActiveRecord::Type::String.new)
+        base.send(:define_attribute, "contentType", ActiveRecord::Type::String.new)
+        base.send(:define_attribute, "content_type", ActiveRecord::Type::String.new)
+        base.send(:define_attribute, "channels", ActiveRecord::Type::String.new)
       end
 
       def valid_from=(value)
+        super
         set(:valid_from, value)
       end
 
       def valid_until=(value)
+        super
         set(:valid_until, value)
       end
 
       def obj_class=(value)
+        super
         set(:obj_class, value)
       end
 
       def permalink=(value)
+        super
         set(:permalink, value)
       end
 
       def name=(value)
+        super
         set(:name, value)
       end
 
       def body=(value)
+        super
         set(:body, value)
       end
 
@@ -257,18 +253,22 @@ module Reactor
       end
 
       def blob=(value)
+        super
         set(:blob, value)
       end
 
       def title=(value)
+        super
         set(:title, value)
       end
 
       def channels=(value)
+        super
         set(:channels, value)
       end
 
       def suppress_export=(value)
+        super
         set(:suppress_export, value)
       end
 
@@ -276,33 +276,45 @@ module Reactor
         self[:channels] || []
       end
 
-      def body_changed?
-        attribute_changed?(:body)
+      def [](key)
+        # convenience access to name
+        return name if key.to_sym == :name
+
+        # regular activerecord attributes
+        # TODO: has_attribute?(attr_name) rails 5
+        if active_record_attr?(key)
+          if key == :valid_from or key == :valid_until or key == :last_changed
+            return as_date(super(key))
+          else
+            return super(key)
+          end
+        end
+
+        # Unknown Obj attributes are delegated to the corresponding instance of AttrDict.
+        begin
+          return (attr_dict.send key)
+        rescue NoMethodError
+        end
+
+        # fallback
+        return nil
       end
 
-      def title_changed?
-        attribute_changed?(:title)
-      end
-
-      def channels_changed?
-        attribute_changed?(:channels)
-      end
 
       # Sets given attribute, to given value. Converts values if neccessary
       # @see [Reactor::Attributes]
       # @note options are passed to underlying xml interface, but as of now have no effect
       def set(key, value, options={})
-        key = key.to_sym
         raise TypeError, "can't modify frozen object" if frozen?
-        key = resolve_attribute_alias(key)
         raise ArgumentError, "Unknown attribute #{key.to_s} for #{self.class.to_s} #{self.path}" unless allowed_attr?(key)
+        key = key.to_sym
         attr = key_to_attr(key)
 
         not_formated_value = value
+        # TODO: not needed? check with Attribute api
         formated_value = serialize_value(key, value)
         crul_set(attr, formated_value, options)
 
-        __track_dirty_attribute(key)
         active_record_set(key, formated_value) if active_record_attr?(key)
         rails_connector_set(key, formated_value, not_formated_value)
 
@@ -346,15 +358,27 @@ module Reactor
 
       protected
       attr_accessor :uploaded
+
+      def builtin_attributes
+        @builtin_attrs ||= (Reactor::Cm::Obj::OBJ_ATTRS + Reactor::Cm::Obj::PREDEFINED_ATTRS).map{|item| item.to_s.underscore.to_sym}
+      end
+
       def builtin_attr?(attr)
-        [:channels, :parent, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :suppress_export, :permalink, :title].include?(attr)
+        builtin_attributes.include?(attr)
+        # [:channels, :parent, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :suppress_export, :permalink, :title].include?(attr)
+      end
+
+      def active_record_attributes
+        @active_record_attrs ||= Reactor::Cm::Obj::OBJ_ATTRS.map{|item| item.to_s.underscore.to_sym}
       end
 
       def active_record_attr?(attr)
-        [:valid_from, :valid_until, :name, :obj_class, :suppress_export, :permalink].include?(attr)
+        active_record_attributes.include?(attr)
+        # [:valid_from, :valid_until, :name, :obj_class, :suppress_export, :permalink].include?(attr)
       end
 
       def allowed_attr?(attr)
+        # TODO: rebuild with current attribute_names method
         return true if builtin_attr?(attr)
 
         custom_attrs =
@@ -363,10 +387,6 @@ module Reactor
           []
 
         custom_attrs.include?(key_to_attr(attr))
-      end
-
-      def resolve_attribute_alias(key)
-        key
       end
 
       def key_to_attr(key)
@@ -398,9 +418,8 @@ module Reactor
       end
 
       def rails_connector_set(field, value, supplied_value)
-        field = :blob if field.to_sym == :body
         field = field.to_sym
-
+        field = :blob if field == :body
         case attribute_type(field)
         when :linklist
           send(:attr_dict).instance_variable_get('@attr_cache')[field] = value
@@ -427,10 +446,6 @@ module Reactor
         @attributes.write_from_user(field.to_s, value)
       end
 
-      def __track_dirty_attribute(key)
-        __send__(:attribute_will_change!, key.to_s)
-      end
-
       # Lazily sets values for crul interface. May be removed in later versions
       def crul_set(field, value, options)
         @__crul_attributes ||= {}
@@ -438,6 +453,7 @@ module Reactor
       end
 
       private
+
       def path=(*args) ; super ; end
 
       def attribute_type(attr)
