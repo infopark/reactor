@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class TrivialController < ActionController::Base
   def nothing
-    render :text => 'but something'
+    render :plain => 'but something'
   end
 end
