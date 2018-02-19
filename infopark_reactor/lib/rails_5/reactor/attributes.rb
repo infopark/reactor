@@ -151,7 +151,6 @@ module Reactor
       writers.each do |attribute|
         attribute_methods << <<-EOC
           def #{attribute}=(value)
-            super
             set(:#{attribute},value)
           end
         EOC
@@ -164,6 +163,8 @@ module Reactor
           mod.send(:remove_method, method)
         end
       end
+      custom_attributes = []
+      attribute_methods = []
       Reactor.class_eval <<-EOC
         class AttributeHandlers
           module Handler__#{obj_class.name}
@@ -172,12 +173,9 @@ module Reactor
               # store allowed attributes
               allowed_attrs = %w|#{writers * ' '}|.map(&:to_sym)
               base.send(:instance_variable_set, '@_o_allowed_attrs', allowed_attrs)
-              #{%w(body blob title channels).map{|item| "base.send(:define_attribute, '#{item}', ActiveRecord::Type::String.new)"}.join("\n")}
 
-              #{custom_attributes.join("\n")}
             end
 
-            #{attribute_methods.join("\n")}
 
             # parent-setting handling
             def parent=(parent_something)
@@ -205,43 +203,34 @@ module Reactor
       def self.included(base)
         base.extend(ClassMethods)
         Reactor::Attributes::LinkListExtender.extend_linklist!
-        base.send(:define_attribute, "body", ActiveRecord::Type::String.new)
-        base.send(:define_attribute, "blob", ActiveRecord::Type::String.new)
-        base.send(:define_attribute, "title", Reactor::Type::String.new)
-        base.send(:define_attribute, "channels", ActiveRecord::Type::String.new)
-        base.send(:define_attribute, "contentType", ActiveRecord::Type::String.new)
-        base.send(:define_attribute, "content_type", ActiveRecord::Type::String.new)
-        base.send(:define_attribute, "channels", ActiveRecord::Type::String.new)
       end
 
       def valid_from=(value)
-        super
         set(:valid_from, value)
       end
 
       def valid_until=(value)
-        super
         set(:valid_until, value)
       end
 
       def obj_class=(value)
-        super
         set(:obj_class, value)
       end
 
       def permalink=(value)
-        super
         set(:permalink, value)
       end
 
       def name=(value)
-        super
         set(:name, value)
       end
 
       def body=(value)
-        super
         set(:body, value)
+      end
+
+      def file_extension=(value)
+        set(:content_type, value)
       end
 
       def blob
@@ -253,53 +242,20 @@ module Reactor
       end
 
       def blob=(value)
-        super
         set(:blob, value)
       end
 
       def title=(value)
-        super
         set(:title, value)
       end
 
       def channels=(value)
-        super
         set(:channels, value)
       end
 
       def suppress_export=(value)
-        super
         set(:suppress_export, value)
       end
-
-      def channels
-        self[:channels] || []
-      end
-
-      def [](key)
-        # convenience access to name
-        return name if key.to_sym == :name
-
-        # regular activerecord attributes
-        # TODO: has_attribute?(attr_name) rails 5
-        if active_record_attr?(key)
-          if key == :valid_from or key == :valid_until or key == :last_changed
-            return as_date(super(key))
-          else
-            return super(key)
-          end
-        end
-
-        # Unknown Obj attributes are delegated to the corresponding instance of AttrDict.
-        begin
-          return (attr_dict.send key)
-        rescue NoMethodError
-        end
-
-        # fallback
-        return nil
-      end
-
 
       # Sets given attribute, to given value. Converts values if neccessary
       # @see [Reactor::Attributes]
@@ -308,17 +264,19 @@ module Reactor
         raise TypeError, "can't modify frozen object" if frozen?
         raise ArgumentError, "Unknown attribute #{key.to_s} for #{self.class.to_s} #{self.path}" unless allowed_attr?(key)
         key = key.to_sym
-        attr = key_to_attr(key)
+        attribute_will_change!(key.to_s)
 
+        attribute = key_to_attr(key)
         not_formated_value = value
-        # TODO: not needed? check with Attribute api
+
         formated_value = serialize_value(key, value)
-        crul_set(attr, formated_value, options)
+        crul_set(attribute, formated_value, options)
 
-        active_record_set(key, formated_value) if active_record_attr?(key)
-        rails_connector_set(key, formated_value, not_formated_value)
-
-        # return new value
+        if active_record_attr?(key)
+          active_record_set(key, formated_value)
+        else
+          rails_connector_set(key, formated_value, not_formated_value)
+        end
         __send__(key)
       end
 
@@ -360,21 +318,19 @@ module Reactor
       attr_accessor :uploaded
 
       def builtin_attributes
-        @builtin_attrs ||= (Reactor::Cm::Obj::OBJ_ATTRS + Reactor::Cm::Obj::PREDEFINED_ATTRS).map{|item| item.to_s.underscore.to_sym}
+        @builtin_attrs ||= (active_record_attributes + Reactor::Cm::Obj::PREDEFINED_ATTRS).map{|item| item.to_s.underscore.to_sym}
       end
 
       def builtin_attr?(attr)
         builtin_attributes.include?(attr)
-        # [:channels, :parent, :valid_from, :valid_until, :name, :obj_class, :content_type, :body, :blob, :suppress_export, :permalink, :title].include?(attr)
       end
 
       def active_record_attributes
-        @active_record_attrs ||= Reactor::Cm::Obj::OBJ_ATTRS.map{|item| item.to_s.underscore.to_sym}
+        @active_record_attrs ||= self.class.columns.map(&:name)
       end
 
       def active_record_attr?(attr)
-        active_record_attributes.include?(attr)
-        # [:valid_from, :valid_until, :name, :obj_class, :suppress_export, :permalink].include?(attr)
+        active_record_attributes.include?(attr.to_s)
       end
 
       def allowed_attr?(attr)
@@ -426,7 +382,7 @@ module Reactor
           send(:attr_dict).send(:blob_dict)[field] = :special_linklist_handling_is_broken
         when :date
           if supplied_value.nil? || supplied_value.kind_of?(String)
-            parsed_value = Time.from_iso(value).in_time_zone rescue nil
+            parsed_value = DateTime.from_iso(value).in_time_zone rescue nil
           else
             parsed_value = supplied_value
           end

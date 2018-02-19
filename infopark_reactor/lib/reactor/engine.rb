@@ -5,7 +5,11 @@ module Reactor
     if ::Rails::VERSION::MAJOR == 5
       config.after_initialize {
         if defined?(Obj) && Obj <= RailsConnector::BasicObj
-          Obj.send(:include, Reactor::Main)
+          #
+          #
+          # Class.column_names.include? attr_name
+          # Obj.subclasses.each{|klass| klass.reload_attributes}
+          # Obj.send(:include, Reactor::Main)
         else
           raise "Reactor can be only used with FionaConnector. Please define class Obj in your application"
         end

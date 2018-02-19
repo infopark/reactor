@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe 'Date Handling' do
-  class TestClassWithCustomAttributes < Obj ; end
+  # class TestClassWithCustomAttributes < Obj ; end
 
 
   shared_examples "date handling" do
@@ -126,7 +126,7 @@ describe 'Date Handling' do
     before    { @obj = TestClassWithCustomAttributes.new(:name => 'date_test', :parent => '/') }
     after     { @obj.destroy if @obj.persisted? }
 
-    context "with different time zone" do 
+    context "with different time zone" do
       specify "handling time zones" do
         t1 = Time.new(2015, 2, 2)
 

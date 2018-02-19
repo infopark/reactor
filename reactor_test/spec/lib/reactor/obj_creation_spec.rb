@@ -1,10 +1,10 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-unless defined?(TestClassWithCustomAttributes)
-  class TestClassWithCustomAttributes < Obj
-  end
-end
+# unless defined?(TestClassWithCustomAttributes)
+#   class TestClassWithCustomAttributes < Obj
+#   end
+# end
 
 
 describe "Reactor::Persistence" do
@@ -206,5 +206,5 @@ describe "Reactor::Persistence" do
     end
 
   end
-  
+
 end

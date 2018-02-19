@@ -7,7 +7,7 @@ describe Obj do
   end
 end
 
-describe Reactor::Attributes do
+describe Reactor::Attributes, focus: true do
   #use_vcr_cassette 'reactor'
 
   before do
@@ -87,13 +87,13 @@ describe Reactor::Attributes do
 
     describe '#valid_from=' do
       it "sets valid_from" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_from = t
         expect(obj.valid_from).to eq(t)
       end
 
       it "propagates the value to [:valid_from]" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_from = t
         expect(obj[:valid_from]).to eq(t)
       end
@@ -101,27 +101,27 @@ describe Reactor::Attributes do
 
     describe '#valid_until=' do
       it 'sets valid_until' do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_until = t
         expect(obj.valid_until).to eq(t)
       end
 
       it "propagates the value to [:valid_until]" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_until = t
         expect(obj[:valid_until]).to eq(t)
       end
     end
 
     describe '#suppress_export=' do
-      it 'sets valid_until' do
-        t = 1
+      it 'sets suppress_export' do
+        t = true
         obj.suppress_export = t
         expect(obj.suppress_export).to eq(t)
       end
 
       it "propagates the value to [:suppress_export]" do
-        t = 1
+        t = true
         obj.suppress_export = t
         expect(obj[:suppress_export]).to eq(t)
       end
@@ -175,12 +175,12 @@ describe Reactor::Attributes do
 
       context ':valid_from' do
         it "sets valid from" do
-          t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+          t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_from, t)
           expect(obj.valid_from).to eq(t)
         end
         it "propagates to [:valid_from]" do
-          t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+          t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_from, t)
           expect(obj[:valid_from]).to eq(t)
         end
@@ -188,12 +188,12 @@ describe Reactor::Attributes do
 
       context ':valid_until' do
         it "sets valid until" do
-          t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+          t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_until, t)
           expect(obj.valid_until).to eq(t)
         end
         it "propagates to [:valid_until]" do
-          t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+          t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_until, t)
           expect(obj[:valid_until]).to eq(t)
         end
@@ -230,12 +230,12 @@ describe Reactor::Attributes do
 
     describe 'test_attr_date=' do
       it "sets test_attr_date" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.test_attr_date = t
         expect(obj.test_attr_date).to eq(t)
       end
       it "propagates to [:test_attr_date]" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.test_attr_date = t
         expect(obj[:test_attr_date]).to eq(t)
       end
@@ -572,8 +572,8 @@ describe Reactor::Attributes do
   end
 
   context "instance of subclass of Obj with custom attributes" do
-    class TestClassWithCustomAttributes < Obj
-    end
+    # class TestClassWithCustomAttributes < Obj
+    # end
 
     subject {TestClassWithCustomAttributes.find_by_path('/test_obj_with_custom_attributes')}
 

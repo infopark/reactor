@@ -1,10 +1,10 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-unless defined?(TestClassWithCustomAttributes)
-  class TestClassWithCustomAttributes < Obj
-  end
-end
+# unless defined?(TestClassWithCustomAttributes)
+#   class TestClassWithCustomAttributes < Obj
+#   end
+# end
 
 describe "Object with two links set" do
   before do

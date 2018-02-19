@@ -1,7 +1,6 @@
 if ::Rails::VERSION::MAJOR == 5
   class Obj < RailsConnector::BasicObj
-    # puts "load Obj"
-    # include Reactor::Main
+    include Reactor::Main
   end
 else
   PARENT_CLASS = begin

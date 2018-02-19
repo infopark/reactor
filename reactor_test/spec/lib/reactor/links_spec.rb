@@ -2,8 +2,8 @@
 require 'spec_helper'
 
 unless defined?(TestClassWithCustomAttributes)
-  class TestClassWithCustomAttributes < Obj
-  end
+  # class TestClassWithCustomAttributes < Obj
+  # end
 end
 
 describe "link setting without persistence" do
@@ -247,7 +247,7 @@ describe "link persisting" do
     end
 
     context "with titles" do
-      before do 
+      before do
         obj.send(:"#{attr}=", [
           {:url => 'http://google.com', :title => 'gOOgle'},
           {:destination_object => '/object_sure_to_exist', :title => 'obj!'}])
@@ -400,7 +400,7 @@ describe "Reactor::Persistence" do
       expect(super_objects.size).to eq(1)
       expect(super_objects.first.obj_id).to eq(@linking.obj_id)
     end
-    
+
   end
   describe '#has_super_links?' do
     context "for object with superlink" do
@@ -430,4 +430,3 @@ describe "Reactor::Persistence" do
     end
   end
 end
-  

@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe 'Superlinks' do
-  class TestClassWithCustomAttributes < Obj ; end
+  # class TestClassWithCustomAttributes < Obj ; end
 
   before do
     @obj      = TestClassWithCustomAttributes.create(:name => 'date_test', :parent => '/')

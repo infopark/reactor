@@ -3,6 +3,9 @@ require 'spec_helper'
 shared_examples "dirty attribute tracking" do |attribute, old_value, new_value, default_value|
 
   it "tracks changes of #{attribute}" do
+    # puts ": --------------------------- : #{attribute}"
+    # puts subject.attributes.inspect
+    # puts ": --------------------------- :"
     expect {
       subject.__send__(:"#{attribute}=", new_value)
     }.to change{subject.__send__(attribute)}.from(old_value).to(new_value)
@@ -16,6 +19,9 @@ end
 shared_examples "dirty attribute tracking with persistance" do |attribute, old_value, new_value, default_value|
 
   it "tracks changes of #{attribute}" do
+    # puts "--- #{attribute} ---"
+    # puts subject.inspect
+    # puts subject.__send__(:"#{attribute}")
     expect {
       subject.__send__(:"#{attribute}=", new_value)
       subject.save!
@@ -25,13 +31,13 @@ shared_examples "dirty attribute tracking with persistance" do |attribute, old_v
   end
 end
 
-describe "Dirty attribute tracking", focus: true do
+describe "Dirty attribute tracking", focus: false do
   after(:all) { Obj.where('path LIKE "/dirty_attr_check%"').each(&:destroy) }
 
   context "with new instance" do
     let(:subject) { TestClassWithCustomAttributes.new(name: 'old_name', title: 'old title', test_attr_string: 'old string') }
 
-    describe "built-in attribute" do
+    describe "built-in attribute", focus: false do
       include_examples "dirty attribute tracking", :name, 'old_name', 'new_name', nil
     end
 
@@ -39,7 +45,7 @@ describe "Dirty attribute tracking", focus: true do
       include_examples "dirty attribute tracking", :title, 'old title', 'new title', nil
     end
 
-    describe "content attribute" do
+    describe "content attribute", focus: false  do
       include_examples "dirty attribute tracking", :test_attr_string, 'old string', 'new string', ''
     end
   end
@@ -86,8 +92,20 @@ describe "Dirty attribute tracking", focus: true do
     end
   end
 
-  context "existing instance with persisting" do
-    before(:each) { @obj = TestClassWithCustomAttributes.create!(parent: '/', name: 'dirty_attr_check', title: 'old title', test_attr_string: 'old string') }
+  context "existing instance with persisting", focus: false do
+    before do
+      TestClassWithCustomAttributes.new
+      puts 1
+      puts TestClassWithCustomAttributes.ancestors
+      puts "_-------"
+
+      @obj = TestClassWithCustomAttributes.new(parent: '/', name: 'dirty_attr_check', title: 'old title', test_attr_string: 'old string')
+      puts 2
+      @obj.save!
+      # @obj = TestClassWithCustomAttributes.create!(parent: '/', name: 'dirty_attr_check', title: 'old title', test_attr_string: 'old string')
+      puts @obj.inspect
+    end
+
     after(:each) { @obj.destroy }
 
     let(:subject) { Obj.find(@obj.id) }
@@ -97,7 +115,7 @@ describe "Dirty attribute tracking", focus: true do
       expect(@obj.changed).to be_empty
     end
 
-    describe "built-in attribute" do
+    describe "built-in attribute", focus: false do
       include_examples "dirty attribute tracking with persistance", :name, 'dirty_attr_check', 'dirty_attr_check2', 'dirty_attr_check'
     end
 
@@ -105,11 +123,11 @@ describe "Dirty attribute tracking", focus: true do
       include_examples "dirty attribute tracking with persistance", :title, 'old title', 'new title', 'old title'
     end
 
-    describe "content attribute" do
+    describe "content attribute", focus: false do
       include_examples "dirty attribute tracking with persistance", :test_attr_string, 'old string', 'new string', 'old string'
     end
 
-    context "when changing built-in attribute" do
+    context "when changing built-in attribute", focus: false do
       it "does not change irrevelant attributes" do
         expect(subject.__send__(:attribute_changed?, :name)).not_to be_truthy
         expect(subject.__send__(:attribute_changed?, :title)).not_to be_truthy
@@ -122,7 +140,7 @@ describe "Dirty attribute tracking", focus: true do
       end
     end
 
-    context "when changing built-in content attribute" do
+    context "when changing built-in content attribute", focus: false do
       it "does not change irrevelant attributes" do
         expect(subject.__send__(:attribute_changed?, :name)).not_to be_truthy
         expect(subject.__send__(:attribute_changed?, :title)).not_to be_truthy
@@ -135,7 +153,7 @@ describe "Dirty attribute tracking", focus: true do
       end
     end
 
-    context "when content attribute" do
+    context "when content attribute", focus: false do
       it "does not change irrevelant attributes" do
         expect(subject.__send__(:attribute_changed?, :name)).not_to be_truthy
         expect(subject.__send__(:attribute_changed?, :title)).not_to be_truthy
