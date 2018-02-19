@@ -16,7 +16,7 @@ describe "RSession persistance", type: :request, focus: false do
 
       context "with root user" do
         it "persists the user in the session" do
-          post "/login", user_name: "root"
+          post "/login", params: {user_name: "root"}
           expect(response).to be_ok
 
           get "/login"
@@ -26,7 +26,7 @@ describe "RSession persistance", type: :request, focus: false do
 
       context "with non_root user" do
         it "persists the user in the session" do
-          post "/login", user_name: "non_root"
+          post "/login", params: {user_name: "non_root"}
           expect(response).to be_ok
 
           get "/login"
