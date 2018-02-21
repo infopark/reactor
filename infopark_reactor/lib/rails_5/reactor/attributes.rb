@@ -97,7 +97,6 @@ module Reactor
         when :date, :enum
           attribute_methods << <<-EOC
             def #{attribute}
-              puts "--- DATE #{attribute}"
               self[:#{attribute}]
             end
           EOC
