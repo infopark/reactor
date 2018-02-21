@@ -115,14 +115,14 @@ describe 'Date Handling' do
 
   context "with a persisted obj" do
     before    { @obj = TestClassWithCustomAttributes.create(:name => 'date_test', :parent => '/') }
-    # after     { @obj.destroy }
+    after     { @obj.destroy }
 
     include_examples "date handling"
   end
 
   context "with a newly created obj" do
     before    { @obj = TestClassWithCustomAttributes.new(:name => 'date_test', :parent => '/') }
-    # after     { @obj.destroy if @obj.persisted? }
+    after     { @obj.destroy if @obj.persisted? }
 
     context "with different time zone" do
       specify "handling time zones" do
