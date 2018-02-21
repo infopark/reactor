@@ -44,7 +44,6 @@ module Reactor
     def install(klass, obj_class)
       if obj_class_known?(obj_class)
         c = handler_module(obj_class)
-        # puts c.inspect
         #klass.send(:include, handler_module(obj_class))
         klass.send(:include, c)
         # puts "========================="
@@ -78,34 +77,16 @@ module Reactor
       # Rails.logger.debug "Reactor::AttributeHandlers: generating handler for #{obj_class.name}"
       attribute_methods = []
       writers = []
-      custom_attributes = []
+      # puts "generate_attribute_handler: #{obj_class.name}"
 
       obj_class.custom_attributes.each do |attribute, attribute_data|
-        type = case attribute_data.attribute_type.to_sym
-        when :string
-          "ActiveRecord::Type::String.new"
-        when :html
-          "Reactor::Type::Html.new"
-        when :text
-          "ActiveRecord::Type::String.new"
-        when :markdown
-          "Reactor::Type::Markdown.new"
-        when :linklist
-          "Reactor::Type::Linklist.new"
-        when :date
-          "ActiveRecord::Type::DateTime.new"
-        when :enum
-          "Reactor::Type::Enum.new"
-        when :multienum
-          "Reactor::Type::Multienum.new"
-        end
-
-        custom_attributes << "base.send(:define_attribute, '#{attribute}', #{type})"
-
-        writers << attribute.to_sym
-        writers << attribute.to_s.underscore.to_sym
-
-        # Custom attribute readers: prevent unwanted nils
+        # setters for custom attributes
+        attribute_methods << <<-EOC
+          def #{attribute}=(value)
+            set(:#{attribute},value)
+          end
+        EOC
+        #  get methods
         case attribute_data.attribute_type.to_sym
         when :html
           attribute_methods << <<-EOC
@@ -116,6 +97,7 @@ module Reactor
         when :date, :enum
           attribute_methods << <<-EOC
             def #{attribute}
+              puts "--- DATE #{attribute}"
               self[:#{attribute}]
             end
           EOC
@@ -139,22 +121,14 @@ module Reactor
           EOC
         end
 
-      end
 
-      Reactor::Cm::Obj::PREDEFINED_ATTRS.each do |attribute|
         writers << attribute.to_sym
         writers << attribute.to_s.underscore.to_sym
+
       end
+      # puts attribute_methods
 
       writers.uniq!
-
-      writers.each do |attribute|
-        attribute_methods << <<-EOC
-          def #{attribute}=(value)
-            set(:#{attribute},value)
-          end
-        EOC
-      end
 
       # if a handler for this obj class has been defined previously, purge its methods
       if Reactor::AttributeHandlers.const_defined?("Handler__#{obj_class.name}")
@@ -163,8 +137,7 @@ module Reactor
           mod.send(:remove_method, method)
         end
       end
-      custom_attributes = []
-      attribute_methods = []
+
       Reactor.class_eval <<-EOC
         class AttributeHandlers
           module Handler__#{obj_class.name}
@@ -176,6 +149,7 @@ module Reactor
 
             end
 
+            #{attribute_methods.join("\n")}
 
             # parent-setting handling
             def parent=(parent_something)
@@ -253,6 +227,10 @@ module Reactor
         set(:channels, value)
       end
 
+      def channels
+        self[:channels] || []
+      end
+
       def suppress_export=(value)
         set(:suppress_export, value)
       end
@@ -267,15 +245,15 @@ module Reactor
         attribute_will_change!(key.to_s)
 
         attribute = key_to_attr(key)
-        not_formated_value = value
 
         formated_value = serialize_value(key, value)
         crul_set(attribute, formated_value, options)
 
         if active_record_attr?(key)
+          formated_value = to_time_in_zone(formated_value) if attribute_type(key) == :date
           active_record_set(key, formated_value)
         else
-          rails_connector_set(key, formated_value, not_formated_value)
+          rails_connector_set(key, formated_value)
         end
         __send__(key)
       end
@@ -360,20 +338,20 @@ module Reactor
         key
       end
 
-      def serialize_value(attr, value)
-        case attribute_type(attr)
+      def serialize_value(key, value)
+        case attribute_type(key)
         when :html
-          HTMLSerializer.new(attr, value).serialize
+          HTMLSerializer.new(key, value).serialize
         when :date
-          DateSerializer.new(attr, value).serialize
+          DateSerializer.new(key, value).serialize
         when :linklist
-          LinkListSerializer.new(attr, value).serialize
+          LinkListSerializer.new(key, value).serialize
         else
           value
         end
       end
 
-      def rails_connector_set(field, value, supplied_value)
+      def rails_connector_set(field, value)
         field = field.to_sym
         field = :blob if field == :body
         case attribute_type(field)
@@ -381,12 +359,7 @@ module Reactor
           send(:attr_dict).instance_variable_get('@attr_cache')[field] = value
           send(:attr_dict).send(:blob_dict)[field] = :special_linklist_handling_is_broken
         when :date
-          if supplied_value.nil? || supplied_value.kind_of?(String)
-            parsed_value = DateTime.from_iso(value).in_time_zone rescue nil
-          else
-            parsed_value = supplied_value
-          end
-          send(:attr_dict).instance_variable_get('@attr_cache')[field] = parsed_value
+          send(:attr_dict).instance_variable_get('@attr_cache')[field] = to_time_in_zone(value)
           send(:attr_dict).send(:blob_dict)[field] = value
         else
           send(:attr_dict).instance_variable_get('@attr_cache')[field] = nil
@@ -394,11 +367,17 @@ module Reactor
         end
       end
 
+      def to_time_in_zone(value)
+        return nil if value.blank?
+        ActiveSupport::TimeZone["UTC"].parse(value).in_time_zone.to_time
+      end
+
       def cached_value?(attr, value)
         attribute_type(attr) == :linklist
       end
 
       def active_record_set(field, value)
+        # check if date values works for it
         @attributes.write_from_user(field.to_s, value)
       end
 

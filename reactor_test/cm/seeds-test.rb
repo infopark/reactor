@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 def with(object)
   puts "SEED with #{object.inspect}"
   yield(object) if block_given? && !object.nil?

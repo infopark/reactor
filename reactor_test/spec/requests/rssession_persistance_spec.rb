@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "RSession persistance", type: :request, focus: false do
+describe "RSession persistance", type: :request do
   [:marshal, :hybrid, :json].each do |serialization_scheme|
     context "with #{serialization_scheme} cookie serialization" do
       before do

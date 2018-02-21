@@ -318,7 +318,7 @@ module Reactor
           links_to_remove.clear
           links_to_set.clear
 
-          copy = RailsConnector::AbstractObj.uncached { RailsConnector::AbstractObj.find(self.id) }
+          copy = RailsConnector::BasicObj.uncached { RailsConnector::BasicObj.find(self.id) }
 
           linklists.each do |linklist|
             original_link_ids = Reactor::Attributes::LinkListFromAttrValues.new(copy, linklist).call.map(&:id)
@@ -350,7 +350,6 @@ module Reactor
             end
           end
         end
-
         self.class.connection.clear_query_cache
       end
 

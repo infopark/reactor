@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 require 'spec_helper'
 
 describe Obj do
@@ -7,7 +6,7 @@ describe Obj do
   end
 end
 
-describe Reactor::Attributes, focus: true do
+describe Reactor::Attributes do
   #use_vcr_cassette 'reactor'
 
   before do

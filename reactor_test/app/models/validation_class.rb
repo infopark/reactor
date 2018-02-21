@@ -1,0 +1,1 @@
+class ValidationClass < Obj ; end

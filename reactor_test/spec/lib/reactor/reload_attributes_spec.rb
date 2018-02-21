@@ -25,11 +25,11 @@ describe "Attribute reloading" do
 
   specify do
     # No attribute -> method missing
-    empty = ::ReloadedClass.new
+    empty = ReloadedClass.new
     expect { empty.reloaded_attribute }.to raise_error(NoMethodError)
     expect { empty.reloaded_attribute='test'}.to raise_error(NoMethodError)
 
-    created = ::ReloadedClass.create(name: 'reloaded_test', parent: '/')
+    created = ReloadedClass.create(name: 'reloaded_test', parent: '/')
     expect { created.reloaded_attribute }.to raise_error(NoMethodError)
     expect { created.reloaded_attribute='test'}.to raise_error(NoMethodError)
 

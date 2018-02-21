@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 require 'reactor/cm/multi_xml_request'
 
 module Reactor

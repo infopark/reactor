@@ -107,7 +107,7 @@ module Reactor
             end
           end
         end
-        response = request.execute!
+        request.execute!
       end
 
       def has_attribute?(attr_name)

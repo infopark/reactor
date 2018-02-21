@@ -119,7 +119,7 @@ describe "Reactor::Persistence" do
         :test_attr_enum => "value1",
         :test_attr_multienum => ["value2", "value3"],
         :test_attr_html => "<strong>html</strong>",
-        :test_attr_date => Time.parse("2011-10-11 15:00"),
+        :test_attr_date => Time.parse("2011-10-11 15:00").in_time_zone,
         :test_attr_linklist => 'http://google.com'
       }
       @obj = TestClassWithCustomAttributes.create(attr_values)
@@ -147,7 +147,7 @@ describe "Reactor::Persistence" do
     end
 
     it "sets test_attr_date" do
-      expect(@obj[:test_attr_date]).to eq(Time.parse("2011-10-11 15:00"))
+      expect(@obj[:test_attr_date]).to eq(Time.parse("2011-10-11 15:00").in_time_zone)
     end
 
     it "sets test_attr_linklist" do
