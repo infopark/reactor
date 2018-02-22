@@ -6,12 +6,42 @@ def without(dont_run_block)
   yield if block_given? && !dont_run_block
 end
 
-# %x( docker exec -it fiona7_reactor /fiona/CMS-Fiona-7.0.1/instance/default/bin/CM -restore /fiona/empty_cms )
-# %x( docker exec -it fiona7_reactor /fiona/CMS-Fiona-7.0.1/instance/default/bin/CM -unrailsify )
-# %x( docker exec -it fiona7_reactor /fiona/CMS-Fiona-7.0.1/instance/default/bin/CM -railsify )
+
+# load empty mysql
+
+
+def prepare_cms_db(db_name)
+  cms_db_config = begin
+    Rails.configuration.database_configuration['cms']
+  rescue
+    {
+      'username' => 'root',
+      'host' => 'localhost',
+    }
+  end
+  db_config = "-h#{cms_db_config['host']} -u#{cms_db_config['username']}"
+  db_config << " -p#{cms_db_config['password']}" if cms_db_config['password'].present?
+
+  sql_file = File.expand_path('../reactor_test.sql', __FILE__)
+
+  drop_db_if_exists(db_name, db_config)
+  sh %{mysqladmin #{db_config} create #{db_name}}
+  sh %{mysql #{db_config} #{db_name} < "#{sql_file}"}
+end
+
+def drop_db_if_exists(db_name, db_config)
+  databases = `echo 'show databases;' | mysql #{db_config}`
+  if databases.include?(db_name)
+    sh %{mysqladmin #{db_config} -f drop #{db_name}}
+  end
+end
+
+prepare_cms_db 'reactor_test'
 
 klass_name = "TestClassWithCustomAttributes"
-klass = Reactor::Cm::ObjClass.create(klass_name, 'publication') rescue nil
+if RailsConnector::ObjClass.find_by_name(klass_name).blank?
+  klass = Reactor::Cm::ObjClass.create(klass_name, 'publication')
+end
 klass = Reactor::Cm::ObjClass.get(klass_name)
 
 attributes = []
