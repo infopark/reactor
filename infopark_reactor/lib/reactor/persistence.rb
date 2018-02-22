@@ -248,20 +248,6 @@ module Reactor
             super(attributes, options)
           end
         end
-      elsif Reactor.rails5_x?
-        # It should excactly match ActiveRecord::Base.new in it's behavior
-        # @see ActiveRecord::Base.new
-        def initialize(attributes = nil, &block)
-          if true ||  !self.class.send(:attribute_methods_overriden?) #FIXME !!!
-            ignored_attributes = ignore_attributes(attributes)
-            # supress block hijacking!
-            super(attributes) {}
-            load_ignored_attributes(ignored_attributes)
-            yield self if block_given?
-          else
-            super(attributes)
-          end
-        end
       else
         raise RuntimeError, "Unsupported Rails version!"
       end
@@ -426,26 +412,12 @@ module Reactor
         end
       end
 
-      if Reactor.rails5_x?
-        alias_method :_create_record, :create
-      end
-
-      if Reactor.rails5_x?
-        def update(attribute_names = self.attribute_names)
-           run_callbacks(:update) do
-             crul_obj_save if crul_attributes_set? || crul_links_changed?
-             self.reload
-             self.id
-           end
-        end
-      else
-        def update
-           run_callbacks(:update) do
-             crul_obj_save if crul_attributes_set? || crul_links_changed?
-             self.reload
-             self.id
-           end
-        end
+      def update
+         run_callbacks(:update) do
+           crul_obj_save if crul_attributes_set? || crul_links_changed?
+           self.reload
+           self.id
+         end
       end
 
       if Reactor.rails4_x?
@@ -454,10 +426,6 @@ module Reactor
         else
           alias_method :update_record, :update
         end
-      end
-
-      if Reactor.rails5_x?
-        alias_method :_update_record, :update
       end
 
       def ignore_attributes(attributes)

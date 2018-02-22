@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 require 'reactor/attributes/link_list_from_accessor'
 require 'reactor/attributes/link_list_from_attr_values'
 
@@ -452,29 +451,6 @@ module Reactor
           old_name
         end
       end
-
-      # Detect the subclass from the inheritance column of attrs. If the inheritance column value
-      # is not self or a valid subclass, raises ActiveRecord::SubclassNotFound
-      # If this is a StrongParameters hash, and access to inheritance_column is not permitted,
-      # this will ignore the inheritance column and return nil
-      # def subclass_from_attrs(attrs)
-      #   subclass_name = attrs.with_indifferent_access[inheritance_column]
-      #
-      #   if subclass_name.present? && subclass_name != self.name
-      #     subclass = subclass_name.safe_constantize
-      #
-      #     if subclass # this if has been added
-      #       unless descendants.include?(subclass)
-      #         raise ActiveRecord::SubclassNotFound.new("Invalid single-table inheritance type: #{subclass_name} is not a subclass of #{name}")
-      #       end
-      #
-      #       subclass
-      #     end
-      #   end
-      # end
-
-      # alias_method :subclass_from_attributes, :subclass_from_attrs
-      # remove_method :subclass_from_attrs
 
       # Convenience method: it is equivalent to following call chain:
       #

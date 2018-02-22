@@ -1,11 +1,3 @@
-# -*- encoding : utf-8 -*-
-require 'rails_5/reactor/type/string'
-require 'rails_5/reactor/type/enum'
-require 'rails_5/reactor/type/html'
-require 'rails_5/reactor/type/linklist'
-require 'rails_5/reactor/type/markdown'
-require 'rails_5/reactor/type/multienum'
-
 require 'reactor/attributes/date_serializer'
 require 'reactor/attributes/html_serializer'
 require 'reactor/attributes/link_list_serializer'
@@ -43,12 +35,7 @@ module Reactor
 
     def install(klass, obj_class)
       if obj_class_known?(obj_class)
-        c = handler_module(obj_class)
-        #klass.send(:include, handler_module(obj_class))
-        klass.send(:include, c)
-        # puts "========================="
-        # puts klass.inspect
-        # puts "========================="
+        klass.send(:include, handler_module(obj_class))
       end
     end
 
@@ -78,7 +65,6 @@ module Reactor
       attribute_methods = []
       writers = []
       attr_definitions = []
-      # puts "generate_attribute_handler: #{obj_class.name}"
 
       obj_class.custom_attributes.each do |attribute, attribute_data|
         # setters for custom attributes
@@ -126,7 +112,6 @@ module Reactor
         writers << attribute.to_s.underscore.to_sym
 
       end
-      # puts attribute_methods
 
       writers.uniq!
 
