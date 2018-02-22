@@ -77,6 +77,7 @@ module Reactor
       # Rails.logger.debug "Reactor::AttributeHandlers: generating handler for #{obj_class.name}"
       attribute_methods = []
       writers = []
+      attr_definitions = []
       # puts "generate_attribute_handler: #{obj_class.name}"
 
       obj_class.custom_attributes.each do |attribute, attribute_data|
@@ -145,6 +146,7 @@ module Reactor
               # store allowed attributes
               allowed_attrs = %w|#{writers * ' '}|.map(&:to_sym)
               base.send(:instance_variable_set, '@_o_allowed_attrs', allowed_attrs)
+              #{attr_definitions.join("\n")}
 
             end
 

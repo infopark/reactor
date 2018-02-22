@@ -26,9 +26,6 @@ describe Reactor::Persistence do
       expect(o.test_attr_text).to eq('test1')
       expect(o.test_attr_linklist.first.url).to eq('http://google.com')
 
-      allow(o).to receive(:test_attr_text) { 'hahah, no' }
-      allow(o).to receive(:test_attr_linklist) { 'whatever' }
-
       o.test_attr_text = 'test2'
       o.test_attr_linklist = [{:url => 'http://yahoo.com'}]
 
@@ -667,20 +664,10 @@ describe Reactor::Persistence do
     end
   end
 
-  describe '#reload' do
-    skip
-  end
-
   describe '#resolve_refs' do
     context "object without resolved refs" do
       let(:obj) {Obj.find_by_path('/object_without_resolved_refs')}
-      it "resolves refs of the object" do
-        obj_id = obj.id
-        obj.resolve_refs
-        skip("68")
-        expect(Reactor::Cm::Obj.get(obj_id).send(:get_content_attr_text, :blob)).to match(/<a href="\.\.\/object_sure_to_exist\/index\.html">link<\/a>/)
-      end
-
+      
       it "returns true" do
         expect(obj.resolve_refs).to be_truthy
       end
@@ -707,10 +694,6 @@ describe Reactor::Persistence do
       expect(Obj).to be_exists(@obj.id)
       expect(@obj).to be_kind_of(Obj)
     end
-  end
-
-  describe '#save' do
-    skip
   end
 
   describe '#save!' do

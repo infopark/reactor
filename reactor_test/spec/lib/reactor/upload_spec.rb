@@ -143,14 +143,6 @@ shared_examples "binary uploadable object" do
   end
 end
 
-describe "Brand new obj instance" do
-  skip
-  # it_behaves_like "uploadable object" do
-  #   before {@obj = Obj.new(:name => 'uploadable_test', :parent => '/', :obj_class => 'PlainObjClass') }
-  #   after { @obj.destroy }
-  # end
-end
-
 describe "Created txt-compatible obj" do
   it_behaves_like "txt uploadable object" do
     before {@obj = Obj.create(:name => 'uploadable_test', :parent => '/', :obj_class => 'PlainObjClass')}

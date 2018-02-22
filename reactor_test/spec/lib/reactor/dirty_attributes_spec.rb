@@ -3,10 +3,6 @@ require 'spec_helper'
 shared_examples "dirty attribute tracking" do |attribute, old_value, new_value, default_value|
 
   it "tracks changes of #{attribute}" do
-    # puts ": --------------------------- : #{attribute}"
-    # puts subject.attributes.inspect
-    # puts "default value: #{default_value}"
-    # puts ": --------------------------- :"
     expect {
       subject.__send__(:"#{attribute}=", new_value)
     }.to change{subject.__send__(attribute)}.from(old_value).to(new_value)
@@ -20,9 +16,6 @@ end
 shared_examples "dirty attribute tracking with persistance" do |attribute, old_value, new_value, default_value|
 
   it "tracks changes of #{attribute}" do
-    # puts "--- #{attribute} ---"
-    # puts subject.inspect
-    # puts subject.__send__(:"#{attribute}")
     expect {
       subject.__send__(:"#{attribute}=", new_value)
       subject.save!
@@ -97,7 +90,6 @@ describe "Dirty attribute tracking", focus: false do
     before do
       @obj = TestClassWithCustomAttributes.create!(parent: '/', name: 'dirty_attr_check', title: 'old title', test_attr_string: 'old string')
       @obj.save!
-      puts @obj.inspect
     end
 
     after(:each) { @obj.destroy }

@@ -1,10 +1,4 @@
-# -*- encoding : utf-8 -*-
 require 'spec_helper'
-
-unless defined?(TestClassWithCustomAttributes)
-  # class TestClassWithCustomAttributes < Obj
-  # end
-end
 
 describe "link setting without persistence" do
   let(:obj) { TestClassWithCustomAttributes.create(:obj_class => 'TestClassWithCustomAttributes', :name => 'link_testbead', :parent => '/linktestbead') }
@@ -306,7 +300,6 @@ end
 
 describe "link default behavior" do
   context "when added a linklist field to existing newly created object" do
-    class LinktestClass < Obj ; end
     before do
       @obj = LinktestClass.create(:parent => '/', :name => 'without_link_at_first', :test_attr_text => 'some text')
       @klass = Reactor::Cm::ObjClass.get('LinktestClass')
@@ -330,7 +323,6 @@ describe "link default behavior" do
   end
 
   context "when added a linklist field to existing released and edited object" do
-    class LinktestClass < Obj ; end
     before do
       @obj = LinktestClass.create(:parent => '/', :name => 'without_link_at_first', :test_attr_text => 'some text')
       @obj.release!
@@ -356,7 +348,6 @@ describe "link default behavior" do
   end
 
   context "when added a linklist field to existing and released(!) object" do
-    class LinktestClass < Obj ; end
     before do
       @obj = LinktestClass.create(:parent => '/', :name => 'without_link_at_first', :test_attr_text => 'some text')
       @obj.release!

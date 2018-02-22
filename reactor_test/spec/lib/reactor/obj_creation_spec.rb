@@ -1,11 +1,4 @@
-# -*- encoding : utf-8 -*-
 require 'spec_helper'
-
-# unless defined?(TestClassWithCustomAttributes)
-#   class TestClassWithCustomAttributes < Obj
-#   end
-# end
-
 
 describe "Reactor::Persistence" do
   describe "Obj.new(:name, :parent, :obj_class) .. #save" do
@@ -105,10 +98,6 @@ describe "Reactor::Persistence" do
     end
   end
 
-  describe "Obj.create(:name, :parent, :obj_class, :custom_attributes)" do
-    skip
-  end
-
   describe "TestClassWithCustomAttributes.create(:name, :parent, :custom_attributes)" do
     before(:all) do
       attr_values = {
@@ -153,10 +142,6 @@ describe "Reactor::Persistence" do
     it "sets test_attr_linklist" do
       expect(@obj[:test_attr_linklist].first.url).to eq("http://google.com")
     end
-  end
-
-  describe "Obj.new(:name, :parent, :obj_class, :custom_attributes) .. #save" do
-    skip
   end
 
   describe "TestClassWithCustomAttributes.new(:name, :parent, :custom_attributes) .. #save" do
