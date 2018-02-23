@@ -1,0 +1,10 @@
+# require components
+require 'reactor/rails_connector_meta'
+require 'reactor/legacy'
+require 'reactor/validations'
+require 'reactor/permission'
+require 'reactor/workflow'
+require 'reactor/streaming_upload'
+require 'reactor/rc_independent'
+require 'reactor/sudo'
+require 'reactor/main'

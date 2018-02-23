@@ -3,12 +3,12 @@ module Reactor
 
   class Engine < Rails::Engine
     if ::Rails::VERSION::MAJOR == 5
-      config.after_initialize {
+      config.after_initialize do
         if defined?(Obj) && Obj <= RailsConnector::BasicObj
         else
           raise "Reactor can be only used with FionaConnector. Please define class Obj in your application"
         end
-      }
+      end
     end
 
     rake_tasks do
@@ -27,6 +27,7 @@ module Reactor
       ActionController::Base.__send__(:helper_method, :rsession)
 
       ActionController::Base.__send__(:include, Reactor::SessionHelper::AuthHelper)
+      ActionController::Base.__send__(:include, Reactor::SessionHelper::AuthFilter)
     end
 
   end

@@ -219,11 +219,10 @@ module Reactor
         return true
       end
 
-      # TODO: depends on rails version
       # It should excactly match ActiveRecord::Base.new in it's behavior
       # @see ActiveRecord::Base.new
       def initialize(attributes = nil, &block)
-        if true ||  !self.class.send(:attribute_methods_overriden?) #FIXME !!!
+        if !self.class.send(:attribute_methods_overriden?)
           ignored_attributes = ignore_attributes(attributes)
           # supress block hijacking!
           super(attributes) {}
@@ -478,7 +477,7 @@ module Reactor
 
       protected
       def attribute_methods_overriden?
-        self.name != 'RailsConnector::AbstractObj'
+        self.name != 'RailsConnector::Obj'
       end
     end
   end
