@@ -37,6 +37,22 @@ require 'reactor/not_permitted'
 
 # require eager loader
 require 'rails_connector/meta/eager_loader'
-require 'components_loader'
 
-require 'session_loader'
+# require components
+require 'reactor/rails_connector_meta'
+require 'reactor/legacy'
+require 'reactor/validations'
+require 'reactor/permission'
+require 'reactor/workflow'
+require 'reactor/streaming_upload'
+require 'reactor/rc_independent'
+require 'reactor/sudo'
+require 'reactor/main'
+
+# require rails integration
+# session handling
+require 'reactor/session'
+require 'reactor/session/user'
+require 'reactor/session_helper/auth_helper'
+require 'reactor/session_helper/rsession_helper'
+require 'reactor/session_helper/session_state'

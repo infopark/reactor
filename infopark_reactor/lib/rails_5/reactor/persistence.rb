@@ -222,13 +222,15 @@ module Reactor
       # It should excactly match ActiveRecord::Base.new in it's behavior
       # @see ActiveRecord::Base.new
       def initialize(attributes = nil, &block)
-        if !self.class.send(:attribute_methods_overriden?)
+        if true || !self.class.send(:attribute_methods_overriden?)
           ignored_attributes = ignore_attributes(attributes)
           # supress block hijacking!
           super(attributes) {}
           load_ignored_attributes(ignored_attributes)
           yield self if block_given?
         else
+          # TODO
+          # here we get 'ActiveRecord::AssociationTypeMismatch'
           super(attributes)
         end
       end
@@ -477,7 +479,7 @@ module Reactor
 
       protected
       def attribute_methods_overriden?
-        self.name != 'RailsConnector::Obj'
+        self.name != 'RailsConnector::BasicObj'
       end
     end
   end
