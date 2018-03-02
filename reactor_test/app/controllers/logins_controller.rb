@@ -1,6 +1,6 @@
 class LoginsController < ApplicationController
   def show
-    render text: rsession.user_name
+    render plain: rsession.user_name
   end
 
   def create

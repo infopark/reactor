@@ -3,11 +3,11 @@ require 'reactor/tools/xpath_extractor'
 module Reactor
 
   module ResponseHandler
-    
+
     class XmlAttribute
       attr_accessor :response
       attr_accessor :context
-      
+
       def get(response, attribute)
         @response = response
         @context = context
@@ -92,7 +92,7 @@ module Reactor
       end
 
     end
-    
+
   end
 
 end

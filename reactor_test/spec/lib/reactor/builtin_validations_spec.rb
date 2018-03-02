@@ -1,8 +1,6 @@
-# -*- encoding : utf-8 -*-
 require 'spec_helper'
 
 describe 'Builtin validation' do
-  class ValidationClass < Obj ; end
 
   before  { @obj = ValidationClass.create(:name => 'validation_test', :parent => '/') }
   after   { @obj.destroy }

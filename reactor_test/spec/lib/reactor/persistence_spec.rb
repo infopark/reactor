@@ -26,9 +26,6 @@ describe Reactor::Persistence do
       expect(o.test_attr_text).to eq('test1')
       expect(o.test_attr_linklist.first.url).to eq('http://google.com')
 
-      allow(o).to receive(:test_attr_text) { 'hahah, no' }
-      allow(o).to receive(:test_attr_linklist) { 'whatever' }
-
       o.test_attr_text = 'test2'
       o.test_attr_linklist = [{:url => 'http://yahoo.com'}]
 
@@ -57,15 +54,15 @@ describe Reactor::Persistence do
 
     it 'sets suppress_export' do
       o1 = TestClassWithCustomAttributes.create(:parent => '/', :name => 'suppress1_')
-      expect(o1.suppress_export).to eq(0)
+      expect(o1.suppress_export).to be false
       o1.update_attributes(suppress_export: 1)
-      expect(o1.suppress_export).to eq(1)
+      expect(o1.suppress_export).to be true
 
 
       o2 = TestClassWithCustomAttributes.create(:parent => '/', :name => 'suppress2_', suppress_export: '1')
-      expect(o2.suppress_export).to eq(1)
+      expect(o2.suppress_export).to be true
       o2.update_attributes(suppress_export: 0)
-      expect(o2.suppress_export).to eq(0)
+      expect(o2.suppress_export).to be false
     end
   end
 
@@ -214,6 +211,7 @@ describe Reactor::Persistence do
     context "object without working version" do
       let(:obj) { stub_model(Obj) }
       before { allow(obj).to receive(:edited?) { false } }
+      before { allow(obj).to receive(:really_edited?) { false } }
       before { allow(obj).to receive(:workflow_name) { nil } }
 
       it "raises AlreadyReleased exception" do
@@ -430,6 +428,7 @@ describe Reactor::Persistence do
     context "the object has not been edited" do
       let(:obj) {stub_model(Obj)}
       before { allow(obj).to receive(:edited?) {false} }
+      before { allow(obj).to receive(:really_edited?) {false} }
       it "raises NoWorkingVersion" do
         expect { obj.take! }.to raise_exception(Reactor::NoWorkingVersion)
       end
@@ -665,20 +664,10 @@ describe Reactor::Persistence do
     end
   end
 
-  describe '#reload' do
-    skip
-  end
-
   describe '#resolve_refs' do
     context "object without resolved refs" do
       let(:obj) {Obj.find_by_path('/object_without_resolved_refs')}
-      it "resolves refs of the object" do
-        obj_id = obj.id
-        obj.resolve_refs
-        skip("68")
-        expect(Reactor::Cm::Obj.get(obj_id).send(:get_content_attr_text, :blob)).to match(/<a href="\.\.\/object_sure_to_exist\/index\.html">link<\/a>/)
-      end
-
+      
       it "returns true" do
         expect(obj.resolve_refs).to be_truthy
       end
@@ -705,10 +694,6 @@ describe Reactor::Persistence do
       expect(Obj).to be_exists(@obj.id)
       expect(@obj).to be_kind_of(Obj)
     end
-  end
-
-  describe '#save' do
-    skip
   end
 
   describe '#save!' do

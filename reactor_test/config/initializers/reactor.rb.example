@@ -1,0 +1,7 @@
+Reactor::Configuration.xml_access = {
+  :host => '127.0.0.1', # Fiona host
+  :port => 3002, # CM http port (TCL port + 1)
+  :id => '1234', # leave it as is
+  :username => 'root', # default user for all requests
+  :secret => 'MYSECRET' # instance secret!
+}

@@ -1,0 +1,58 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+  #   container_name: elasticsearch
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   mem_limit: 1g
+  #   environment:
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #     - xpack.security.enabled=false
+  #     - xpack.monitoring.enabled=false
+  #     - http.cors.enabled=true
+  #     - http.cors.allow-origin=*
+  #     - http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE
+  #     - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type, Content-Length
+  #   ports:
+  #     - 9200:9200
+  #   links:
+  #     - redis
+# Will see if needed
+#    volumes:
+#      - "es-data:/usr/share/elasticsearch/data"
+  app:
+    image: fiona7:latest
+    container_name: fiona
+    command: ./start.sh
+    environment:
+      - LD_LIBRARY_PATH="/fiona/CMS-Fiona-7.0.1/lib/sles:$LD_LIBRARY_PATH"
+    ports:
+      - "3001:3001"
+      - "3002:3002"
+      - "3011:3011"
+      - "8080:8080"
+      - "6000:6000"
+      - "6001:6001"
+      - "6002:6002"
+    links:
+      - mysql
+      # - redis
+      # - elasticsearch
+    depends_on:
+      - mysql
+      # - redis
+      # - elasticsearch
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - "6379:6379"

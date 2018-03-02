@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<configuration>
+    <adaptor>mysql</adaptor>
+    <server>db</server>
+    <database>reactor_test</database>
+    <user>reactor_user</user>
+    <password>reactor_user</password>
+    <port>3306</port>
+    <!-- You must NOT change the value for 'storeBlobsInDatabase' after you have
+        executed the application for the first time. If you do so you *will*
+        lose data. -->
+    <storeBlobsInDatabase>true</storeBlobsInDatabase>
+</configuration>

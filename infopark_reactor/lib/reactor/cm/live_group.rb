@@ -8,7 +8,7 @@ module Reactor
     # The LiveGroup class respects the user management configured in the content manager and
     # handles all live groups. See @Group for further details.
     class LiveGroup < Group
-      
+
       protected
 
       # Overwritten method from +Group+.
@@ -21,7 +21,7 @@ module Reactor
       end
 
     end
-    
+
   end
-  
+
 end

@@ -1,20 +1,22 @@
 cms: &cms
-  adapter: <%= defined?(Mysql2) ? 'mysql2' : 'mysql' %>
-  database: reactor
-  username: reactoruser
-  password: reactoruser
-  host: 33.33.33.10
+  adapter: mysql2
+  database: reactor_test
+  username: reactor_user
+  password: reactor_user
+  host: 127.0.0.1
   reconnect: true
 
 test:
   <<: *cms
 
+production:
+  <<: *cms
+
 development:
   #<<: *cms
-  adapter: <%= defined?(Mysql2) ? 'mysql2' : 'mysql' %>
-  database: test
+  adapter: mysql2
+  database: reactor_test_ugd
   username: root
-  password: 
-  host: localhost
+  password: root
+  host: 127.0.0.1
   reconnect: true
-

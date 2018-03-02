@@ -289,7 +289,7 @@ module Reactor
       end
 
       def changed_linklists
-        custom_attrs = 
+        custom_attrs =
           self.singleton_class.send(:instance_variable_get, '@_o_allowed_attrs') ||
           self.class.send(:instance_variable_get, '@_o_allowed_attrs') ||
           []
@@ -490,7 +490,7 @@ module Reactor
 
           if subclass_name.present? && subclass_name != self.name
             subclass = subclass_name.safe_constantize
-            
+
             if subclass # this if has been added
               unless descendants.include?(subclass)
                 raise ActiveRecord::SubclassNotFound.new("Invalid single-table inheritance type: #{subclass_name} is not a subclass of #{name}")

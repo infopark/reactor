@@ -2,8 +2,8 @@
 require 'spec_helper'
 
 unless defined?(TestClassWithCustomAttributes)
-  class TestClassWithCustomAttributes < Obj
-  end
+  # class TestClassWithCustomAttributes < Obj
+  # end
 end
 
 shared_examples "attribute type reader" do

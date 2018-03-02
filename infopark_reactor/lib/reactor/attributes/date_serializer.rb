@@ -1,30 +1,32 @@
-# -*- encoding : utf-8 -*-
+# return always utc-timestam in iso format 'YYYYMMDDhhmmss'
 module Reactor
   module Attributes
     class DateSerializer
-      def initialize(attr, value)
-        @attr, @value = attr, value
+      def initialize(key, value)
+        @attr, @value = key, value
       end
 
       def serialize
-        @serialized ||= serialize_date
+        @serialized ||= serialize_date(@value)
       end
 
       private
-      def serialize_date
-        if @value.is_a?(Time)
-          @value.dup.utc.to_iso
-        elsif @value.is_a?(String)
-          if iso_format?(@value)
-            @value
-          elsif !@value.empty?
-            Time.zone.parse(@value).utc.to_iso
+      def serialize_date(value)
+        return nil if value.blank?
+        if value.is_a?(Time) || value.is_a?(DateTime)
+          value.utc.to_s(:number)
+        elsif value.is_a?(String)
+          if iso_format?(value)
+            value
           else
-            # empty string <=> clear date
-            nil
+            begin
+              DateTime.parse(value).utc.to_s(:number)
+            rescue ArgumentError
+              nil
+            end
           end
         else
-          @value
+          nil
         end
       end
 

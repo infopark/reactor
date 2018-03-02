@@ -2,7 +2,7 @@ require 'reactor/cm/object_base'
 
 module Reactor
   module Cm
-    class AttributeGroup < ObjectBase 
+    class AttributeGroup < ObjectBase
       set_base_name 'attributeGroup'
 
       attribute :obj_class, name: :objClass

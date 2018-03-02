@@ -69,7 +69,6 @@ module Reactor
         end
 
         response = request.execute!
-
         response.ok?
       end
 

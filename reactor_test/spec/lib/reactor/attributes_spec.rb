@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 require 'spec_helper'
 
 describe Obj do
@@ -87,13 +86,13 @@ describe Reactor::Attributes do
 
     describe '#valid_from=' do
       it "sets valid_from" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_from = t
         expect(obj.valid_from).to eq(t)
       end
 
       it "propagates the value to [:valid_from]" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_from = t
         expect(obj[:valid_from]).to eq(t)
       end
@@ -101,27 +100,27 @@ describe Reactor::Attributes do
 
     describe '#valid_until=' do
       it 'sets valid_until' do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_until = t
         expect(obj.valid_until).to eq(t)
       end
 
       it "propagates the value to [:valid_until]" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.valid_until = t
         expect(obj[:valid_until]).to eq(t)
       end
     end
 
     describe '#suppress_export=' do
-      it 'sets valid_until' do
-        t = 1
+      it 'sets suppress_export' do
+        t = true
         obj.suppress_export = t
         expect(obj.suppress_export).to eq(t)
       end
 
       it "propagates the value to [:suppress_export]" do
-        t = 1
+        t = true
         obj.suppress_export = t
         expect(obj[:suppress_export]).to eq(t)
       end
@@ -175,12 +174,12 @@ describe Reactor::Attributes do
 
       context ':valid_from' do
         it "sets valid from" do
-          t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+          t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_from, t)
           expect(obj.valid_from).to eq(t)
         end
         it "propagates to [:valid_from]" do
-          t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+          t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_from, t)
           expect(obj[:valid_from]).to eq(t)
         end
@@ -188,12 +187,12 @@ describe Reactor::Attributes do
 
       context ':valid_until' do
         it "sets valid until" do
-          t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+          t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_until, t)
           expect(obj.valid_until).to eq(t)
         end
         it "propagates to [:valid_until]" do
-          t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+          t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
           obj.set(:valid_until, t)
           expect(obj[:valid_until]).to eq(t)
         end
@@ -230,12 +229,12 @@ describe Reactor::Attributes do
 
     describe 'test_attr_date=' do
       it "sets test_attr_date" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.test_attr_date = t
         expect(obj.test_attr_date).to eq(t)
       end
       it "propagates to [:test_attr_date]" do
-        t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
+        t = DateTime.parse('Wed Aug 24 11:16:46 UTC 2011')
         obj.test_attr_date = t
         expect(obj[:test_attr_date]).to eq(t)
       end
@@ -312,13 +311,16 @@ describe Reactor::Attributes do
 
     describe "#set" do
       it "doesn't raise exception for existing attributes" do
-        [:test_attr_date, :test_attr_html, :test_attr_string, :test_attr_text, :test_attr_enum].each do |a|
-          expect { obj.set(a, :token) }.not_to raise_exception(ArgumentError)
+        [:test_attr_html, :test_attr_string, :test_attr_text, :test_attr_enum].each do |a|
+          expect { obj.set(a, :token.to_s) }.not_to raise_exception
+        end
+        [:test_attr_date].each do |a|
+          expect { obj.set(a, DateTime.now) }.not_to raise_exception
         end
       end
 
       it "raises exception for invalid attributes" do
-        expect { obj.set(:invalid_attribute_for_sure, :token) }.to raise_exception(ArgumentError)
+        expect { obj.set(:invalid_attribute_for_sure, :token.to_s) }.to raise_exception(ArgumentError)
       end
 
       context ":test_attr_date" do
@@ -467,7 +469,7 @@ describe Reactor::Attributes do
     #   obj.send("#{attr}=", t)
     #   obj.send("#{attr}").should be_utc
     # end
-    # 
+    #
     # it "strips usec" do
     #   t = Time.parse("Wed Sep 07 11:54:32.123 +0200 2011")
     #   obj.send("#{attr}=", t)
@@ -488,7 +490,7 @@ describe Reactor::Attributes do
 
     it "rewrites links with matching path and existing obj" do
       allow(Obj).to receive(:exists?) {|id| id == @target_id}
-      
+
       obj.set(attr, "<a href=\"/#{@target_id}/#{@target_name}\">link</a>")
       expect(obj.send(attr)).to eq("<a href=\"#{@target_path}\">link</a>")
     end
@@ -569,8 +571,8 @@ describe Reactor::Attributes do
   end
 
   context "instance of subclass of Obj with custom attributes" do
-    class TestClassWithCustomAttributes < Obj
-    end
+    # class TestClassWithCustomAttributes < Obj
+    # end
 
     subject {TestClassWithCustomAttributes.find_by_path('/test_obj_with_custom_attributes')}
 
@@ -610,14 +612,12 @@ describe Reactor::Attributes do
       @target_name = 'abc'
       @target_id = 12345
       @target_obj = stub_obj(Obj, :path => @target_path)
-      Obj.stub_chain(:select, :find) do |id|
-        @target_obj if id == @target_id
-      end
+      allow(Obj).to receive_message_chain(:select, :find) {|id| @target_obj if id == @target_id }
     end
 
     it "isn't a link serializing attribute" do
       allow(Obj).to receive(:exists?) {|id| id == @target_id}
-    
+
       obj.set(attr, "<a href=\"/#{@target_id}/#{@target_name}\">link</a>")
       expect(obj.send(attr)).to eq("<a href=\"/#{@target_id}/#{@target_name}\">link</a>")
     end
