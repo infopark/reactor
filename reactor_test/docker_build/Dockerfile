@@ -10,7 +10,7 @@ RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends unzip build-essential vim \
     libc6:i386 libncurses5:i386 libstdc++6:i386 \
-    software-properties-common python-software-properties \
+    software-properties-common  \
     redis-tools  apt-utils
 
 
@@ -58,7 +58,7 @@ RUN rm -rf /Infopark-CMS-Fiona-7.0.1-Linux \
 
 ADD /create_db.sql .
 ADD /empty_cms.tgz .
-RUN tar xzf empty_cms.tgz 
+# RUN tar xzf empty_cms.tgz
 
 ADD /start.sh .
 RUN chmod +x start.sh
@@ -66,8 +66,7 @@ RUN chmod +x start.sh
 ADD /CM.sh /fiona/CMS-Fiona-7.0.1/instance/default/bin/CM
 RUN chmod +x /fiona/CMS-Fiona-7.0.1/instance/default/bin/CM
 ADD /cms/config/*  /fiona/CMS-Fiona-7.0.1/instance/default/config/
-ADD /cms/script/cm/serverCmds/* /fiona/CMS-Fiona-7.0.1/instance/default/script/cm/serverCmds/
-
+COPY /cms/script/cm  /fiona/CMS-Fiona-7.0.1/instance/default/script/cm
 
 # Define default command.
 CMD ["bash"]
