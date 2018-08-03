@@ -10,3 +10,4 @@ supported/*
 vagrant/*
 680-XML-Reference-de.pdf
 reactor_test/.ruby-version
+reactor_test/vendor/cache
