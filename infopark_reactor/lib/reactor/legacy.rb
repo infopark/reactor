@@ -46,10 +46,10 @@ module Reactor
 
       def obj_from_anything(anything)
         case anything
-        when Fixnum then RailsConnector::AbstractObj.find(anything)
+        when Integer then RailsConnector::AbstractObj.find(anything)
         when String then RailsConnector::AbstractObj.find_by_path(anything)
         when RailsConnector::AbstractObj then anything
-        else raise ArgumentError, "Link target must Fixnum, String or Obj, but was #{anything.class}."
+        else raise ArgumentError, "Link target must Integer, String or Obj, but was #{anything.class}."
         end
       end
 

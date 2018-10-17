@@ -197,7 +197,7 @@ module Reactor
       def permalink=(value)
         set(:permalink, value)
       end
-      
+
       def name=(value)
         set(:name, value)
       end
@@ -285,10 +285,10 @@ module Reactor
       # @deprecated
       def set_link(key, id_or_path_or_cms_obj)
         target_path = case id_or_path_or_cms_obj
-        when Fixnum then Obj.find(id_or_path_or_cms_obj).path
+        when Integer then Obj.find(id_or_path_or_cms_obj).path
         when String then id_or_path_or_cms_obj
         when Obj then id_or_path_or_cms_obj.path
-        else raise ArgumentError.new("Link target must Fixnum, String or Obj, but was #{id_or_path_or_cms_obj.class}.")
+        else raise ArgumentError.new("Link target must Integer, String or Obj, but was #{id_or_path_or_cms_obj.class}.")
         end
 
         edit!
@@ -315,7 +315,7 @@ module Reactor
       def allowed_attr?(attr)
         return true if builtin_attr?(attr)
 
-        custom_attrs = 
+        custom_attrs =
           self.singleton_class.send(:instance_variable_get, '@_o_allowed_attrs') ||
           self.class.send(:instance_variable_get, '@_o_allowed_attrs') ||
           []
