@@ -5,7 +5,7 @@ module Reactor
   module Cm
     class Obj
       attr_reader :obj_id
-      OBJ_ATTRS = [:permalink, :objClass, :workflowName, :name, :suppressExport, :parent] 
+      OBJ_ATTRS = [:permalink, :objClass, :workflowName, :name, :suppressExport, :parent]
       ATTR_LENGTH_CONSTRAINT = {:name => 250, :title => 250}
 
       def self.create(name, parent, objClass)
@@ -249,6 +249,10 @@ module Reactor
         simple_command("release",msg)
       end
 
+      def unrelease!(msg=nil)
+        simple_command("unrelease",msg)
+      end
+
       def edit!(msg=nil)
         simple_command("edit",msg)
       end
@@ -317,7 +321,7 @@ module Reactor
           end
           xml.tag!('content-resolveRefs')
         end
-        response = request.execute!
+        request.execute!
       end
 
       def path
@@ -360,7 +364,7 @@ module Reactor
           xml.get_key_tag!('content', 'workflowComment')
         end
         response = request.execute!
-        result = response.xpath('//workflowComment/*').map {|x| x.text.to_s}.first
+        response.xpath('//workflowComment/*').map {|x| x.text.to_s}.first
       end
 
       def editor
@@ -418,7 +422,7 @@ module Reactor
             xml.tag!("#{base_name}-#{cmd_name}")
           end
         end
-        response = @request.execute!
+        @request.execute!
       end
 
       def base_name

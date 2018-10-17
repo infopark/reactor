@@ -38,6 +38,18 @@ module Reactor
         return false
       end
 
+      # Unreleases the object. Returns true on success,
+      # false when one of the following occurs:
+      # 1. user lacks the permissions
+      # 2. the object is not released
+      # 3. object is invalid
+      # 4. other error occoured
+      def unrelease(comment=nil)
+        return unrelease!(comment)
+      rescue Reactor::Cm::XmlRequestError, ActiveRecord::RecordInvalid, Reactor::NotPermitted
+        return false
+      end
+
       # Removes the working version of the object,
       # if it exists
       # @param comment [String] comment to leave for the next user
@@ -68,6 +80,14 @@ module Reactor
           crul_obj.release!(comment)
           reload
         end
+        return true
+      end
+
+      # Unreleases the object. Returns true on succes, can raise exceptions
+      # @param comment [String] comment to leave for the next user
+      def unrelease!(comment=nil)
+        crul_obj.unrelease!(comment)
+        reload
         return true
       end
 
@@ -289,7 +309,7 @@ module Reactor
       end
 
       def changed_linklists
-        custom_attrs = 
+        custom_attrs =
           self.singleton_class.send(:instance_variable_get, '@_o_allowed_attrs') ||
           self.class.send(:instance_variable_get, '@_o_allowed_attrs') ||
           []
@@ -490,7 +510,7 @@ module Reactor
 
           if subclass_name.present? && subclass_name != self.name
             subclass = subclass_name.safe_constantize
-            
+
             if subclass # this if has been added
               unless descendants.include?(subclass)
                 raise ActiveRecord::SubclassNotFound.new("Invalid single-table inheritance type: #{subclass_name} is not a subclass of #{name}")
