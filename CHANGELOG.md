@@ -1,3 +1,6 @@
+## 1.26.1
+- [fix] replace Fixnum with Integer
+- [new] Add unrelease for Obj
 ## 1.26.0
 * Implement Jobs API
 

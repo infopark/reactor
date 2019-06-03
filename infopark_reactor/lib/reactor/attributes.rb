@@ -127,10 +127,10 @@ module Reactor
       # @deprecated
       def set_link(key, id_or_path_or_cms_obj)
         target_path = case id_or_path_or_cms_obj
-        when Fixnum then Obj.find(id_or_path_or_cms_obj).path
+        when Integer then Obj.find(id_or_path_or_cms_obj).path
         when String then id_or_path_or_cms_obj
         when Obj then id_or_path_or_cms_obj.path
-        else raise ArgumentError.new("Link target must Fixnum, String or Obj, but was #{id_or_path_or_cms_obj.class}.")
+        else raise ArgumentError.new("Link target must Integer, String or Obj, but was #{id_or_path_or_cms_obj.class}.")
         end
 
         edit!

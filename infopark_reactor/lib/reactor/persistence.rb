@@ -38,6 +38,18 @@ module Reactor
         return false
       end
 
+      # Unreleases the object. Returns true on success,
+      # false when one of the following occurs:
+      # 1. user lacks the permissions
+      # 2. the object is not released
+      # 3. object is invalid
+      # 4. other error occoured
+      def unrelease(comment=nil)
+        return unrelease!(comment)
+      rescue Reactor::Cm::XmlRequestError, ActiveRecord::RecordInvalid, Reactor::NotPermitted
+        return false
+      end
+
       # Removes the working version of the object,
       # if it exists
       # @param comment [String] comment to leave for the next user
@@ -68,6 +80,14 @@ module Reactor
           crul_obj.release!(comment)
           reload
         end
+        return true
+      end
+
+      # Unreleases the object. Returns true on succes, can raise exceptions
+      # @param comment [String] comment to leave for the next user
+      def unrelease!(comment=nil)
+        crul_obj.unrelease!(comment)
+        reload
         return true
       end
 

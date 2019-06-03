@@ -11,11 +11,11 @@ module Reactor
 
       def initialize(anything)
         link_data = {}
-        
+
         case anything
         when Hash
           link_data = anything
-        when Fixnum
+        when Integer
           link_data[:url] = RailsConnector::AbstractObj.find(anything).path
         else
           link_data[:url] = anything
