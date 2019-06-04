@@ -1,5 +1,5 @@
-class AddNamedLinks < ActiveRecord::Migration[5.1]
-  def change
+class AddNamedLinks < Reactor::Migration
+  def self.up
     create_attribute name: 'related_links', type: 'linklist'
     create_class name: 'NamedLink', type: 'document' do
       set :title,
@@ -8,5 +8,10 @@ class AddNamedLinks < ActiveRecord::Migration[5.1]
 
       take :related_links
     end
+  end
+
+  def self.down
+    delete_class name: 'NamedLink'
+    delete_attribute name: 'related_links'
   end
 end
