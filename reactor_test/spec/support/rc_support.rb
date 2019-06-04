@@ -1,4 +1,5 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
+
 module RCSupport
   def stub_obj(class_name, attributes={})
     stub = stub_model(class_name)

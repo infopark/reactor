@@ -1,7 +1,8 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe TrivialHelper, :type => :helper do
+describe TrivialHelper, type: :helper do
   describe '#rsession' do
     it 'is a Reactor::Session' do
       expect(helper.rsession).to be_kind_of(Reactor::Session)

@@ -1,9 +1,16 @@
-source "https://rubygems.org"
-gem "rspec-rails", '3.7.2'
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+gem 'rspec-rails', '3.7.2'
+
 gem 'rspec-activemodel-mocks'
-gem "infopark_fiona_connector", '7.0.1.5.1.4.rc2' # :path => '../../fiona_connector'
-gem "infopark_reactor", :path=>"../infopark_reactor"
+# gem "infopark_fiona_connector", '7.0.1.5.1.4.rc2'
+
+gem 'infopark_fiona_connector', path: '../../fiona_connector'
+gem 'infopark_reactor', path: '../infopark_reactor'
 gem 'mysql_blob_streaming', '2.2.1'
 
-gem "mysql2",  '0.3.21'
-gem 'rails',  '~> 5.0'
+gem 'mysql2', '0.3.21'
+
+gem 'rails', '~> 5.0'

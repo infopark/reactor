@@ -1,4 +1,5 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe "Reactor without credentials" do
@@ -7,7 +8,8 @@ describe "Reactor without credentials" do
   end
 
   after do
-    Reactor::Configuration.xml_access[:username] = 'root' #removing this line will break so many tests ...
+    #removing this line will break so many tests ...
+    Reactor::Configuration.xml_access[:username] = 'root'
   end
 
   it "raises a descriptive exception" do
