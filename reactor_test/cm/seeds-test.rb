@@ -37,7 +37,6 @@ def drop_db_if_exists(db_name, db_config)
 end
 
 prepare_cms_db 'reactor_test'
-puts '----- 1'
 
 klass_name = 'TestClassWithCustomAttributes'
 if RailsConnector::ObjClass.find_by_name(klass_name).blank?
