@@ -11,12 +11,11 @@ services:
     ports:
       - "3306:3306"
   fiona:
-    image: fiona:7.0.1
+    image: fiona7_reactor #fiona:7.0.1
     container_name: fiona7_reactor
-    #command: /bin/bash
-    command: tail -f ./trifork-4.1.40/domains/default/logs/default/server.log
-    volumes:
-      - ./cms_instance:/fiona/CMS-Fiona-7.0.1/instance/default
+    command: tail -f /fiona/CMS-Fiona-7.0.1/instance/default/log/error.log
+    #volumes:
+    #  - ./cms_instance:/fiona/CMS-Fiona-7.0.1/instance/default
     environment:
       - LD_LIBRARY_PATH="/fiona/CMS-Fiona-7.0.1/lib/sles:$LD_LIBRARY_PATH"
       - TERM=xterm
