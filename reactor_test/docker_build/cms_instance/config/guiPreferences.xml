@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guiPreferences>
+<!-- For explanations see guiPreferences.format -->
+  <currentRole>admin</currentRole>
+  <userMenu fileName="userMenu.xml"/>
+  <userSearches/>
+  <objClassHistory/>
+  <objectHistory/>
+<!-- current state of all browsers -->
+  <browserStates>
+<!-- current state of column browser
+        browserWidth: the percentage width when displaying the inspector
+        numCols: display columns (greater zero, [3..7] are typical)
+        -->
+    <cb>
+      <browserWidth>60</browserWidth>
+      <numCols>5</numCols>
+    </cb>
+<!-- current state of tree browser
+        browserWidth: the percentage width when displaying the inspector
+        root: identifier of display root
+        expandedNodes: list of identifiers of initial expanded nodes
+        -->
+    <tb>
+      <browserWidth>60</browserWidth>
+      <root/>
+      <expandedNodes/>
+    </tb>
+<!-- current state of icon browser
+        browserWidth: the percentage width when displaying the inspector
+        -->
+    <ib>
+      <browserWidth>60</browserWidth>
+    </ib>
+  </browserStates>
+<!-- Current theme. Allowed are all names of directories appearing
+    below webapps/NPS/themes/. -->
+  <theme>default</theme>
+<!-- values used in the GUI stylesheet -->
+  <userStyle>
+        <!-- missing values will be filled in from default theme -->
+    </userStyle>
+  <externalEditors/>
+  <blobEditors/>
+  <externalEditorEncoding>ISO-8859-1</externalEditorEncoding>
+  <startArea>browse_page</startArea>
+  <startingPublication>2001</startingPublication>
+  <wantChildrenSorted>true</wantChildrenSorted>
+  <wantWorkflowConfirmation>true</wantWorkflowConfirmation>
+  <hideMenu>false</hideMenu>
+  <showRelativeDates>false</showRelativeDates>
+  <browserName>cb</browserName>
+</guiPreferences>

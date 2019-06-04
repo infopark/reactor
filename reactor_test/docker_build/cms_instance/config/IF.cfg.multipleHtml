@@ -1,0 +1,119 @@
+[KVHTMLTemplateEx]
+szMainTop=<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"> <HTML> <HEAD> <TITLE>$SUMMARY01</TITLE> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=$CHARSET"> $SUMMARY $USERSUMMARY </HEAD> <FRAMESET COLS="25%,75%"> <FRAME SRC="$XANCHOR" NAME="Left" SCROLLING="AUTO" TARGET="Right"> <FRAME SRC="$ANCHOR" NAME="Right" SCROLLING="AUTO"> </FRAMESET> <BODY LINK="#004080" VLINK="#8080C0">
+szMainBottom=</BODY> </HTML>
+szFirstH1Start=<TABLE BORDER="0" CELLPADDING="15" WIDTH="100%" BGCOLOR="#000000"><TR><TD><FONT COLOR="#FFFFFF" SIZE="5" FACE="Arial"><EM><STRONG>$SUMMARY01</STRONG></EM></FONT><BR><FONT COLOR="#FFFFFF" SIZE="4" FACE="Arial"><EM>$TOCTE</EM></FONT></TD></TR></TABLE><P>$HEADER<P>
+szFirstH1End=<P><CENTER><A HREF="$NEXT">Next</A></CENTER><BR>$FOOTER<BR>
+szMiddleH1Start=<TABLE BORDER="0" CELLPADDING="15" WIDTH="100%" BGCOLOR="#000000"><TR><TD><FONT COLOR="#FFFFFF" SIZE="5" FACE="Arial"><EM><STRONG>$SUMMARY01</STRONG></EM></FONT><BR><FONT COLOR="#FFFFFF" SIZE="4" FACE="Arial"><EM>$TOCTE</EM></FONT></TD></TR></TABLE><P>$HEADER<P>
+szMiddleH1End=<P><CENTER><A HREF="$PREV">Previous</A> <A HREF="$NEXT">Next</A></CENTER><BR>$FOOTER<BR>
+szLastH1Start=<TABLE BORDER="0" CELLPADDING="15" WIDTH="100%" BGCOLOR="#000000"><TR><TD><FONT COLOR="#FFFFFF" SIZE="5" FACE="Arial"><EM><STRONG>$SUMMARY01</STRONG></EM></FONT><BR><FONT COLOR="#FFFFFF" SIZE="4" FACE="Arial"><EM>$TOCTE</EM></FONT></TD></TR></TABLE><P>$HEADER<P>
+szLastH1End=<P><CENTER><A HREF="$PREV">Previous</A></CENTER><BR>$FOOTER<BR>
+szH2HTML=<H2><A NAME="$ANCHOR"></A>$TOCE</H2>
+szH3HTML=<H3><A NAME="$ANCHOR"></A>$TOCE</H3>
+szH4HTML=<H4><A NAME="$ANCHOR"></A>$TOCE</H4>
+szH5HTML=<H5><A NAME="$ANCHOR"></A>$TOCE</H5>
+szH6HTML=<H6><A NAME="$ANCHOR"></A>$TOCE</H6>
+szTOCH1Start=<OL type = I>
+szTOCH2Start=<OL type = A>
+szTOCH3Start=<OL type = 1>
+szTOCH4Start=<OL type = i>
+szTOCH5Start=<OL type = a>
+szTOCH6Start=<UL>
+szTOC_H1=<LI><FONT FACE="Arial" SIZE="2"><A HREF="$ANCHOR" TARGET="Right">$TOCTE</A></FONT>
+szTOC_H2=<LI><FONT FACE="Arial" SIZE="2"><A HREF="$TOPANCHOR#$ANCHOR" TARGET="Right">$TOCTE</A></FONT>
+szTOC_H3=<LI><FONT FACE="Arial" SIZE="2"><A HREF="$TOPANCHOR#$ANCHOR" TARGET="Right">$TOCTE</A></FONT>
+szTOC_H4=<LI><FONT COLOR="#8080C0" FACE="Arial" SIZE="2"><A HREF="$TOPANCHOR#$ANCHOR" TARGET="Right">$TOCTE</A></FONT>
+szTOC_H5=<LI><FONT COLOR="#8080C0" FACE="Arial" SIZE="2"><A HREF="$TOPANCHOR#$ANCHOR" TARGET="Right">$TOCTE</A></FONT>
+szTOC_H6=<LI><FONT COLOR="#FF0000" FACE="Arial" SIZE="2"><A HREF="$TOPANCHOR#$ANCHOR" TARGET="Right">$TOCTE</A></FONT>
+szTOCH1End=</OL>
+szTOCH2End=</OL>
+szTOCH3End=</OL>
+szTOCH4End=</OL>
+szTOCH5End=</OL>
+szTOCH6End=</UL>
+szXFile=<BODY BGCOLOR="#FFFFFF" LINK="#00408" VLINK="#8080C0" ALINK="#FF0000"><FONT COLOR="#000000" SIZE="5" FACE="ARIAL"><EM><STRONG>Table of Contents</EM></STRONG></FONT><P>$TOC</P></BODY>
+szXStartBlock=<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"> <HTML> <HEAD> <TITLE>$SUMMARY01, $MAINURL:$TOPANCHOR</TITLE> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=$CHARSET"> <META NAME="Author" CONTENT="$SUMMARY03"> </HEAD>
+szXEndBlock=</HTML>
+szStartBlock=<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"> <HTML> <HEAD>  <TITLE>$SUMMARY01, $MAINURL:$TOPANCHOR</TITLE> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=$CHARSET"> <META NAME="Author" CONTENT="$SUMMARY03"> </HEAD> <BODY BGCOLOR="#FFFFFF" LINK="#004080" VLINK="#8080C0">
+szEndBlock=</BODY> </HTML>
+bPutBlocksInSeparateFiles=TRUE
+bHardPageMakesNewBlock=FALSE
+lcbBlockSize=
+szChunkTemplate=
+szTableHTML=
+bTableHTMLForSpreadsheetOnly=TRUE
+szUserSummary=<META NAME="$NAME" CONTENT="$CONTENT">
+szTOCH1LeafNode=
+szTOCH2LeafNode=
+szTOCH3LeafNode=
+szTOCH4LeafNode=
+szTOCH5LeafNode=
+szTOCH6LeafNode=
+
+
+[KVHTMLOptionsEx]
+OutputCharSet=KVCS_UTF8
+bUseDocumentColors=TRUE
+bUseDocumentFontInfo=TRUE
+bSupportFontFace=TRUE
+bSupportUserFontSizeMapping=TRUE
+FontSizeMap=8,10,12,14,18,24,36
+bDisplayRelativeFontSize=TRUE
+bSupportRFC1942_cols=TRUE
+bNbspEmptyCells=TRUE
+SATableBorder=SA_BaseOnDocument
+nTableBorderWidth=3
+szBaseURL=
+szMainURL=
+szDefaultOutputDirectory=
+szPicPath=
+szPicURL=
+szJavaURL=
+bRemoveFileNameSpaces=FALSE
+bRasterizeFiles=TRUE
+OutputRasterGraphicType=KVGFX_JPEG
+OutputVectorGraphicType=KVGFX_JPEG
+cxVectorToRasterXRes=500
+cyVectorToRasterYRes=500
+bGenerateURLs=TRUE
+lcbMaxMemUsage=
+bSupportColumnHeadings=FALSE
+bSupportRowHeadings=FALSE
+bSupportCellSpan=FALSE
+bSupportRowSpan=FALSE
+bSupportColumnWidth=TRUE
+bRemoveEmptyColumns=FALSE
+nRowsBeforeSplit=20
+OutputLanguageID=Language_UNKNOWN
+eStyleSheetType=CSS_INLINE
+bTabsToTables=FALSE
+bForceOutputCharSet=TRUE
+bEnableEmptyRows=FALSE
+cReplaceChar=
+cRedact=
+eSrcCharSet=KVCS_8859_1
+bForceSrcCharSet=TRUE
+nCompressionQuality=0
+bNoPictures=FALSE
+
+
+[KVHTMLHeadingInfo]
+minParaLen=5,5,5
+maxParaLen=80,80,80
+fontSizeMin=14,12,10
+fontSizeMax=96,12,12
+bMustBeBold=TRUE,TRUE,TRUE
+bMustBeItalic=FALSE,FALSE,FALSE
+bMustBeUnderlined=FALSE,FALSE,FALSE
+bNonZeroIndent=FALSE,FALSE,FALSE
+bNoTabs=FALSE,FALSE,FALSE
+bNoMultiSpaces=FALSE,FALSE,FALSE
+mSpaceBefore=-1,-1,-1
+mSpaceAfter=-1,-1,-1
+
+
+[KVHTMLTOCOptions]
+bAllowHeadingsInTables=FALSE
+headingCreateType=KVHC_DocHeadingsOnly
+
+
+

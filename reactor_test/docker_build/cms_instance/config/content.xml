@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content>
+<!-- Whether to log login and receiver in the logEntries -->
+  <anonymousWorkflowLog>false</anonymousWorkflowLog>
+  <caseSensitiveObjectNames>true</caseSensitiveObjectNames>
+  <contentService>
+    <defaultPublication>publication</defaultPublication>
+  </contentService>
+  <generateThumbnails>true</generateThumbnails>
+  <genericDocumentsCanContainImages>false</genericDocumentsCanContainImages>
+  <inputCharsets type="list">
+    <listitem>iso8859-1</listitem>
+    <listitem>iso8859-2</listitem>
+    <listitem>utf-8</listitem>
+  </inputCharsets>
+  <invalidAnchorTargets/>
+  <keepOldVersions>true</keepOldVersions>
+  <mimeTypes fileName="mimeTypes.xml"/>
+  <publicationIndexFileName>index</publicationIndexFileName>
+  <sortKey>name</sortKey>
+  <thumbnailSize>48</thumbnailSize>
+  <validAnchorTargets/>
+  <workflow>
+    <editStepMembershipRequiredForEditor>false</editStepMembershipRequiredForEditor>
+  </workflow>
+  <linkChecker>
+    <whiteList>
+<!-- no check at all -->
+      <entry urlPattern="http://localhost/*" httpCodePatterns="*"/>
+<!-- check but only accept certain HTTP response codes -->
+      <entry urlPattern="https://intranet.infopark/*" httpCodePatterns="40*,41*"/>
+    </whiteList>
+    <timeout>5</timeout>
+  </linkChecker>
+</content>

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+binDir=`dirname "$0"`
+NPS_INSTANCEDIR=`cd "$binDir/.." && /bin/pwd`
+export NPS_INSTANCEDIR
+NPS_BASEDIR=`cd "$NPS_INSTANCEDIR/../.." && /bin/pwd`
+export NPS_BASEDIR
+
+LIB_FOUNDATION_RESOURCES_PATH="$NPS_BASEDIR"/3rdparty/libFoundation
+export LIB_FOUNDATION_RESOURCES_PATH
+
+PATH="$NPS_BASEDIR"/3rdparty/bin:"$PATH"
+export PATH
+
+test -x "$NPS_BASEDIR"/3rdparty/bin/tclsh && {
+    for path in "$NPS_BASEDIR"/3rdparty/lib/tcl?.?; do
+        TCL_LIBRARY="$path"
+        export TCL_LIBRARY
+    done
+    TCLLIBPATH="$NPS_BASEDIR"/3rdparty/lib
+    export TCLLIBPATH
+}
+
+LD_LIBRARY_PATH="$NPS_BASEDIR"/lib:"$NPS_BASEDIR"/3rdparty/lib:"$LD_LIBRARY_PATH"
+test -f /etc/SuSE-release && {
+    LD_LIBRARY_PATH="$NPS_BASEDIR"/lib/sles:"$LD_LIBRARY_PATH"
+}
+export LD_LIBRARY_PATH
+
+export PATH
+
+exec "$NPS_BASEDIR/lib/TE.bin" "$@"

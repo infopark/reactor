@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <handler>ldap</handler>
+    <config>
+        <host>ldap.server</host>
+        <port>389</port>
+        <secureConnection>none</secureConnection>
+        <protocolVersion>3</protocolVersion>
+        <bindDn/>
+        <bindPassword/>
+
+        <groupFilter>(objectclass=groupOfUniqueNames)</groupFilter>
+        <groupSearchBase>ou=groups,dc=company,dc=de</groupSearchBase>
+        <groupResolver>
+            <name>lookup</name>
+            <properties>
+                <idAttribute>ou</idAttribute>
+            </properties>
+        </groupResolver>
+        <groupAttributeMapping>
+            <name>cn</name>
+            <realName>description</realName>
+        </groupAttributeMapping>
+        <groupToUserRelationAttribute>uniqueMember</groupToUserRelationAttribute>
+
+        <userFilter>(objectclass=inetOrgPerson)</userFilter>
+        <userSearchBase>ou=people,dc=company,dc=de</userSearchBase>
+        <userResolver>
+            <name>lookup</name>
+            <properties>
+                <idAttribute>uid</idAttribute>
+            </properties>
+        </userResolver>
+        <userAttributeMapping>
+            <login>sn</login>
+            <realName>cn</realName>
+        </userAttributeMapping>
+
+        <globalPermissionResolver>
+            <name>simple</name>
+            <properties/>
+        </globalPermissionResolver>
+
+        <superUsers type="list">
+            <login>root</login>
+        </superUsers>
+    </config>
+</configuration>
+

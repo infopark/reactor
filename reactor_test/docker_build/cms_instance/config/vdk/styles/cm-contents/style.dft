@@ -1,0 +1,9 @@
+#
+# Document Format
+#
+$control: 1
+dft:
+{
+  field: DOC
+    /filter = "flt_xml"
+} 

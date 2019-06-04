@@ -1,0 +1,29 @@
+#
+# Configuration file. Please feel free to change it
+#
+# Verity Data Access Gateway Definition
+
+$control:1
+gateway:
+{
+  $include vgwfsys.vgw
+
+  vgw:
+  {
+    #uncomment the line below to stack http with fsys,
+    #otherwise, please comment the line below
+    $include vgwhttp.vgw
+  }
+  vgw:
+  {
+    dda: vgwkvcn
+    protocols: vzip vpst
+    #can be an absolute file path
+    config: cache-dir ../kvcache
+    #in secs, -1, means no expiration
+    #          0, means cache is always recreated
+    config: cache-timeout -1
+  }
+}
+$$
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <handler>ads</handler>
+    <config>
+        <host>ads.server</host>
+        <port>389</port>
+        <bindDn>cn=administrator,cn=Users,dc=company,dc=de</bindDn>
+        <bindPassword>password</bindPassword>
+
+        <groupFilter>(objectclass=group)</groupFilter>
+        <groupSearchBase>ou=NpsGroups,dc=company,dc=de</groupSearchBase>
+        <groupResolver>
+            <name>lookup</name>
+            <properties>
+                <idAttribute>sAMAccountName</idAttribute>
+            </properties>
+        </groupResolver>
+
+        <userFilter>(objectclass=user)</userFilter>
+        <userSearchBase>cn=Users,dc=company,dc=de</userSearchBase>
+        <userResolver>
+            <name>lookup</name>
+            <properties>
+                <idAttribute>sAMAccountName</idAttribute>
+            </properties>
+        </userResolver>
+
+        <globalPermissionResolver>
+            <name>simple</name>
+            <properties/>
+        </globalPermissionResolver>
+
+        <useServerSideExpansion>true</useServerSideExpansion>
+        <!--
+        <transitiveModifier>1.2.840.113556.1.4.1941</transitiveModifier>
+        -->
+
+        <superUsers type="list">
+            <login>root</login>
+        </superUsers>
+    </config>
+</configuration>
+

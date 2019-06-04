@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <handler>ldap</handler>
+    <config>
+        <host>ldap.server</host>
+        <port>389</port>
+        <secureConnection>none</secureConnection>
+        <protocolVersion>3</protocolVersion>
+        <bindDn/>
+        <bindPassword/>
+
+        <groupFilter>(objectclass=posixGroup)</groupFilter>
+        <groupSearchBase>ou=groups,dc=company,dc=de</groupSearchBase>
+        <groupResolver>
+            <name>simple</name>
+            <properties>
+                <dnFormat>cn=%s,ou=groups,dc=company,dc=de</dnFormat>
+            </properties>
+        </groupResolver>
+        <groupAttributeMapping>
+            <name>cn</name>
+            <realName>description</realName>
+        </groupAttributeMapping>
+        <groupToUserRelationAttribute>memberUid</groupToUserRelationAttribute>
+        <memberValueIsLogin>true</memberValueIsLogin>
+
+        <userFilter>(objectclass=posixAccount)</userFilter>
+        <userSearchBase>ou=people,dc=company,dc=de</userSearchBase>
+        <userResolver>
+            <name>simple</name>
+            <properties>
+                <dnFormat>cn=%s,ou=people,dc=company,dc=de</dnFormat>
+            </properties>
+        </userResolver>
+        <userAttributeMapping>
+            <login>cn</login>
+            <realName>description</realName>
+        </userAttributeMapping>
+
+        <globalPermissionResolver>
+            <name>simple</name>
+            <properties/>
+        </globalPermissionResolver>
+
+        <superUsers type="list">
+            <login>root</login>
+        </superUsers>
+    </config>
+</configuration>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<style.xml version="3.0.0">
+    <field xmltag="name"/>
+    <field xmltag="state"/>
+    <field xmltag="objType"/>
+    <field xmltag="objClass"/>
+    <field xmltag="title"/>
+    <field xmltag="lastChanged"/>
+    <field xmltag="validFrom"/>
+    <field xmltag="validUntil"/>
+    <field xmltag="objId"/>
+    <field xmltag="abstract"/>
+    <field xmltag="pl_zusammenfassung"/>
+    <field xmltag="blobLength"/>
+    <ignore xmltag="ses-indexDoc"/>
+</style.xml>

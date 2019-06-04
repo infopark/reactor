@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <content fileName="content.xml">
+<!-- Whether to log login and receiver in the logEntries -->
+    <anonymousWorkflowLog>false</anonymousWorkflowLog>
+    <caseSensitiveObjectNames>true</caseSensitiveObjectNames>
+    <contentService>
+      <defaultPublication>publication</defaultPublication>
+    </contentService>
+    <generateThumbnails>true</generateThumbnails>
+    <genericDocumentsCanContainImages>false</genericDocumentsCanContainImages>
+    <inputCharsets type="list">
+      <listitem>iso8859-1</listitem>
+      <listitem>iso8859-2</listitem>
+      <listitem>utf-8</listitem>
+    </inputCharsets>
+    <invalidAnchorTargets/>
+    <keepOldVersions>true</keepOldVersions>
+    <mimeTypes fileName="mimeTypes.xml">
+      <pdf>application/pdf</pdf>
+      <html>text/html</html>
+      <jpg>image/jpeg</jpg>
+      <asp>text/html</asp>
+      <bz2>application/x-bzip2</bz2>
+      <class>application/class</class>
+      <css>text/css</css>
+      <doc>application/msword</doc>
+      <frame>application/vnd.framemaker</frame>
+      <gif>image/gif</gif>
+      <gz>application/x-gzip</gz>
+      <htm>text/html</htm>
+      <ico>image/x-icon</ico>
+      <inc>text/html</inc>
+      <jar>application/java-archive</jar>
+      <java>text/plain</java>
+      <jpeg>image/jpeg</jpeg>
+      <js>text/plain</js>
+      <jsp>text/html</jsp>
+      <m4a>audio/mp4</m4a>
+      <m4v>video/mp4</m4v>
+      <mp4>video/mp4</mp4>
+      <mp3>audio/mpeg</mp3>
+      <mov>video/quicktime</mov>
+      <php>text/html</php>
+      <png>image/png</png>
+      <pps>application/vnd.ms-powerpoint</pps>
+      <ppt>application/vnd.ms-powerpoint</ppt>
+      <properties>text/plain</properties>
+      <rtf>application/rtf</rtf>
+      <shtml>text/html</shtml>
+      <stc>application/vnd.sun.xml.calc.template</stc>
+      <stw>application/vnd.sun.xml.writer.template</stw>
+      <swf>application/x-shockwave-flash</swf>
+      <sxc>application/vnd.sun.xml.calc</sxc>
+      <sxw>application/vnd.sun.xml.writer</sxw>
+      <tar>application/x-gtar</tar>
+      <tbz2>application/x-bzip2</tbz2>
+      <templ>text/html</templ>
+      <tgz>application/x-gzip</tgz>
+      <tif>image/tiff</tif>
+      <tiff>image/tiff</tiff>
+      <txt>text/plain</txt>
+      <wmf>image/wmf</wmf>
+      <wml>text/html</wml>
+      <xls>application/vnd.ms-excel</xls>
+      <xml>text/plain</xml>
+      <zip>application/zip</zip>
+    </mimeTypes>
+    <publicationIndexFileName>index</publicationIndexFileName>
+    <sortKey>name</sortKey>
+    <thumbnailSize>48</thumbnailSize>
+    <validAnchorTargets/>
+    <workflow>
+      <editStepMembershipRequiredForEditor>false</editStepMembershipRequiredForEditor>
+    </workflow>
+  </content>
+  <export fileName="export.xml">
+    <abortOnError>false</abortOnError>
+    <absoluteFsPathPrefix/>
+    <absoluteUrlPrefix/>
+    <charset>utf-8</charset>
+    <charsetMap>
+      <ascii>US-ASCII</ascii>
+      <big5>Big5</big5>
+      <cp437>IBM437</cp437>
+      <cp775>IBM775</cp775>
+      <cp850>IBM850</cp850>
+      <cp852>IBM852</cp852>
+      <cp855>IBM855</cp855>
+      <cp857>IBM857</cp857>
+      <cp860>IBM860</cp860>
+      <cp861>IBM861</cp861>
+      <cp862>IBM862</cp862>
+      <cp863>IBM863</cp863>
+      <cp864>IBM864</cp864>
+      <cp865>IBM865</cp865>
+      <cp866>IBM866</cp866>
+      <cp869>IBM869</cp869>
+      <euc-cn>GB2312</euc-cn>
+      <euc-jp>EUC-JP</euc-jp>
+      <euc-kr>EUC-KR</euc-kr>
+      <gb1988>ISO646-CN</gb1988>
+      <gb2312>GB_2312-80</gb2312>
+      <iso2022-jp>ISO-2022-JP</iso2022-jp>
+      <iso2022-kr>ISO-2022-KR</iso2022-kr>
+      <iso8859-15>ISO-8859-15</iso8859-15>
+      <iso8859-1>ISO-8859-1</iso8859-1>
+      <iso8859-2>ISO-8859-2</iso8859-2>
+      <iso8859-3>ISO-8859-3</iso8859-3>
+      <iso8859-4>ISO-8859-4</iso8859-4>
+      <iso8859-5>ISO-8859-5</iso8859-5>
+      <iso8859-6>ISO-8859-6</iso8859-6>
+      <iso8859-7>ISO-8859-7</iso8859-7>
+      <iso8859-8>ISO-8859-8</iso8859-8>
+      <iso8859-9>ISO-8859-9</iso8859-9>
+      <jis0201>JIS_C6220-1969</jis0201>
+      <jis0208>JIS_C6226-1983</jis0208>
+      <jis0212>JIS_X0212-1990</jis0212>
+      <koi8-r>KOI8-R</koi8-r>
+      <ksc5601>KSC_5601</ksc5601>
+      <shiftjis>Shift_JIS</shiftjis>
+      <unicode>ISO-10646-UCS-2</unicode>
+      <utf-8>UTF-8</utf-8>
+    </charsetMap>
+    <convertNpspm>
+      <isActive>true</isActive>
+      <mapping>
+        <asp>velocity</asp>
+        <htm>velocity</htm>
+        <html>velocity</html>
+        <inc>velocity</inc>
+        <jsp>jsp</jsp>
+        <php>velocity</php>
+        <shtml>velocity</shtml>
+        <wml>velocity</wml>
+        <xml>velocity</xml>
+      </mapping>
+      <hideForbiddenLinks>true</hideForbiddenLinks>
+    </convertNpspm>
+    <defaultDoctype>html</defaultDoctype>
+    <exportAbsolutePaths>false</exportAbsolutePaths>
+<!-- This value can be used by scripts associated with the content in
+            order to create links pointing back to the editorial system. -->
+    <guiUrl>http://localhost:8080/default/NPS</guiUrl>
+    <incrementalUpdate>
+      <isActive>false</isActive>
+      <exportBaseDir>export</exportBaseDir>
+      <login>root</login>
+      <password>changeme</password>
+    </incrementalUpdate>
+    <referenceAttributes type="list"/>
+    <tclDynamicLinkFormatterCommands>
+      <include>formatter:include</include>
+      <phpInclude>formatter:phpInclude</phpInclude>
+      <phpIncludeOnce>formatter:phpIncludeOnce</phpIncludeOnce>
+      <phpRequire>formatter:phpRequire</phpRequire>
+      <phpRequireOnce>formatter:phpRequireOnce</phpRequireOnce>
+    </tclDynamicLinkFormatterCommands>
+    <tclFormatterCommands>
+      <phpVardef>::formatter::phpVardef</phpVardef>
+      <formatBlobLength>::formatter::blobLength</formatBlobLength>
+      <formatToRFC822>::formatter::rfc822</formatToRFC822>
+      <dehtmlize>::formatter::dehtmlize</dehtmlize>
+    </tclFormatterCommands>
+    <tclSystemExecuteCommands>
+      <editLink>systemExecute:editLink</editLink>
+      <currentDate>systemExecute:currentDate</currentDate>
+    </tclSystemExecuteCommands>
+    <toclistSortLanguage>de_DE</toclistSortLanguage>
+    <validDateTimeOutputFormats>
+      <europeanDate>%d.%m.%Y</europeanDate>
+      <europeanLongDateTime>%d.%m.%Y %H:%M:%S %Z (%z)</europeanLongDateTime>
+      <europeanShortDateTime>%d.%m.%Y %H:%M %Z</europeanShortDateTime>
+      <europeanShortDateTimeWoZone>%d.%m.%Y %H:%M</europeanShortDateTimeWoZone>
+      <isoDate>%Y-%m-%d %Z</isoDate>
+      <isoLongDateTime>%Y-%m-%d %H:%M:%S %Z (%z)</isoLongDateTime>
+      <isoShortDateTime>%Y-%m-%d %H:%M %Z</isoShortDateTime>
+      <us24hLongDateTime>%m/%d/%Y %H:%M:%S %Z (%z)</us24hLongDateTime>
+      <us24hShortDateTime>%m/%d/%Y %H:%M %Z</us24hShortDateTime>
+      <usAmPmLongDateTime>%m/%d/%Y %I:%M:%S %p %Z (%z)</usAmPmLongDateTime>
+      <usAmPmShortDateTime>%m/%d/%Y %I:%M %p %Z</usAmPmShortDateTime>
+      <usDate>%m/%d/%Y</usDate>
+    </validDateTimeOutputFormats>
+    <wantLinkCallback>false</wantLinkCallback>
+    <writeLiveServerReadPerms>true</writeLiveServerReadPerms>
+  </export>
+  <gui fileName="gui.xml">
+<!-- For explanations see guiConfig.format -->
+<!-- auto-detect the highest available jre -->
+<!-- prefer https to supress ie security warnings -->
+    <jreSpecification name="auto">
+      <clsId>8AD9C840-044E-11D1-B3E9-00805F499D93</clsId>
+      <codebase>https://java.sun.com/products/plugin/autodl/jinstall-1_4-windows-i586.cab#Version=1,4,0,0</codebase>
+    </jreSpecification>
+<!-- forcing usage of a particular jre version
+    <jreSpecification name="1.4.2_07">
+        <clsId>CAFEEFAC-0014-0002-0007-ABCDEFFEDCBA</clsId>
+        <codebase>https://java.sun.com/update/1.4.2/jinstall-1_4_2_07-windows-i586.cab#Version=1,4,2,7</codebase>
+    </jreSpecification>
+    -->
+    <contentInspectors fileName="contentInspectors.xml">
+<!-- inspectors and or views may be defined in an optional <beans> element,
+         see inspectorRegistry.xml - beans defined here will be added or will
+         replace the default configuration! -->
+      <beans>
+        <!-- tabbed overview inspectors. -->
+        <!--
+        <bean id="publication-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        <bean id="document-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        <bean id="image-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        <bean id="generic-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        <bean id="template-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        -->
+    </beans>
+<!-- templates references by content or default views may be defined in an
+         optional <templates> element containing <template name="..."> elements
+         with a CDATA section for each template - these will override the
+         default templates! -->
+    </contentInspectors>
+    <contentMenu fileName="contentMenu.xml">
+<!-- additional items may be defined in an optional <beans> element,
+         see itemRegistry.xml -->
+      <beans>
+        <bean id="pdfServiceConfig" abstract="true">
+          <property name="pdfDownloadUrl" value="/infopark-pdf-generator/getPdf"/>
+          <property name="xslPath">
+            <null/>
+          </property>
+          <property name="pdfTemplateName" value="mastertemplate"/>
+        </bean>
+        <bean id="createPdfManual" parent="pdfServiceConfig" class="com.infopark.cm.htmlgui.browse.fopper.CreateAction">
+          <property name="titles">
+            <map>
+              <entry key="de" value="PDF-Handbuch erstellen"/>
+              <entry key="en" value="Generate PDF Manual"/>
+              <entry key="fr" value="Créer manuel au format PDF"/>
+            </map>
+          </property>
+          <property name="selectionType" value="single"/>
+          <property name="objectTypes">
+            <set>
+              <value>document</value>
+              <value>publication</value>
+            </set>
+          </property>
+          <property name="dialogSize" value="small"/>
+<!--property name="pdfDebugUrl" value="/infopark-pdf-generator/getIndex"/-->
+        </bean>
+        <bean id="updatePdfManual" parent="pdfServiceConfig" class="com.infopark.cm.htmlgui.browse.fopper.UpdateAction">
+          <property name="titles">
+            <map>
+              <entry key="de" value="PDF-Handbuch aktualisieren"/>
+              <entry key="en" value="Update PDF Manual"/>
+              <entry key="fr" value="Mettre à jour manuel au format PDF"/>
+            </map>
+          </property>
+          <property name="selectionType" value="single"/>
+          <property name="objectTypes">
+            <set>
+              <value>generic</value>
+            </set>
+          </property>
+          <property name="dialogSize" value="small"/>
+        </bean>
+      </beans>
+<!-- additional menu entries to be merged may be defined in an optional
+         <menuBar> element, see WEB-INF/menuBar.xml -->
+      <menuBar>
+        <!--
+        <menu name="file">
+            <group name="object">
+                <item roles="admin">createPdfManual</item>
+                <item roles="admin">updatePdfManual</item>
+            </group>
+        </menu>
+        -->
+    </menuBar>
+<!-- additional toolbar entries to be merged may be defined in an optional
+         <toolBar> element, see WEB-INF/toolBar.xml -->
+      <toolBar/>
+    </contentMenu>
+    <dynamicPreviewUrl/>
+    <dynamicPreviewDirectory/>
+    <dynamicPreviewExtensions>
+        <!--
+        <extension>php</extension>
+        -->
+    </dynamicPreviewExtensions>
+    <fontFamily>
+<!-- fonts which can be selected by the user -->
+      <item>Arial</item>
+      <item>Helvetica</item>
+      <item>Tahoma</item>
+      <item>Times</item>
+      <item>Verdana</item>
+      <item>Courier</item>
+      <item>Courier New</item>
+      <item>Lucida Console</item>
+    </fontFamily>
+    <fontSize>
+<!-- font sizes which can be selected by the user -->
+      <item>6pt</item>
+      <item>7pt</item>
+      <item>8pt</item>
+      <item>9pt</item>
+      <item>10pt</item>
+      <item>11pt</item>
+      <item>12pt</item>
+      <item>14pt</item>
+    </fontSize>
+    <previewMasterTemplates>
+      <template>
+        <name>mastertemplate</name>
+        <title lang="de">Standard</title>
+        <title lang="en">Standard</title>
+        <title lang="es">Standard</title>
+        <title lang="fr">Standard</title>
+        <title lang="it">Standard</title>
+      </template>
+      <template>
+        <name>mt2</name>
+        <title lang="de">Alternative</title>
+        <title lang="en">Alternative</title>
+        <title lang="es">Alternativo</title>
+        <title lang="fr">Alternatif</title>
+        <title lang="it">Alternativo</title>
+      </template>
+    </previewMasterTemplates>
+    <roles>
+      <role>
+        <name>admin</name>
+        <title lang="de">Volle Sicht</title>
+        <title lang="en">Full View</title>
+        <title lang="es">Full View</title>
+        <title lang="fr">Vue complète</title>
+        <title lang="it">Full View</title>
+<!--
+            <availableFor>
+                <group>admins</group>
+            </availableFor>
+            -->
+        <values>
+          <browserName>cb</browserName>
+          <enableToolBar>true</enableToolBar>
+          <browserShowsInactive>true</browserShowsInactive>
+          <browserShowsTitles>false</browserShowsTitles>
+          <browserShowsImages>true</browserShowsImages>
+          <browserShowsGenerics>true</browserShowsGenerics>
+          <browserShowsTemplates>true</browserShowsTemplates>
+          <browserShowsDocuments>true</browserShowsDocuments>
+          <preferEditedTemplates>true</preferEditedTemplates>
+          <preferEditedContents>true</preferEditedContents>
+          <defaultTemplate>mastertemplate</defaultTemplate>
+        </values>
+      </role>
+      <role>
+        <name>restricted</name>
+        <title lang="de">Eingeschränkte Sicht</title>
+        <title lang="en">Restricted View</title>
+        <title lang="es">Restricted View</title>
+        <title lang="fr">Vue réduite</title>
+        <title lang="it">Restricted View</title>
+        <values>
+          <browserName fixed="true">pb</browserName>
+          <enableToolBar>true</enableToolBar>
+          <browserShowsInactive fixed="true">false</browserShowsInactive>
+          <browserShowsTitles>true</browserShowsTitles>
+          <browserShowsImages>true</browserShowsImages>
+          <browserShowsGenerics>true</browserShowsGenerics>
+          <browserShowsTemplates fixed="false">false</browserShowsTemplates>
+          <browserShowsDocuments>true</browserShowsDocuments>
+          <preferEditedTemplates fixed="false">false</preferEditedTemplates>
+          <preferEditedContents>true</preferEditedContents>
+          <defaultTemplate>mastertemplate</defaultTemplate>
+        </values>
+      </role>
+    </roles>
+<!--
+      Pre-6.10.3 installations may activate continued support of EOP.
+      This requires to provide webapps/GUI/NPS/eop, e.g. from a previous Fiona version.
+    -->
+    <supportsEop>false</supportsEop>
+    <webDav fileName="webDav.xml">
+<!-- Publication class to use when creating a new empty "directory"
+         via WebDAV. Default is "publication". -->
+      <defaultPublicationClass>publication</defaultPublicationClass>
+<!-- Object class to use when creating a new object from a "file"
+        via WebDAV. You have to make sure that the given object class
+        allows the content type in question. Default is "generic".
+        -->
+      <objectClasses type="dictionary">
+        <html>Document</html>
+        <wri>Generic</wri>
+        <css>Generic</css>
+        <js>Generic</js>
+        <txt>Generic</txt>
+        <pdf>Generic</pdf>
+        <doc>Generic</doc>
+        <gif>Image</gif>
+        <jpg>Image</jpg>
+        <jpeg>Image</jpeg>
+        <png>Image</png>
+        <templ>template</templ>
+      </objectClasses>
+      <substituteUnderscoreWithSpaces>true</substituteUnderscoreWithSpaces>
+    </webDav>
+  </gui>
+  <indexing fileName="indexing.xml">
+    <advancedSearch>
+      <isActive>true</isActive>
+<!-- The first matching collection wins. It is not possible to index a
+            content into more than one collection at a time. -->
+      <collectionSelection>
+        <select collection="cm-contents">
+          <isEqual name="state" value="edited"/>
+        </select>
+        <select collection="cm-contents">
+          <isEqual name="state" value="released"/>
+        </select>
+      </collectionSelection>
+    </advancedSearch>
+    <contentPreprocessors type="list">
+      <listitem>
+        <mimeTypes type="list">
+          <listitem>application/ami-pro</listitem>
+          <listitem>application/pdf</listitem>
+          <listitem>application/postscript</listitem>
+          <listitem>application/rtf</listitem>
+          <listitem>application/vnd.ms-works</listitem>
+          <listitem>application/vnd.mif</listitem>
+          <listitem>application/msword</listitem>
+          <listitem>application/wordperfect5.1</listitem>
+          <listitem>text/richtext</listitem>
+        </mimeTypes>
+        <processor type="internal"/>
+      </listitem>
+      <listitem>
+        <mimeTypes type="list">
+          <listitem>application/vnd.lotus-1-2-3</listitem>
+          <listitem>application/vnd.lotus-freelance</listitem>
+          <listitem>application/vnd.ms-excel</listitem>
+          <listitem>application/vnd.ms-powerpoint</listitem>
+          <listitem>application/vnd.ms-tnef</listitem>
+          <listitem>application/x-executable</listitem>
+          <listitem>application/zip</listitem>
+        </mimeTypes>
+        <processor type="ignoreBlob"/>
+      </listitem>
+<!-- example for configuring an external indexer preprocessor -->
+<!--
+        <listitem>
+            <mimeTypes type="list">
+                <listitem>application/ami-pro</listitem>
+                <listitem>application/pdf</listitem>
+                <listitem>application/postscript</listitem>
+                <listitem>application/rtf</listitem>
+                <listitem>application/vnd.lotus-1-2-3</listitem>
+                <listitem>application/vnd.ms-excel</listitem>
+                <listitem>application/vnd.ms-powerpoint</listitem>
+                <listitem>application/vnd.ms-tnef</listitem>
+                <listitem>application/vnd.ms-works</listitem>
+                <listitem>application/vnd.lotus-freelance</listitem>
+                <listitem>application/vnd.mif</listitem>
+                <listitem>application/msword</listitem>
+                <listitem>application/wordperfect5.1</listitem>
+                <listitem>application/x-executable</listitem>
+                <listitem>text/richtext</listitem>
+            </mimeTypes>
+            <processor type="external">myPreprocessor</processor>
+            <processorArguments>arg1 arg2</processorArguments>
+        </listitem>
+        -->
+    </contentPreprocessors>
+    <incrementalExport>
+      <isActive>false</isActive>
+      <collectionSelection>
+        <select collection="">
+          <matches name="contentType" value="^(css|js)$"/>
+        </select>
+        <select collection="">
+          <isEqual name="objType" value="image"/>
+        </select>
+        <select collection="">
+          <isEqual name="mimeType" value="application/zip"/>
+        </select>
+        <select collection="live-docs"/>
+      </collectionSelection>
+    </incrementalExport>
+    <staticExport>
+      <isActive>false</isActive>
+      <collectionSelection/>
+    </staticExport>
+    <vseLocale>uni</vseLocale>
+  </indexing>
+  <searching fileName="searching.xml">
+    <postprocessor/>
+    <preprocessor/>
+    <searchResultFormatterCommands>
+      <uppercase>uppercase</uppercase>
+    </searchResultFormatterCommands>
+  </searching>
+  <server fileName="server.xml">
+    <cm>
+      <tclHost/>
+      <tclPort>3001</tclPort>
+      <httpHost/>
+      <httpConnectHost>localhost</httpConnectHost>
+      <httpPort>3002</httpPort>
+      <stateHost>localhost</stateHost>
+      <statePort>3003</statePort>
+      <httpProxyHost/>
+      <httpProxyPort/>
+      <database fileName="cmdb.xml">
+        <adaptor>mysql</adaptor>
+        <server>db</server>
+        <database>reactor_test</database>
+        <user>reactor_user</user>
+        <password>reactor_user</password>
+        <port>3306</port>
+<!-- You must NOT change the value for 'storeBlobsInDatabase' after you have
+        executed the application for the first time. If you do so you *will*
+        lose data. -->
+        <storeBlobsInDatabase>true</storeBlobsInDatabase>
+      </database>
+    </cm>
+    <ses>
+      <tclHost/>
+      <tclPort>3012</tclPort>
+      <httpHost>0.0.0.0</httpHost>
+      <httpConnectHost>0.0.0.0</httpConnectHost>
+      <httpPort>3011</httpPort>
+      <stateHost>0.0.0.0</stateHost>
+      <statePort>3013</statePort>
+      <httpProxyHost/>
+      <httpProxyPort/>
+    </ses>
+    <te>
+      <tclHost/>
+      <tclPort>3051</tclPort>
+      <httpHost/>
+      <httpConnectHost>localhost</httpConnectHost>
+      <httpPort>3052</httpPort>
+      <stateHost>localhost</stateHost>
+      <statePort>3053</statePort>
+      <httpProxyHost/>
+      <httpProxyPort/>
+      <database fileName="tedb.xml">
+        <adaptor>sqlite</adaptor>
+      </database>
+    </te>
+    <log fileName="log.xml">
+<!-- Valid "info" log levels are 0, 1, 2, 3, where each level
+         includes logging the messages of all numerically lower levels
+         (lower number = higher priority).
+         Messages will go to the specified log file. -->
+      <logger name="info" level="2" logFile="info.log"/>
+      <logger name="error" logFile="error.log"/>
+      <logger name="alert" logFile="error.log"/>
+      <logger name="warning" logFile="error.log"/>
+      <logger name="debug" logFile="debug.log"/>
+    </log>
+    <email>
+<!-- leave 'host' empty to deactive email services -->
+<!--
+        <host>localhost</host>
+        -->
+      <host/>
+    </email>
+    <instanceSecret>MYSECRET</instanceSecret>
+  </server>
+  <tuning fileName="tuning.xml">
+    <clearCachesFrequency>100</clearCachesFrequency>
+    <export>
+      <acceptableFailures>0</acceptableFailures>
+      <maxNumberOfExportedObjects>500</maxNumberOfExportedObjects>
+      <maxParallelExports>2</maxParallelExports>
+      <maxRecursionLevel>100</maxRecursionLevel>
+      <timeout>60</timeout>
+      <usesAllThreshold>200</usesAllThreshold>
+    </export>
+    <indexing>
+      <maxBulkSize>200</maxBulkSize>
+      <interval>60</interval>
+      <optimizationInterval>86400</optimizationInterval>
+      <filterTimeout>300</filterTimeout>
+    </indexing>
+    <jobMaxLogLength>50</jobMaxLogLength>
+    <master>
+      <cm>
+        <minIdleSlaves>0</minIdleSlaves>
+        <maxSlaves>25</maxSlaves>
+        <slaveExecArguments/>
+      </cm>
+      <ses>
+        <minIdleSlaves>0</minIdleSlaves>
+        <maxSlaves>25</maxSlaves>
+        <slaveExecArguments/>
+      </ses>
+      <te>
+        <minIdleSlaves>1</minIdleSlaves>
+        <maxSlaves>5</maxSlaves>
+        <slaveExecArguments/>
+      </te>
+      <slaveExecMaxFailures>4</slaveExecMaxFailures>
+      <slaveIdleTimeout>3600</slaveIdleTimeout>
+      <slaveShutdownTimeout>10</slaveShutdownTimeout>
+      <slaveStartupTimeout>120</slaveStartupTimeout>
+    </master>
+    <maxSearchResultSize>0</maxSearchResultSize>
+    <minStreamingDataLength>8</minStreamingDataLength>
+    <slave>
+      <masterTimeout>1</masterTimeout>
+      <maxNumberOfRequests>400</maxNumberOfRequests>
+      <clientRequestTimeout>30</clientRequestTimeout>
+      <httpRequestTimeout>120</httpRequestTimeout>
+    </slave>
+    <streamingTicketValidityTimeInterval>360000</streamingTicketValidityTimeInterval>
+  </tuning>
+  <userManagement fileName="userManagement.xml">
+    <editorial fileName="um_internal.xml">
+      <handler>internal</handler>
+    </editorial>
+    <live fileName="um_internal.xml">
+      <handler>internal</handler>
+    </live>
+    <globalPermissions type="list">
+      <globalPermission>permissionGlobalExport</globalPermission>
+      <globalPermission>permissionGlobalRTCEdit</globalPermission>
+      <globalPermission>permissionGlobalRoot</globalPermission>
+      <globalPermission>permissionGlobalUserAttributeEdit</globalPermission>
+      <globalPermission>permissionGlobalUserEdit</globalPermission>
+      <globalPermission>permissionGlobalMirrorHandling</globalPermission>
+    </globalPermissions>
+    <preferences fileName="preferences.xml">
+      <dateTimeInputFormatName>dayMonthYear</dateTimeInputFormatName>
+      <dateTimeOutputFormatName>europeanShortDateTimeWoZone</dateTimeOutputFormatName>
+      <defaultTemplate>mastertemplate</defaultTemplate>
+      <displayTitleFormat>%s</displayTitleFormat>
+      <inputCharset>iso8859-1</inputCharset>
+      <languages type="list">
+        <language>de</language>
+        <language>en</language>
+      </languages>
+      <listDisplayRows>20</listDisplayRows>
+      <maxHierarchyDepth>5</maxHierarchyDepth>
+      <maxHierarchyLines>100</maxHierarchyLines>
+      <preferEditedContents>true</preferEditedContents>
+      <preferEditedTemplates>true</preferEditedTemplates>
+      <showEditMarkers>true</showEditMarkers>
+      <textAreaHeight>20</textAreaHeight>
+      <textAreaWidth>50</textAreaWidth>
+      <textFieldWidth>65</textFieldWidth>
+      <timeZone>CET</timeZone>
+      <wantReminderEmails>true</wantReminderEmails>
+      <guiPreferences fileName="guiPreferences.xml">
+<!-- For explanations see guiPreferences.format -->
+        <currentRole>admin</currentRole>
+        <userMenu fileName="userMenu.xml">
+<!-- For explanations see guiMenu.format -->
+          <name>bookmarks</name>
+          <title lang="de">Bookmarks</title>
+          <title lang="en">Bookmarks</title>
+          <title lang="es">Bookmarks</title>
+          <title lang="fr">Bookmarks</title>
+          <title lang="it">Preferiti</title>
+        </userMenu>
+        <userSearches/>
+        <objClassHistory/>
+        <objectHistory/>
+<!-- current state of all browsers -->
+        <browserStates>
+<!-- current state of column browser
+        browserWidth: the percentage width when displaying the inspector
+        numCols: display columns (greater zero, [3..7] are typical)
+        -->
+          <cb>
+            <browserWidth>60</browserWidth>
+            <numCols>5</numCols>
+          </cb>
+<!-- current state of tree browser
+        browserWidth: the percentage width when displaying the inspector
+        root: identifier of display root
+        expandedNodes: list of identifiers of initial expanded nodes
+        -->
+          <tb>
+            <browserWidth>60</browserWidth>
+            <root/>
+            <expandedNodes/>
+          </tb>
+<!-- current state of icon browser
+        browserWidth: the percentage width when displaying the inspector
+        -->
+          <ib>
+            <browserWidth>60</browserWidth>
+          </ib>
+        </browserStates>
+<!-- Current theme. Allowed are all names of directories appearing
+    below webapps/NPS/themes/. -->
+        <theme>default</theme>
+<!-- values used in the GUI stylesheet -->
+        <userStyle>
+        <!-- missing values will be filled in from default theme -->
+    </userStyle>
+        <externalEditors/>
+        <blobEditors/>
+        <externalEditorEncoding>ISO-8859-1</externalEditorEncoding>
+        <startArea>browse_page</startArea>
+        <startingPublication>2001</startingPublication>
+        <wantChildrenSorted>true</wantChildrenSorted>
+        <wantWorkflowConfirmation>true</wantWorkflowConfirmation>
+        <hideMenu>false</hideMenu>
+        <showRelativeDates>false</showRelativeDates>
+      </guiPreferences>
+    </preferences>
+  </userManagement>
+  <wizards fileName="wizards.xml">
+    <importArchive>
+      <unarchivers>
+        <zip>
+          <executable>unzip</executable>
+          <params>%f</params>
+        </zip>
+        <tar>
+          <executable>tar</executable>
+          <params>xf %f</params>
+        </tar>
+        <tgz>
+          <executable>tar</executable>
+          <params>xzf %f</params>
+        </tgz>
+        <tbz2>
+          <executable>tar</executable>
+          <params>xjf %f</params>
+        </tbz2>
+      </unarchivers>
+      <offerFolderFormats>false</offerFolderFormats>
+    </importArchive>
+    <diff>
+<!--
+      see diffWizard.tcl for a description of this configuration
+    -->
+<!-- Windows -->
+<!--
+    <executable>CSDiff.exe</executable>
+    <type>csdiff</type>
+    -->
+<!-- Unix -->
+<!--
+    <executable>wdiff</executable>
+    <type>wdiff</type>
+    -->
+<!--
+    <fieldSequence type="list">
+      <field>title</field>
+      <field>blob</field>
+    </fieldSequence>
+    -->
+<!--
+    <hiddenFields type="list">
+      <field>forInternalUse</field>
+    </hiddenFields>
+    -->
+      <isActive>true</isActive>
+    </diff>
+    <thumbnailer>
+    <!--
+    <imageObjClass>Image</imageObjClass>
+    <defaultThumbnailFolder>/</defaultThumbnailFolder>
+    <thumbnailSuffix>_thumb</thumbnailSuffix>
+    <thumbnailSize>128</thumbnailSize>
+    -->
+  </thumbnailer>
+  </wizards>
+</configuration>

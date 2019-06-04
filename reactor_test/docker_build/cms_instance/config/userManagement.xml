@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<userManagement>
+  <editorial fileName="um_internal.xml"/>
+  <live fileName="um_internal.xml"/>
+  <globalPermissions type="list">
+    <globalPermission>permissionGlobalExport</globalPermission>
+    <globalPermission>permissionGlobalRTCEdit</globalPermission>
+    <globalPermission>permissionGlobalRoot</globalPermission>
+    <globalPermission>permissionGlobalUserAttributeEdit</globalPermission>
+    <globalPermission>permissionGlobalUserEdit</globalPermission>
+    <globalPermission>permissionGlobalMirrorHandling</globalPermission>
+  </globalPermissions>
+  <preferences fileName="preferences.xml"/>
+</userManagement>

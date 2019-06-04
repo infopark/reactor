@@ -2,6 +2,7 @@ version: '2'
 services:
   db:
     image: mysql:5.6
+    container_name: reactor_db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: reactor_test
@@ -9,17 +10,23 @@ services:
       MYSQL_PASSWORD: reactor_user
     ports:
       - "3306:3306"
-  app:
-    image: fiona7_reactor:latest
+  fiona:
+    image: fiona:7.0.1
     container_name: fiona7_reactor
-    command: ./start.sh
+    #command: /bin/bash
+    command: tail -f ./trifork-4.1.40/domains/default/logs/default/server.log
+    volumes:
+      - ./cms_instance:/fiona/CMS-Fiona-7.0.1/instance/default
     environment:
       - LD_LIBRARY_PATH="/fiona/CMS-Fiona-7.0.1/lib/sles:$LD_LIBRARY_PATH"
+      - TERM=xterm
     ports:
       - "3001:3001"
       - "3002:3002"
       - "3202:3202"
       - "3011:3011"
       - "8080:8080"
+    links:
+      - db
     depends_on:
       - db

@@ -13,10 +13,10 @@ DEFAULT_NPS_PATH="$HOME/CMS-Fiona-7.0.1"
 PORT_LIST="3001 3002 3003 3011 3012 3013 3051 3052 3053 8080"
 
 # see installTriforkLicense() for TRIFORK_LICENSE
-TRIFORK_PACKAGE_PATH=`ls "${BASEDIR}"/trifork-*-unix.zip`
-TRIFORK_VERSION=`echo "$TRIFORK_PACKAGE_PATH" | sed 's#.*/trifork-##;s#-unix.zip##'`
-TRIFORK_USER=administrator
-TRIFORK_PASSWORD=trifork
+# TRIFORK_PACKAGE_PATH=`ls "${BASEDIR}"/trifork-*-unix.zip`
+# TRIFORK_VERSION=`echo "$TRIFORK_PACKAGE_PATH" | sed 's#.*/trifork-##;s#-unix.zip##'`
+# TRIFORK_USER=administrator
+# TRIFORK_PASSWORD=trifork
 
 NPS_PACKAGE=$BASEDIR/data.zip
 
@@ -548,14 +548,14 @@ main()
 
     prepareInstallation
     askLicense
-    askTrifork
-    test "$TRIFORK_INSTALLED" || {
-        installTrifork
-    }
+    #askTrifork
+    #test "$TRIFORK_INSTALLED" || {
+    #    installTrifork
+    #}
 
     installNps
-    installTriforkLicense
-    patchRcScriptForTrifork
+    #installTriforkLicense
+    #patchRcScriptForTrifork
 
     initializeNPS
     startNPS

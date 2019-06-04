@@ -1,0 +1,92 @@
+#
+# Document Dataset Descriptor
+#
+# DO NOT add user fields to this file - add them to style.ufl
+# which is included at the end of this file.
+$control: 1
+$include style.prm
+$subst: 1
+descriptor:
+  /collection = yes
+{
+  # Header information for partition management
+  data-table:	_df
+    /num-records = 1
+    /max-records = 1
+  {
+    worm:	_DBVERSION	text
+    fixwidth:	_DDDSTAMP	4 date
+    varwidth:	_DOCIDX		_dv
+    fixwidth:   _DOCIDX_OF    4 unsigned-integer
+    fixwidth:   _DOCIDX_SZ    3 unsigned-integer
+    fixwidth:	_PARTDESC	32 text
+
+    constant:	_FtrCfg		text "${DOC-FEATURES:}"
+    constant:	_SumCfg		text "${DOC-SUMMARIES:}"
+
+    fixwidth:	_SPARE1		16 text
+    fixwidth:	_SPARE2		4 signed-integer
+  }
+
+  # Required internal fields per document
+  data-table:	_df
+    /offset = 64
+  {
+    autoval:	_STYLE		sirepath
+    fixwidth:	_DOCID		4 unsigned-integer
+    fixwidth:	_SECURITY	4 unsigned-integer
+      /minmax = yes
+    fixwidth:	_INDEX_DATE	4 date
+      /minmax = yes
+  }
+
+$ifdef DOC-FEATURES
+  # Optional feature vector per document
+  data-table:	_dg
+  {
+    varwidth:	VDKFEATURES	_dh
+      /_implied_size
+  }
+$endif
+
+$ifdef DOC-SUMMARIES
+  # Optional generated summary per document
+  data-table:	_di
+  {
+    varwidth:	VDKSUMMARY	_dj
+      /_implied_size
+  }
+$endif
+
+  data-table:	_dk
+  {
+    dispatch:	DOC
+    varwidth:	DOC_FN		_dl
+  }
+
+# -----------------------------------------------------------------
+# The VdkVgwKey is the application's primary key to identify
+# each document in the Document Data Table.  By default, the
+# VdkVgwKey is a text string no more than 256 bytes (VdkDocKey_MaxSize)
+# in length.  It is stored in a separate data-table, indexed and
+# minmaxxed to minimize the time required to lookup by VdkVgwKey.
+
+data-table: aaa
+{
+  varwidth: VdkVgwKey aab
+    /indexed = yes
+    /minmax = yes
+    /alias = vdk:VdkVgwKey
+    /alias = docId
+}
+
+
+# -----------------------------------------------------------------
+# All extensions the the DDD schema are included via style.xfl
+# This includes TIS Standard fields, User defined fields and
+# gateway specific fields.
+
+$include style.xfl
+
+}
+$$

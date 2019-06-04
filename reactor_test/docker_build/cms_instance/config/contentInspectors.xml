@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contentInspectors>
+<!-- inspectors and or views may be defined in an optional <beans> element,
+         see inspectorRegistry.xml - beans defined here will be added or will
+         replace the default configuration! -->
+  <beans>
+        <!-- tabbed overview inspectors. -->
+        <!--
+        <bean id="publication-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        <bean id="document-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        <bean id="image-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        <bean id="generic-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        <bean id="template-overview" parent="abstract-overview">
+            <property name="template" value="tabbed-overview.vm"/>
+        </bean>
+        -->
+    </beans>
+<!-- templates references by content or default views may be defined in an
+         optional <templates> element containing <template name="..."> elements
+         with a CDATA section for each template - these will override the
+         default templates! -->
+</contentInspectors>

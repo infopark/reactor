@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job-dump><requirements/><EOJobs><objectID>1501</objectID><jobId>1501</jobId><jobName>systemTransferUpdates</jobName><category>system</category><jobComment/><title>Transfer Updates</title><execLogin>root</execLogin><execPerm>permissionGlobalRoot</execPerm><queuePos>-1</queuePos><repeatMode>0</repeatMode><repeatDefs/><isActive>1</isActive></EOJobs><sharedRequirements/></job-dump>

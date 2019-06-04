@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user-dump><requirements/><EOUsers><objectID>2091</objectID><userId>2091</userId><userLogin>not_root_group</userLogin><userPassword/><userRealname/><userEmail/><userLocked>0</userLocked><userIsgroup>1</userIsgroup><defaultGrpId/><ownerUserId>1030</ownerUserId></EOUsers><EOUserGrpAssgts><objectID>2093</objectID><userGrpAssgtId>2093</userGrpAssgtId><userId>2091</userId><subUserId>2092</subUserId></EOUserGrpAssgts><sharedRequirements/></user-dump>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webDav>
+<!-- Publication class to use when creating a new empty "directory"
+         via WebDAV. Default is "publication". -->
+  <defaultPublicationClass>publication</defaultPublicationClass>
+<!-- Object class to use when creating a new object from a "file"
+        via WebDAV. You have to make sure that the given object class
+        allows the content type in question. Default is "generic".
+        -->
+  <objectClasses type="dictionary">
+    <html>Document</html>
+    <wri>Generic</wri>
+    <css>Generic</css>
+    <js>Generic</js>
+    <txt>Generic</txt>
+    <pdf>Generic</pdf>
+    <doc>Generic</doc>
+    <gif>Image</gif>
+    <jpg>Image</jpg>
+    <jpeg>Image</jpeg>
+    <png>Image</png>
+    <templ>template</templ>
+  </objectClasses>
+  <substituteUnderscoreWithSpaces>true</substituteUnderscoreWithSpaces>
+</webDav>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<live>
+  <handler>bima_crm</handler>
+  <config>
+    <host>https://bimadevelop.crm.infopark.net/api2</host>
+    <connectionUser>webservice</connectionUser>
+    <apikey>4955c9f6d2cd8c12971e16ae12f96821aea0c7ceccbde74ee1b8544527b3efff</apikey>
+    <defaultGroupName>cms_users</defaultGroupName>
+    <adminUserGroup>admins</adminUserGroup>
+    <permissionPrefix>cms</permissionPrefix>
+  </config>
+</live>

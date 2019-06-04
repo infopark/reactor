@@ -1,0 +1,329 @@
+#
+# style.zon - zone filter configuration
+#
+# This file is used to configure the behavior of the zone filter.
+# macro definitions similar to those allowed by the C preprocessor.
+# Note that style.zon may be removed, causing the zone filter to default
+# to legacy behavior.
+# Refer to the "Defining Document Zones" chapter in the
+# Verity Collection Reference for more information.
+
+#
+# Generally, this file contains a zonespec (with possible modifiers) containing
+# element, header and entity parameters.
+#
+# element: <zone name>
+# [/modifiers]
+#
+# element parameters specify which content tags should be considered zones.
+# The element zone name may be a wildcard ("*"), in which case any
+# applicable modifiers (except /ignore) are inherited as default values for
+# subsequently-named element parameters.  Modifiers associated with the
+# last-appearing element parameter (including /ignore) are also retained and
+# used for any elements enountered that have not been explicitly listed in
+# this file.
+#
+# Note that /noindex and /noextract element modifiers have no effect for
+# elements with the /ignore modifier.
+#
+#
+# header: <header name>
+# [/<modifiers>]
+#
+# header parameters specify which headers should be considered zones.
+# The header name may be a wildcard ("*"), and header wildcards behave
+# as element wildcards do.
+#
+#
+# entity: <entity string> <equivalent string>
+# [/<modifiers>]
+#
+# entity parameters specify the translation of entities.
+# If no entity parameters are specified, default tables for the appropriate
+# charset and document type will be used.
+#
+
+$control: 1
+
+$ifdef ZONEMODE_SGML
+# This section is used when the zone filter is launched without
+# a -html, -email, -news, -traffic or -usermode arguments.
+zonespec:
+/ignoreattributes = no
+{
+	element: *
+}
+
+$elifdef ZONEMODE_HTML
+# This section is used when the zone filter is launched with
+# the -html argument.  Note that if no zonespec /html modifier is used,
+# the style.zon file will be ignored and hard-coded default settings
+# used.
+zonespec:
+/html
+/ignoreattributes = no
+{
+	# Ignore anything not explicitly listed
+	element: *
+		/ignore = yes
+
+	# Allow use of noindex/noextract tags
+	# These tags are not HTML tags, but are useful for specifying content
+	# that should not be indexed or should not have feature extraction.
+	element: noindex
+	element: noextract
+
+	element: applet
+		/ignore = yes
+	element: area
+		/ignore = yes
+	element: basefont
+		/ignore = yes
+	element: bdo
+		/ignore = yes
+	element: br
+		/ignore = yes
+	element: button
+		/ignore = yes
+	element: center
+		/ignore = yes
+	element: col
+		/ignore = yes
+	element: colgroup
+		/ignore = yes
+	element: dd
+		/ignore = yes
+	element: del
+		/ignore = yes
+	element: dir
+		/ignore = yes
+	element: div
+		/ignore = yes
+	element: dl
+		/ignore = yes
+	element: dt
+		/ignore = yes
+	element: fieldset
+		/ignore = yes
+	element: fig
+		/ignore = yes
+	element: frameset
+		/ignore = yes
+	element: hr
+		/ignore = yes
+	element: input
+		/ignore = yes
+	element: ins
+		/ignore = yes
+	element: isindex
+		/ignore = yes
+	element: kbd
+		/ignore = yes
+	element: label
+		/ignore = yes
+	element: legend
+		/ignore = yes
+	element: li
+		/ignore = yes
+	element: listing
+		/ignore = yes
+	element: map
+		/ignore = yes
+	element: math
+		/ignore = yes
+	element: menu
+		/ignore = yes
+	element: meta
+		/ignore = yes
+	element: nextid
+		/ignore = yes
+	element: noframes
+		/ignore = yes
+	element: noscript
+		/ignore = yes
+	element: ol
+		/ignore = yes
+	element: optgroup
+		/ignore = yes
+	element: option
+		/ignore = yes
+	element: p
+		/ignore = yes
+	element: param
+		/ignore = yes
+	element: plaintext
+		/ignore = yes
+	element: pre
+		/ignore = yes
+	element: s
+		/ignore = yes
+	element: select
+		/ignore = yes
+	element: small
+		/ignore = yes
+	element: span
+		/ignore = yes
+	element: strike
+		/ignore = yes
+	element: style
+		/ignore = yes
+	element: sub
+		/ignore = yes
+	element: sup
+		/ignore = yes
+	element: tab
+		/ignore = yes
+	element: table
+		/ignore = yes
+	element: tbody
+		/ignore = yes
+	element: tfoot
+		/ignore = yes
+	element: thead
+		/ignore = yes
+	element: td
+		/ignore = yes
+	element: th
+		/ignore = yes
+	element: tr
+		/ignore = yes
+	element: tt
+		/ignore = yes
+	element: ul
+		/ignore = yes
+	element: var
+		/ignore = yes
+	element: xmp
+		/ignore = yes
+	element: a
+	element: abbr
+	element: abbrev
+	element: acronym
+	element: au
+	element: address
+	element: b
+		/nonwordbreaking = yes
+	element: banner
+	element: base
+	element: big
+		/nonwordbreaking = yes
+	element: blockquote
+	element: body
+	element: caption
+	element: cite
+	element: code
+	element: dfn
+	element: em
+		/nonwordbreaking = yes
+	element: fn
+	element: font
+		/nonwordbreaking = yes
+	element: form
+	element: frame
+	element: h1
+	element: h2
+	element: h3
+	element: h4
+	element: h5
+	element: h6
+	element: head
+	element: html
+	element: i
+		/nonwordbreaking = yes
+	element: iframe
+	element: img
+	element: lang
+	element: link
+	element: note
+	element: object
+	element: person
+	element: q
+	element: samp
+	element: script
+	element: strong
+		/nonwordbreaking = yes
+	element: textarea
+	element: title
+		/field = yes
+	element: u
+		/nonwordbreaking = yes
+}
+
+$elifdef ZONEMODE_EMAIL
+# This section is used when the zone filter is launched with
+# the -email argument.  Note that if no zonespec /email modifer is used,
+# the style.zon file will be ignored and hard-coded default settings
+# used.
+zonespec:
+/email
+{
+	header: To
+		/field = yes
+	header: From
+		/field = yes
+	header: Subject
+		/field = yes
+	header: Date
+		/field = yes
+	header: Cc
+		/field = yes
+	header: Bcc
+		/field = yes
+	header: Organization
+	header: Sent
+		/field = yes
+	header: Priority
+		/field = yes
+	header: Importance
+		/field = yes
+}
+
+$elifdef ZONEMODE_NEWS
+# This section is used when the zone filter is launched with
+# the -news argument.  Note that if no zonespec /news modifer is used,
+# the style.zon file will be ignored and hard-coded default settings
+# used.
+zonespec:
+/news
+{
+	header: From
+		/field = yes
+	header: Subject
+		/field = yes
+	header: Date
+		/field = yes
+	header: Keywords
+		/field = yes
+	header: Organization
+	header: Summary
+	header: Newsgroups
+		/field = yes
+	header: References
+		/field = yes
+}
+
+$elifdef ZONEMODE_TRAFFIC
+# This section is used when the zone filter is launched with
+# the -traffic argument.  Note that if no zonespec /traffic modifer is used,
+# the style.zon file will be ignored and hard-coded default settings
+# used.
+zonespec:
+/traffic
+{
+	header: *
+}
+
+$else
+# This default section is typically not invoked.
+# Note that a "-usermode <ModeName>" argument may be passed to the zone
+# filter, and will cause $ZONEMODE_USER and $ZONEMODE="ModeName" to be
+# defined.  This can be used to create custom style.zon configurations for
+# handling various document types.
+zonespec:
+/ignoreattributes = no
+{
+	element: *
+}
+$endif
+$$
+

@@ -8,10 +8,10 @@ VOLUME /data
 RUN \
   dpkg --add-architecture i386 && \
   apt-get update && \
-  apt-get install -y --no-install-recommends unzip build-essential vim \
+  apt-get install -y --no-install-recommends apt-utils \
+    unzip build-essential vim \
     libc6:i386 libncurses5:i386 libstdc++6:i386 \
-    software-properties-common  \
-    redis-tools  apt-utils
+    software-properties-common
 
 
 ENV MYSQL_USER=mysql \
@@ -25,17 +25,17 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 
-RUN \
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java8-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
+# RUN \
+#   echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+#   add-apt-repository -y ppa:webupd8team/java && \
+#   apt-get update && \
+#   apt-get install -y oracle-java8-installer && \
+#   rm -rf /var/lib/apt/lists/* && \
+#   rm -rf /var/cache/oracle-jdk8-installer
 
 # Set environment variables.
 ENV HOME /fiona
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 ENV FIONA_VERSION 7.0.1
 
 # Define working directory.

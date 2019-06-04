@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contentMenu>
+<!-- additional items may be defined in an optional <beans> element,
+         see itemRegistry.xml -->
+  <beans>
+    <bean id="pdfServiceConfig" abstract="true">
+      <property name="pdfDownloadUrl" value="/infopark-pdf-generator/getPdf"/>
+      <property name="xslPath">
+        <null/>
+      </property>
+      <property name="pdfTemplateName" value="mastertemplate"/>
+    </bean>
+    <bean id="createPdfManual" parent="pdfServiceConfig" class="com.infopark.cm.htmlgui.browse.fopper.CreateAction">
+      <property name="titles">
+        <map>
+          <entry key="de" value="PDF-Handbuch erstellen"/>
+          <entry key="en" value="Generate PDF Manual"/>
+          <entry key="fr" value="Créer manuel au format PDF"/>
+        </map>
+      </property>
+      <property name="selectionType" value="single"/>
+      <property name="objectTypes">
+        <set>
+          <value>document</value>
+          <value>publication</value>
+        </set>
+      </property>
+      <property name="dialogSize" value="small"/>
+<!--property name="pdfDebugUrl" value="/infopark-pdf-generator/getIndex"/-->
+    </bean>
+    <bean id="updatePdfManual" parent="pdfServiceConfig" class="com.infopark.cm.htmlgui.browse.fopper.UpdateAction">
+      <property name="titles">
+        <map>
+          <entry key="de" value="PDF-Handbuch aktualisieren"/>
+          <entry key="en" value="Update PDF Manual"/>
+          <entry key="fr" value="Mettre à jour manuel au format PDF"/>
+        </map>
+      </property>
+      <property name="selectionType" value="single"/>
+      <property name="objectTypes">
+        <set>
+          <value>generic</value>
+        </set>
+      </property>
+      <property name="dialogSize" value="small"/>
+    </bean>
+  </beans>
+<!-- additional menu entries to be merged may be defined in an optional
+         <menuBar> element, see WEB-INF/menuBar.xml -->
+  <menuBar>
+        <!--
+        <menu name="file">
+            <group name="object">
+                <item roles="admin">createPdfManual</item>
+                <item roles="admin">updatePdfManual</item>
+            </group>
+        </menu>
+        -->
+    </menuBar>
+<!-- additional toolbar entries to be merged may be defined in an optional
+         <toolBar> element, see WEB-INF/toolBar.xml -->
+  <toolBar/>
+</contentMenu>

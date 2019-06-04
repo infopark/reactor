@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+  <dateTimeInputFormatName>dayMonthYear</dateTimeInputFormatName>
+  <dateTimeOutputFormatName>europeanShortDateTimeWoZone</dateTimeOutputFormatName>
+  <defaultTemplate>mastertemplate</defaultTemplate>
+  <displayTitleFormat>%s</displayTitleFormat>
+  <inputCharset>iso8859-1</inputCharset>
+  <languages type="list">
+    <language>de</language>
+    <language>en</language>
+  </languages>
+  <listDisplayRows>20</listDisplayRows>
+  <maxHierarchyDepth>5</maxHierarchyDepth>
+  <maxHierarchyLines>100</maxHierarchyLines>
+  <preferEditedContents>true</preferEditedContents>
+  <preferEditedTemplates>true</preferEditedTemplates>
+  <showEditMarkers>true</showEditMarkers>
+  <textAreaHeight>20</textAreaHeight>
+  <textAreaWidth>50</textAreaWidth>
+  <textFieldWidth>65</textFieldWidth>
+  <timeZone>CET</timeZone>
+  <wantReminderEmails>true</wantReminderEmails>
+  <guiPreferences fileName="guiPreferences.xml"/>
+</preferences>

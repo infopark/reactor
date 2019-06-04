@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export>
+  <abortOnError>false</abortOnError>
+  <absoluteFsPathPrefix/>
+  <absoluteUrlPrefix/>
+  <charset>utf-8</charset>
+  <charsetMap>
+    <ascii>US-ASCII</ascii>
+    <big5>Big5</big5>
+    <cp437>IBM437</cp437>
+    <cp775>IBM775</cp775>
+    <cp850>IBM850</cp850>
+    <cp852>IBM852</cp852>
+    <cp855>IBM855</cp855>
+    <cp857>IBM857</cp857>
+    <cp860>IBM860</cp860>
+    <cp861>IBM861</cp861>
+    <cp862>IBM862</cp862>
+    <cp863>IBM863</cp863>
+    <cp864>IBM864</cp864>
+    <cp865>IBM865</cp865>
+    <cp866>IBM866</cp866>
+    <cp869>IBM869</cp869>
+    <euc-cn>GB2312</euc-cn>
+    <euc-jp>EUC-JP</euc-jp>
+    <euc-kr>EUC-KR</euc-kr>
+    <gb1988>ISO646-CN</gb1988>
+    <gb2312>GB_2312-80</gb2312>
+    <iso2022-jp>ISO-2022-JP</iso2022-jp>
+    <iso2022-kr>ISO-2022-KR</iso2022-kr>
+    <iso8859-15>ISO-8859-15</iso8859-15>
+    <iso8859-1>ISO-8859-1</iso8859-1>
+    <iso8859-2>ISO-8859-2</iso8859-2>
+    <iso8859-3>ISO-8859-3</iso8859-3>
+    <iso8859-4>ISO-8859-4</iso8859-4>
+    <iso8859-5>ISO-8859-5</iso8859-5>
+    <iso8859-6>ISO-8859-6</iso8859-6>
+    <iso8859-7>ISO-8859-7</iso8859-7>
+    <iso8859-8>ISO-8859-8</iso8859-8>
+    <iso8859-9>ISO-8859-9</iso8859-9>
+    <jis0201>JIS_C6220-1969</jis0201>
+    <jis0208>JIS_C6226-1983</jis0208>
+    <jis0212>JIS_X0212-1990</jis0212>
+    <koi8-r>KOI8-R</koi8-r>
+    <ksc5601>KSC_5601</ksc5601>
+    <shiftjis>Shift_JIS</shiftjis>
+    <unicode>ISO-10646-UCS-2</unicode>
+    <utf-8>UTF-8</utf-8>
+  </charsetMap>
+  <convertNpspm>
+    <isActive>true</isActive>
+    <mapping>
+      <asp>velocity</asp>
+      <htm>velocity</htm>
+      <html>velocity</html>
+      <inc>velocity</inc>
+      <jsp>jsp</jsp>
+      <php>velocity</php>
+      <shtml>velocity</shtml>
+      <wml>velocity</wml>
+      <xml>velocity</xml>
+    </mapping>
+    <hideForbiddenLinks>true</hideForbiddenLinks>
+  </convertNpspm>
+  <defaultDoctype>html</defaultDoctype>
+  <exportAbsolutePaths>false</exportAbsolutePaths>
+<!-- This value can be used by scripts associated with the content in
+            order to create links pointing back to the editorial system. -->
+  <guiUrl>http://localhost:8080/default/NPS</guiUrl>
+  <incrementalUpdate>
+    <isActive>false</isActive>
+    <exportBaseDir>export</exportBaseDir>
+    <login>root</login>
+    <password>changeme</password>
+  </incrementalUpdate>
+  <referenceAttributes type="list"/>
+  <tclDynamicLinkFormatterCommands>
+    <include>formatter:include</include>
+    <phpInclude>formatter:phpInclude</phpInclude>
+    <phpIncludeOnce>formatter:phpIncludeOnce</phpIncludeOnce>
+    <phpRequire>formatter:phpRequire</phpRequire>
+    <phpRequireOnce>formatter:phpRequireOnce</phpRequireOnce>
+  </tclDynamicLinkFormatterCommands>
+  <tclFormatterCommands>
+    <phpVardef>::formatter::phpVardef</phpVardef>
+    <formatBlobLength>::formatter::blobLength</formatBlobLength>
+    <formatToRFC822>::formatter::rfc822</formatToRFC822>
+    <dehtmlize>::formatter::dehtmlize</dehtmlize>
+  </tclFormatterCommands>
+  <tclSystemExecuteCommands>
+    <editLink>systemExecute:editLink</editLink>
+    <currentDate>systemExecute:currentDate</currentDate>
+  </tclSystemExecuteCommands>
+  <toclistSortLanguage>de_DE</toclistSortLanguage>
+  <validDateTimeOutputFormats>
+    <europeanDate>%d.%m.%Y</europeanDate>
+    <europeanLongDateTime>%d.%m.%Y %H:%M:%S %Z (%z)</europeanLongDateTime>
+    <europeanShortDateTime>%d.%m.%Y %H:%M %Z</europeanShortDateTime>
+    <europeanShortDateTimeWoZone>%d.%m.%Y %H:%M</europeanShortDateTimeWoZone>
+    <isoDate>%Y-%m-%d %Z</isoDate>
+    <isoLongDateTime>%Y-%m-%d %H:%M:%S %Z (%z)</isoLongDateTime>
+    <isoShortDateTime>%Y-%m-%d %H:%M %Z</isoShortDateTime>
+    <us24hLongDateTime>%m/%d/%Y %H:%M:%S %Z (%z)</us24hLongDateTime>
+    <us24hShortDateTime>%m/%d/%Y %H:%M %Z</us24hShortDateTime>
+    <usAmPmLongDateTime>%m/%d/%Y %I:%M:%S %p %Z (%z)</usAmPmLongDateTime>
+    <usAmPmShortDateTime>%m/%d/%Y %I:%M %p %Z</usAmPmShortDateTime>
+    <usDate>%m/%d/%Y</usDate>
+  </validDateTimeOutputFormats>
+  <wantLinkCallback>false</wantLinkCallback>
+  <writeLiveServerReadPerms>true</writeLiveServerReadPerms>
+</export>

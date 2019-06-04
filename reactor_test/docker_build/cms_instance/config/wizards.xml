@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wizards>
+  <importArchive>
+    <unarchivers>
+      <zip>
+        <executable>unzip</executable>
+        <params>%f</params>
+      </zip>
+      <tar>
+        <executable>tar</executable>
+        <params>xf %f</params>
+      </tar>
+      <tgz>
+        <executable>tar</executable>
+        <params>xzf %f</params>
+      </tgz>
+      <tbz2>
+        <executable>tar</executable>
+        <params>xjf %f</params>
+      </tbz2>
+    </unarchivers>
+    <offerFolderFormats>false</offerFolderFormats>
+  </importArchive>
+  <diff>
+<!--
+      see diffWizard.tcl for a description of this configuration
+    -->
+<!-- Windows -->
+<!--
+    <executable>CSDiff.exe</executable>
+    <type>csdiff</type>
+    -->
+<!-- Unix -->
+<!--
+    <executable>wdiff</executable>
+    <type>wdiff</type>
+    -->
+<!--
+    <fieldSequence type="list">
+      <field>title</field>
+      <field>blob</field>
+    </fieldSequence>
+    -->
+<!--
+    <hiddenFields type="list">
+      <field>forInternalUse</field>
+    </hiddenFields>
+    -->
+    <isActive>true</isActive>
+  </diff>
+  <thumbnailer>
+    <!--
+    <imageObjClass>Image</imageObjClass>
+    <defaultThumbnailFolder>/</defaultThumbnailFolder>
+    <thumbnailSuffix>_thumb</thumbnailSuffix>
+    <thumbnailSize>128</thumbnailSize>
+    -->
+  </thumbnailer>
+</wizards>
