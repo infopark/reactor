@@ -13,7 +13,8 @@ services:
   fiona:
     image: fiona7_reactor #fiona:7.0.1
     container_name: fiona7_reactor
-    command: tail -f /fiona/CMS-Fiona-7.0.1/instance/default/log/error.log
+    #command: tail -f /fiona/CMS-Fiona-7.0.1/instance/default/log/error.log
+    command: ./start.sh
     #volumes:
     #  - ./cms_instance:/fiona/CMS-Fiona-7.0.1/instance/default
     environment:
