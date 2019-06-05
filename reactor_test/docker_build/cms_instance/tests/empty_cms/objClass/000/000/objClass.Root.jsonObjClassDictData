@@ -1,1 +1,0 @@
-{"attributeGroups": [{"attributes": ["title", "blob", "validFrom", "validUntil", "contentType", "channels"], "name": "baseGroup", "title.de": "Felder", "title.en": "Fields", "title.es": "Campos", "title.fr": "Champs", "title.it": "Campi"}], "canCreateNewsItems": 0, "availableBlobEditors": ["internalEditor"], "presetAttributes": {}}

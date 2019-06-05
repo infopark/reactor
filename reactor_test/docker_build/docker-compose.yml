@@ -11,12 +11,9 @@ services:
     ports:
       - "3306:3306"
   fiona:
-    image: fiona7_reactor #fiona:7.0.1
+    image: fiona7_reactor
     container_name: fiona7_reactor
-    #command: tail -f /fiona/CMS-Fiona-7.0.1/instance/default/log/error.log
     command: ./start.sh
-    #volumes:
-    #  - ./cms_instance:/fiona/CMS-Fiona-7.0.1/instance/default
     environment:
       - LD_LIBRARY_PATH="/fiona/CMS-Fiona-7.0.1/lib/sles:$LD_LIBRARY_PATH"
       - TERM=xterm
@@ -25,7 +22,6 @@ services:
       - "3002:3002"
       - "3202:3202"
       - "3011:3011"
-      - "8080:8080"
     links:
       - db
     depends_on:
