@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 require 'reactor/attributes/link_list_from_accessor'
 require 'reactor/attributes/link_list_from_attr_values'
 
@@ -38,18 +37,6 @@ module Reactor
         return false
       end
 
-      # Unreleases the object. Returns true on success,
-      # false when one of the following occurs:
-      # 1. user lacks the permissions
-      # 2. the object is not released
-      # 3. object is invalid
-      # 4. other error occoured
-      def unrelease(comment=nil)
-        return unrelease!(comment)
-      rescue Reactor::Cm::XmlRequestError, ActiveRecord::RecordInvalid, Reactor::NotPermitted
-        return false
-      end
-
       # Removes the working version of the object,
       # if it exists
       # @param comment [String] comment to leave for the next user
@@ -80,14 +67,6 @@ module Reactor
           crul_obj.release!(comment)
           reload
         end
-        return true
-      end
-
-      # Unreleases the object. Returns true on succes, can raise exceptions
-      # @param comment [String] comment to leave for the next user
-      def unrelease!(comment=nil)
-        crul_obj.unrelease!(comment)
-        reload
         return true
       end
 
@@ -240,41 +219,27 @@ module Reactor
         return true
       end
 
-      if Reactor.rails3_0?
-        # It should excactly match ActiveRecord::Base.new in it's behavior
-        # @see ActiveRecord::Base.new
-        def initialize(attributes = nil, &block)
-          if true ||  !self.class.send(:attribute_methods_overriden?) # FIXME !!!!
-            ignored_attributes = ignore_attributes(attributes)
-            # supress block hijacking!
-            super(attributes) {}
-            load_ignored_attributes(ignored_attributes)
-            yield self if block_given?
-          else
-            super(attributes)
-          end
+      # It should excactly match ActiveRecord::Base.new in it's behavior
+      # @see ActiveRecord::Base.new
+      def initialize(attributes = nil, &block)
+        if true || !self.class.send(:attribute_methods_overriden?)
+          ignored_attributes = ignore_attributes(attributes)
+          # supress block hijacking!
+          super(attributes) {}
+          load_ignored_attributes(ignored_attributes)
+          yield self if block_given?
+        else
+          # TODO
+          # here we get 'ActiveRecord::AssociationTypeMismatch'
+          super(attributes)
         end
-      elsif Reactor.rails3_1? || Reactor.rails3_2? || Reactor.rails4_x?
-        # It should excactly match ActiveRecord::Base.new in it's behavior
-        # @see ActiveRecord::Base.new
-        def initialize(attributes = nil, options={}, &block)
-          if true ||  !self.class.send(:attribute_methods_overriden?) #FIXME !!!
-            ignored_attributes = ignore_attributes(attributes)
-            # supress block hijacking!
-            super(attributes, options) {}
-            load_ignored_attributes(ignored_attributes)
-            yield self if block_given?
-          else
-            super(attributes, options)
-          end
-        end
-      else
-        raise RuntimeError, "Unsupported Rails version!"
       end
 
       # Equivalent to Obj#edited?
       def really_edited?
-        self.edited?
+        # check if really edited with curl request
+        crul_obj.edited?
+        # self.edited?
       end
 
       # Returns an array of errors
@@ -353,7 +318,7 @@ module Reactor
           links_to_remove.clear
           links_to_set.clear
 
-          copy = RailsConnector::AbstractObj.uncached { RailsConnector::AbstractObj.find(self.id) }
+          copy = RailsConnector::BasicObj.uncached { RailsConnector::BasicObj.find(self.id) }
 
           linklists.each do |linklist|
             original_link_ids = Reactor::Attributes::LinkListFromAttrValues.new(copy, linklist).call.map(&:id)
@@ -385,7 +350,6 @@ module Reactor
             end
           end
         end
-
         self.class.connection.clear_query_cache
       end
 
@@ -411,6 +375,7 @@ module Reactor
         @crul_obj = Reactor::Cm::Obj.create(name, parent, klass)
       end
 
+      # TODO: depends on rails version
       def create
         run_callbacks(:create) do
           c_name  = self.name
@@ -420,33 +385,23 @@ module Reactor
           self.id = @crul_obj.obj_id
           crul_obj_save if crul_attributes_set? || crul_links_changed?
           self.reload # ?
+          self.changes_applied
           self.id
         end
       end
 
-      if Reactor.rails4_x?
-        if Reactor.rails4_0_ge6? || Reactor.rails4_1? || Reactor.rails4_2?
-          alias_method :_create_record, :create
-        else
-          alias_method :create_record, :create
-        end
-      end
+      alias_method :_create_record, :create
 
-      def update
+      def update(attribute_names = self.attribute_names)
          run_callbacks(:update) do
            crul_obj_save if crul_attributes_set? || crul_links_changed?
            self.reload
+           self.changes_applied
            self.id
          end
       end
 
-      if Reactor.rails4_x?
-        if Reactor.rails4_0_ge6? || Reactor.rails4_1? || Reactor.rails4_2?
-          alias_method :_update_record, :update
-        else
-          alias_method :update_record, :update
-        end
-      end
+      alias_method :_update_record, :update
 
       def ignore_attributes(attributes)
         return {} if attributes.nil?
@@ -500,33 +455,6 @@ module Reactor
         end
       end
 
-      if Reactor.rails4_x?
-        # Detect the subclass from the inheritance column of attrs. If the inheritance column value
-        # is not self or a valid subclass, raises ActiveRecord::SubclassNotFound
-        # If this is a StrongParameters hash, and access to inheritance_column is not permitted,
-        # this will ignore the inheritance column and return nil
-        def subclass_from_attrs(attrs)
-          subclass_name = attrs.with_indifferent_access[inheritance_column]
-
-          if subclass_name.present? && subclass_name != self.name
-            subclass = subclass_name.safe_constantize
-
-            if subclass # this if has been added
-              unless descendants.include?(subclass)
-                raise ActiveRecord::SubclassNotFound.new("Invalid single-table inheritance type: #{subclass_name} is not a subclass of #{name}")
-              end
-
-              subclass
-            end
-          end
-        end
-
-        if Reactor.rails4_0_ge6? || Reactor.rails4_1? || Reactor.rails4_2?
-          alias_method :subclass_from_attributes, :subclass_from_attrs
-          remove_method :subclass_from_attrs
-        end
-      end
-
       # Convenience method: it is equivalent to following call chain:
       #
       #     i = create(attributes)
@@ -553,7 +481,7 @@ module Reactor
 
       protected
       def attribute_methods_overriden?
-        self.name != 'RailsConnector::AbstractObj'
+        self.name != 'RailsConnector::BasicObj'
       end
     end
   end

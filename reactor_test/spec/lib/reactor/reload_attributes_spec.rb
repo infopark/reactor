@@ -25,7 +25,7 @@ describe "Attribute reloading" do
   end
 
   specify do
-    skip
+    skip "We don't need it during development process or in production environment"
     # create a ruby class and dynamically reload attributes will not work.
     # We don't need it during development process or in production environment
 
@@ -132,7 +132,7 @@ describe "Attribute reloading" do
   end
 
   specify do
-    skip
+    skip "We don't need it during development process or in production environment"
     # create a ruby class and dynamically reload attributes will not work.
     # We don't need it during development process or in production environment
 

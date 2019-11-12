@@ -1,11 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-unless defined?(TestClassWithCustomAttributes)
-  # class TestClassWithCustomAttributes < Obj
-  # end
-end
-
 shared_examples "attribute type reader" do
   it { expect(obj.send(:attribute_type, attr)).to eq(type) }
   it { expect(obj.send(:attribute_type, :channels)).to eq(:multienum) }
