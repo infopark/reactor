@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-shared_examples "dirty attribute tracking" do |attribute, old_value, new_value, default_value|
+shared_examples "dirty attribute tracking" do |attribute, old_value, new_value|
 
   it "tracks changes of #{attribute}" do
     expect {
@@ -8,20 +8,18 @@ shared_examples "dirty attribute tracking" do |attribute, old_value, new_value, 
     }.to change{subject.__send__(attribute)}.from(old_value).to(new_value)
 
     expect(subject.changed).to include(attribute.to_s)
-    expect(subject.__send__(:"#{attribute}_changed?")).to be_truthy
-    expect(subject.changed_attributes[attribute]).to eq(default_value)
+    expect(subject.__send__(:"#{attribute}_changed?", to: new_value)).to be_truthy
   end
 end
 
-shared_examples "dirty attribute tracking with persistance" do |attribute, old_value, new_value, default_value|
+shared_examples "dirty attribute tracking with persistance" do |attribute, old_value, new_value|
 
   it "tracks changes of #{attribute}" do
     expect {
       subject.__send__(:"#{attribute}=", new_value)
       subject.save!
     }.to change{subject.__send__(attribute)}.from(old_value).to(new_value)
-
-    # expect(subject.previous_changes[attribute]).to eq([default_value, new_value])
+    expect(subject.attribute_previously_changed?(attribute)).to be_truthy
   end
 end
 
@@ -32,15 +30,15 @@ describe "Dirty attribute tracking", focus: false do
     let(:subject) { TestClassWithCustomAttributes.new(name: 'old_name', title: 'old title', test_attr_string: 'old string') }
 
     describe "built-in attribute", focus: false do
-      include_examples "dirty attribute tracking", :name, 'old_name', 'new_name', nil
+      include_examples "dirty attribute tracking", :name, 'old_name', 'new_name'
     end
 
     describe "built-in content attribute" do
-      include_examples "dirty attribute tracking", :title, 'old title', 'new title', nil
+      include_examples "dirty attribute tracking", :title, 'old title', 'new title'
     end
 
     describe "content attribute", focus: false  do
-      include_examples "dirty attribute tracking", :test_attr_string, 'old string', 'new string', nil
+      include_examples "dirty attribute tracking", :test_attr_string, 'old string', 'new string'
     end
   end
 
@@ -56,15 +54,15 @@ describe "Dirty attribute tracking", focus: false do
     end
 
     describe "built-in attribute" do
-      include_examples "dirty attribute tracking", :name, 'dirty_attr_check', 'dirty_attr_check2', 'dirty_attr_check'
+      include_examples "dirty attribute tracking", :name, 'dirty_attr_check', 'dirty_attr_check2'
     end
 
     describe "built-in content attribute" do
-      include_examples "dirty attribute tracking", :title, 'old title', 'new title', 'old title'
+      include_examples "dirty attribute tracking", :title, 'old title', 'new title'
     end
 
     describe "content attribute" do
-      include_examples "dirty attribute tracking", :test_attr_string, 'old string', 'new string', 'old string'
+      include_examples "dirty attribute tracking", :test_attr_string, 'old string', 'new string'
     end
 
   end
