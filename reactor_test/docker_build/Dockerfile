@@ -1,6 +1,8 @@
 # Pull base image.
 FROM ubuntu
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN mkdir /fiona /data
 VOLUME /data
 
