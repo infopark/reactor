@@ -1,7 +1,5 @@
 # Pull base image.
-FROM ubuntu
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM ubuntu:xenial
 
 RUN mkdir /fiona /data
 VOLUME /data

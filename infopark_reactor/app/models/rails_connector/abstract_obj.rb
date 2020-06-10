@@ -26,7 +26,7 @@ module RailsConnector
 
   class AbstractObj
     def self.compute_type(type_name)
-      try_type { type_name.safe_constantize } || self
+      try_type { type_name.constantize } || self
     end
   end
 end
