@@ -14,7 +14,7 @@ This repository contains **Dockerfile** of [Fiona7](https://kb.infopark.com/info
 
 Run to build the image
 
-    docker build -t fiona7_reactor .
+    docker build -t fiona7_reactor_test .
 
 For starting CM
 

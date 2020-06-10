@@ -11,9 +11,9 @@ services:
     ports:
       - "3306:3306"
   fiona:
-    image: fiona7_reactor
-    container_name: fiona7_reactor
-    command: ./start.sh
+    image: fiona7_reactor_test
+    container_name: fiona7_reactor_test
+    command: ["./wait-for-it.sh", "db:3306", "--", "./start.sh"]
     environment:
       - LD_LIBRARY_PATH="/fiona/CMS-Fiona-7.0.1/lib/sles:$LD_LIBRARY_PATH"
       - TERM=xterm

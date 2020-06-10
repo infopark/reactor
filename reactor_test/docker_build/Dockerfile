@@ -44,6 +44,9 @@ RUN rm -rf /Infopark-CMS-Fiona-7.0.1-Linux \
       license.xml \
       npsinstall.log
 
+ADD /wait-for-it.sh .
+RUN chmod +x wait-for-it.sh
+
 ADD /start.sh .
 RUN chmod +x start.sh
 
