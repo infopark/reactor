@@ -19,7 +19,7 @@ def prepare_cms_db(db_name)
       'host' => 'localhost',
     }
   end
-  db_config = "-h#{cms_db_config['host']} -u#{cms_db_config['username']}"
+  db_config = "-h#{cms_db_config['host']} -u#{cms_db_config['username']} -P#{cms_db_config['port']}"
   db_config << " -p#{cms_db_config['password']}" if cms_db_config['password'].present?
 
   sql_file = File.expand_path('../reactor_test.sql', __FILE__)

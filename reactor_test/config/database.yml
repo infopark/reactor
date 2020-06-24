@@ -4,6 +4,7 @@ cms: &cms
   username: reactor_user
   password: reactor_user
   host: 127.0.0.1
+  port: 23306
   reconnect: true
 
 test:
@@ -19,4 +20,5 @@ development:
   username: root
   password: root
   host: 127.0.0.1
+  port: 23306
   reconnect: true
