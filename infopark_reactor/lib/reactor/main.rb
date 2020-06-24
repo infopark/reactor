@@ -2,7 +2,6 @@ module Reactor
   module Main
     def self.included(base)
       [
-        RailsConnector::Meta,
         Reactor::Legacy::Base,
         Reactor::Attributes::Base,
         Reactor::Persistence::Base,

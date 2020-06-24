@@ -56,7 +56,7 @@ module Reactor
     def generate_attribute_handlers
       RailsConnector::Meta::EagerLoader.instance.obj_classes.each do |_, obj_class|
         # Rails.logger.debug "Reactor::AttributeHandlers: preparing obj class #{obj_class.name}"
-        generate_attribute_handler(obj_class) if obj_class.name =~ /^[A-Z]/
+        generate_attribute_handler(obj_class) if obj_class.try(:name) =~ /^[A-Z]/
       end
     end
 
@@ -187,10 +187,6 @@ module Reactor
 
       def body=(value)
         set(:body, value)
-      end
-
-      def file_extension=(value)
-        set(:content_type, value)
       end
 
       def blob

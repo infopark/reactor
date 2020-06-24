@@ -35,11 +35,7 @@ require 'reactor/already_released'
 require 'reactor/no_working_version'
 require 'reactor/not_permitted'
 
-# require eager loader
-require 'rails_connector/meta/eager_loader'
-
 # require components
-require 'reactor/rails_connector_meta'
 require 'reactor/legacy'
 require 'reactor/validations'
 require 'reactor/permission'
