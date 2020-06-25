@@ -45,6 +45,7 @@ require 'reactor/rc_independent'
 require 'reactor/sudo'
 require 'reactor/main'
 require 'reactor/attributes'
+require 'reactor/attributes_handlers'
 require 'reactor/persistence'
 
 # require rails integration

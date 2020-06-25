@@ -57,7 +57,7 @@ module Reactor
     def generate_attribute_handlers
       RailsConnector::Meta::EagerLoader.instance.obj_classes.each do |_, obj_class|
         # Rails.logger.debug "Reactor::AttributeHandlers: preparing obj class #{obj_class.name}"
-        generate_attribute_handler(obj_class) if obj_class.name =~ /^[A-Z]/
+        generate_attribute_handler(obj_class) if obj_class.try(:name) =~ /^[A-Z]/
       end
     end
 
@@ -106,8 +106,8 @@ module Reactor
 
         # active model dirty tracking
         attribute_methods << <<-EOC
-        def #{attribute}_changed?
-          attribute_changed?(:#{attribute})
+        def #{attribute}_changed?(**options)
+          attribute_changed?(:#{attribute}, options)
         end
         EOC
       end

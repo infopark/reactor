@@ -19,7 +19,9 @@ shared_examples "dirty attribute tracking with persistance" do |attribute, old_v
       subject.__send__(:"#{attribute}=", new_value)
       subject.save!
     }.to change{subject.__send__(attribute)}.from(old_value).to(new_value)
-    expect(subject.attribute_previously_changed?(attribute)).to be_truthy
+    if ::Rails::VERSION::MAJOR == 5 && ::Rails::VERSION::MINOR == 2
+      expect(subject.attribute_previously_changed?(attribute)).to be_truthy
+    end
   end
 end
 
