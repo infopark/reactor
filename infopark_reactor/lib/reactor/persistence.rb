@@ -221,7 +221,7 @@ module Reactor
 
       # It should excactly match ActiveRecord::Base.new in it's behavior
       # @see ActiveRecord::Base.new
-      def initialize(attributes = nil, &block)
+      def initialize(attributes = nil, options = {}, &block)
         if true || !self.class.send(:attribute_methods_overriden?)
           ignored_attributes = ignore_attributes(attributes)
           # supress block hijacking!
