@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:infopark/fiona_connector.git
-  revision: d0488e7f18c8a90036d555f9bdfad1880585a560
+  revision: 5f3347afcdba8aca264176270b56a62383642852
   branch: develop
   specs:
     infopark_fiona_connector (7.0.1.5.2.3.rc3)
