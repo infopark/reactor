@@ -87,9 +87,9 @@ module Reactor
       # @see [Reactor::Attributes]
       # @note options are passed to underlying xml interface, but as of now have no effect
       def set(key, value, options={})
+        key = key.to_sym
         raise TypeError, "can't modify frozen object" if frozen?
         raise ArgumentError, "Unknown attribute #{key.to_s} for #{self.class.to_s} #{self.path}" unless allowed_attr?(key)
-        key = key.to_sym
         attribute_will_change!(key.to_s)
 
         attribute = key_to_attr(key)

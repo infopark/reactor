@@ -18,10 +18,7 @@ services:
       - LD_LIBRARY_PATH="/fiona/CMS-Fiona-7.0.1/lib/sles:$LD_LIBRARY_PATH"
       - TERM=xterm
     ports:
-      - "3001:3001"
-      - "3002:3002"
-      - "3202:3202"
-      - "3011:3011"
+      - "23002:3002"
     links:
       - db
     depends_on:
