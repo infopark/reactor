@@ -59,7 +59,7 @@ module RailsConnector
       obj.send(:reload_attributes, objClass)
       obj.instance_eval(&block) if block_given?
       obj.save!
-      obj.release unless obj.keep_edited || !Obj.last.edited?
+      obj.release unless obj.keep_edited || !obj.reload.edited?
       obj
     end
 
