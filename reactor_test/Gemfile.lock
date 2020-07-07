@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:infopark/fiona_connector.git
-  revision: ec202d3180e0e4873d74d34d57939e30b55f18f6
+  revision: 06e260085532f2bac2d66d027673151ee03c7733
   branch: develop
   specs:
     infopark_fiona_connector (7.0.1.5.2.3.rc3)
@@ -107,7 +107,7 @@ GEM
     mysql_blob_streaming (2.3.0)
       mysql2 (>= 0.4.4, < 0.6.0)
     nio4r (2.5.2)
-    nokogiri (1.10.9)
+    nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     pry (0.13.1)
       coderay (~> 1.1)
