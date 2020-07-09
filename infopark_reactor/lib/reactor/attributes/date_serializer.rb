@@ -13,6 +13,9 @@ module Reactor
       private
       def serialize_date(value)
         return nil if value.blank?
+        if value.is_a?(Date)
+          value = value.to_datetime
+        end
         if value.is_a?(Time) || value.is_a?(DateTime)
           value.utc.to_s(:number)
         elsif value.is_a?(String)
