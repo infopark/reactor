@@ -5,7 +5,6 @@ source 'https://rubygems.org'
 gem 'rspec-rails'
 
 gem 'rspec-activemodel-mocks'
-# gem "infopark_fiona_connector", '7.0.1.5.1.4.rc2'
 
 gem "infopark_fiona_connector", git: "git@github.com:infopark/fiona_connector.git", branch: "develop"
 gem 'infopark_reactor', path: '../infopark_reactor'
