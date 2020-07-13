@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
   db:
     image: mysql:5.6
@@ -11,15 +11,27 @@ services:
     ports:
       - "23306:3306"
   fiona:
-    image: fiona7_reactor_test
-    container_name: fiona7_reactor_test
-    command: ["./wait-for-it.sh", "db:3306", "--", "./start.sh"]
+    image: 721039963787.dkr.ecr.eu-central-1.amazonaws.com/mpg-reactor-test
+    container_name: mpg-reactor-test
+    command: ["./wait-for-it.sh", "db:3306", "-s", "--timeout=30", "--", "./start.sh"]
+    volumes:
+      # Path on the host, relative to the Compose file
+      - ./reactor_test.sql:/tmp/test_db_dump.sql
     environment:
-      - LD_LIBRARY_PATH="/fiona/CMS-Fiona-7.0.1/lib/sles:$LD_LIBRARY_PATH"
-      - TERM=xterm
+      LD_LIBRARY_PATH: "/fiona/CMS-Fiona-7.0.1/lib/sles"
+      TERM: xterm
+      TZ: Europe/Berlin
     ports:
       - "23002:3002"
+      - "25022:22"
+    healthcheck:
+      test: ./healthcheck.sh
+      interval: 2s
+      timeout: 1m30s
+      retries: 15
     links:
       - db
     depends_on:
       - db
+volumes:
+  mysql_data: {}

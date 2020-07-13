@@ -1,20 +1,3 @@
-GIT
-  remote: git@github.com:infopark/fiona_connector.git
-  revision: b7cb53c546520ae712368722c6e754a0a8820553
-  branch: develop
-  specs:
-    infopark_fiona_connector (7.0.1.5.2.3.rc3)
-      activerecord (~> 5.0)
-      helpful_configuration (~> 0.1.0)
-      jquery-rails (~> 4.3)
-      json (~> 2.3)
-      maruku (~> 0.7)
-      mime-types (~> 3.1)
-      mysql_blob_streaming (~> 2.3)
-      rails (~> 5.0)
-      rake (~> 12.3)
-      rsolr (~> 2.1.0s)
-
 PATH
   remote: ../infopark_reactor
   specs:
@@ -77,6 +60,17 @@ GEM
     helpful_configuration (0.1.0)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
+    infopark_fiona_connector (7.0.1.5.2.3.rc4)
+      activerecord (~> 5.0)
+      helpful_configuration (~> 0.1.0)
+      jquery-rails (~> 4.3)
+      json (~> 2.3)
+      maruku (~> 0.7)
+      mime-types (~> 3.1)
+      mysql_blob_streaming (~> 2.3)
+      rails (~> 5.0)
+      rake (~> 12.3)
+      rsolr (~> 2.1.0s)
     jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -178,7 +172,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  infopark_fiona_connector!
+  infopark_fiona_connector (= 7.0.1.5.2.3.rc4)
   infopark_reactor!
   mysql2 (~> 0.5.2)
   mysql_blob_streaming (= 2.3.0)

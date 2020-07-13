@@ -11,5 +11,5 @@ vagrant/*
 680-XML-Reference-de.pdf
 reactor_test/.ruby-version
 reactor_test/vendor/cache
-reactor_test/docker_build/Infopark-CMS-Fiona-7.0.1-Linux.zip
+reactor_test/docker_build/Infopark-CMS-Fiona-7.0.1-Linux
 reactor_test/docker_build/infopark-internal-restricted-license-fiona7.xml
