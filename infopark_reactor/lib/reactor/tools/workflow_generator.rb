@@ -187,7 +187,7 @@ module Reactor
 
       def generate_token
         characters = ("0".."9").to_a + ("A".."Z").to_a + ("a".."z").to_a
-        8.times.map { characters[rand(characters.length)] }.join
+        Array.new(8) { characters[rand(characters.length)] }.join
       end
     end
   end

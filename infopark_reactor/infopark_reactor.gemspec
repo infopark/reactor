@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.name        = "infopark_reactor"
   s.version     = Reactor::VERSION.to_s
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Tomasz Przedmojski", "Anton Mezin"]
-  s.email       = ["tomasz.przedmojski@infopark.de", "anton.mezin@infopark.de"]
+  s.authors     = ["Tomasz Przedmojski", "Anton Mezin", "Roman Lemekha"]
+  s.email       = ["tomasz.przedmojski@infopark.de", "anton.mezin@infopark.de", "roman.lemekha@infopark.de"]
   s.homepage    = ""
   s.summary     = "Write into CM in familiar, Rails-like way"
   s.description = "Use the ActiveRecord mimicking API to write into CM and enjoy all the benefits of callbacks, validations and permission checking"
@@ -24,5 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 5.0"
 
   s.add_development_dependency "rspec"
+  s.add_development_dependency "rubocop"
+  s.add_development_dependency "rubocop-performance"
   s.add_development_dependency "yard"
 end

@@ -215,6 +215,7 @@ module Reactor
 
       def to_time_in_zone(value)
         return nil if value.blank?
+
         ActiveSupport::TimeZone["UTC"].parse(value).in_time_zone
       end
 
