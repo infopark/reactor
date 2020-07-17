@@ -8,7 +8,7 @@ describe 'DateSerializer' do
     end
 
     it 'shoud return iso string in UTC zone' do
-      t = Time.parse('20180221101051').in_time_zone('CET')
+      t = Time.zone.parse('20180221101051').in_time_zone('CET')
       d = Reactor::Attributes::DateSerializer.new('date', t)
       expect(d.serialize).to eq '20180221091051'
     end
