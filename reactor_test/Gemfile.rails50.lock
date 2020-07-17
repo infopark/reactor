@@ -1,7 +1,8 @@
 PATH
   remote: ../infopark_reactor
   specs:
-    infopark_reactor (1.27.0.rc3)
+    infopark_reactor (1.27.0.rc4)
+      infopark_fiona_connector (~> 7.0.1.5.2.3.rc5)
       nokogiri
       rails (~> 5.0)
 
@@ -60,7 +61,7 @@ GEM
     helpful_configuration (0.1.0)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
-    infopark_fiona_connector (7.0.1.5.2.3.rc4)
+    infopark_fiona_connector (7.0.1.5.2.3.rc5)
       activerecord (~> 5.0)
       helpful_configuration (~> 0.1.0)
       jquery-rails (~> 4.3)
@@ -172,7 +173,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  infopark_fiona_connector (= 7.0.1.5.2.3.rc4)
+  infopark_fiona_connector (= 7.0.1.5.2.3.rc5)
   infopark_reactor!
   mysql2 (~> 0.5.2)
   mysql_blob_streaming (= 2.3.0)

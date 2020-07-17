@@ -1,8 +1,8 @@
 PATH
   remote: ../infopark_reactor
   specs:
-    infopark_reactor (1.27.0.rc3)
-      infopark_fiona_connector
+    infopark_reactor (1.27.0.rc4)
+      infopark_fiona_connector (~> 7.0.1.5.2.3.rc5)
       nokogiri
       rails (~> 5.0)
 

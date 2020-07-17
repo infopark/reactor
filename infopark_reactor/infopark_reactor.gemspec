@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "infopark_fiona_connector"
+  s.add_dependency "infopark_fiona_connector", "~> 7.0.1.5.2.3.rc5"
   s.add_dependency "nokogiri"
   s.add_dependency "rails", "~> 5.0"
 
