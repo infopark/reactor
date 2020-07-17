@@ -3,7 +3,6 @@ os: linux
 dist: xenial
 cache:
   directories:
-    - infopark_reactor/vendor/bundle
     - reactor_test/vendor/bundle
 rvm:
   - 2.4.5
@@ -30,6 +29,9 @@ after_script:
 jobs:
   include:
   - name: Rubocop
+    cache:
+      directories:
+        - infopark_reactor/vendor/bundle
     before_install:
       - cd infopark_reactor
     before_script: skip
