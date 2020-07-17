@@ -10,8 +10,8 @@ module Reactor
         Reactor::Workflow::Base,
         Reactor::StreamingUpload::Base
       ].each do |mod|
-         base.send(:include, mod)
-       end
+        base.send(:include, mod)
+      end
     end
   end
 end

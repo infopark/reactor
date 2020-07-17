@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Tools
     class WorkflowGenerator
@@ -10,8 +9,8 @@ module Reactor
         @users      = @editors + @correctors
         @groups     = personal_groups(@users)
         @class_name = options[:obj_class] || generate_obj_class_name
-        @workflow_name  = options[:workflow_name] || generate_workflow_name
-        @obj_name   = options[:obj_name] || generate_obj_name
+        @workflow_name = options[:workflow_name] || generate_workflow_name
+        @obj_name = options[:obj_name] || generate_obj_name
       end
 
       def generate!
@@ -45,7 +44,7 @@ module Reactor
       end
 
       def personal_groups(users)
-        users.map {|user| personal_group(user) }
+        users.map { |user| personal_group(user) }
       end
 
       def create_groups
@@ -53,20 +52,20 @@ module Reactor
           if Reactor::Cm::Group.exists?(group)
             Reactor::Cm::Group.get(group)
           else
-            Reactor::Cm::Group.create(:name => group)
+            Reactor::Cm::Group.create(name: group)
           end
         end
       end
 
       def create_users
         @users.each do |user|
-          if Reactor::Cm::User::Internal.exists?(user)
-            internal_user = Reactor::Cm::User::Internal.get(user)
-          else
-            internal_user = Reactor::Cm::User::Internal.create(user, personal_group(user))
-          end
+          internal_user = if Reactor::Cm::User::Internal.exists?(user)
+                            Reactor::Cm::User::Internal.get(user)
+                          else
+                            Reactor::Cm::User::Internal.create(user, personal_group(user))
+                          end
 
-          internal_user.change_password('thepasswordispassword')
+          internal_user.change_password("thepasswordispassword")
         end
       end
 
@@ -76,21 +75,21 @@ module Reactor
         @users.each do |user|
           signature = personal_signature(user)
           if Reactor::Cm::Attribute.exists?(signature)
-            #Reactor::Cm::Attribute.get(signature)
+            # Reactor::Cm::Attribute.get(signature)
             @signatures[user] = signature
           else
-            Reactor::Cm::Attribute.create(signature, 'signature')
+            Reactor::Cm::Attribute.create(signature, "signature")
             @signatures[user] = signature
           end
         end
       end
 
       def create_workflow
-        if Reactor::Cm::Workflow.exists?(@workflow_name)
-          @workflow = Reactor::Cm::Workflow.get(@workflow_name)
-        else
-          @workflow = Reactor::Cm::Workflow.create(@workflow_name)
-        end
+        @workflow = if Reactor::Cm::Workflow.exists?(@workflow_name)
+                      Reactor::Cm::Workflow.get(@workflow_name)
+                    else
+                      Reactor::Cm::Workflow.create(@workflow_name)
+                    end
 
         # set up workflow steps
         @workflow.edit_groups = personal_groups(@editors)
@@ -98,8 +97,8 @@ module Reactor
         serialized_signatures = []
         @correctors.each do |corrector|
           signature = {
-            :group => personal_group(corrector),
-            :attribute => @signatures[corrector]
+            group: personal_group(corrector),
+            attribute: @signatures[corrector]
           }
           serialized_signatures << signature
         end
@@ -110,15 +109,15 @@ module Reactor
       end
 
       def create_obj_class
-        @obj_class  = if Reactor::Cm::ObjClass.exists?(@class_name)
-          Reactor::Cm::ObjClass.get(@class_name)
-        else
-          Reactor::Cm::ObjClass.create(@class_name, 'publication')
+        @obj_class = if Reactor::Cm::ObjClass.exists?(@class_name)
+                       Reactor::Cm::ObjClass.get(@class_name)
+                     else
+                       Reactor::Cm::ObjClass.create(@class_name, "publication")
         end
       end
 
       def create_obj
-        @obj = Reactor::Cm::Obj.create(@obj_name, '/', @class_name)
+        @obj = Reactor::Cm::Obj.create(@obj_name, "/", @class_name)
         @obj.set(:workflowName, @workflow_name)
         @obj.save!
       end
@@ -187,10 +186,9 @@ module Reactor
       end
 
       def generate_token
-        characters = ('0'..'9').to_a + ('A'..'Z').to_a + ('a'..'z').to_a
-        token = 8.times.map { characters[rand(characters.length)] }.join
+        characters = ("0".."9").to_a + ("A".."Z").to_a + ("a".."z").to_a
+        Array.new(8) { characters[rand(characters.length)] }.join
       end
-
     end
   end
 end

@@ -1,11 +1,11 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/support/link_matcher'
+require "reactor/support/link_matcher"
 
 module Reactor
   module Attributes
     class HTMLSerializer
       def initialize(attr, value)
-        @attr, @value = attr, value.to_str
+        @attr = attr
+        @value = value.to_str
       end
 
       def serialize
@@ -13,13 +13,14 @@ module Reactor
       end
 
       private
+
       def serialize_html
         link_expressions = [/(href|src|usemap)\s*=\s*"([^"]*)"/, /(href|src|usemap)\s*=\s*'([^']*)'/]
         link_expressions.each do |expr|
           @value.gsub!(expr) do |string|
-            link = Reactor::Support::LinkMatcher.new($2)
+            link = Reactor::Support::LinkMatcher.new(Regexp.last_match(2))
             if link.recognized?
-              "#{$1}=\"#{link.rewrite_url}\""
+              "#{Regexp.last_match(1)}=\"#{link.rewrite_url}\""
             else
               string
             end

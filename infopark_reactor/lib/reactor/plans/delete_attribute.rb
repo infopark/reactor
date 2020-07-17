@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Plans
     class DeleteAttribute < CommonAttribute
@@ -10,7 +9,7 @@ module Reactor
 
       def prepare!
         error("name is nil") if @name.nil?
-        error("attribute #{@name} does not exist") if not Reactor::Cm::Attribute.exists?(@name)
+        error("attribute #{@name} does not exist") unless Reactor::Cm::Attribute.exists?(@name)
         # TODO: check used..
       end
 
@@ -18,7 +17,6 @@ module Reactor
         attrib = Reactor::Cm::Attribute.get(@name)
         attrib.delete!
       end
-
     end
   end
 end

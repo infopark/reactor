@@ -1,10 +1,8 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/session'
-require 'reactor/cache/permission'
-require 'reactor/cache/user'
+require "reactor/session"
+require "reactor/cache/permission"
+require "reactor/cache/user"
 
 module Reactor
-
   # This module adds #permission method to obj that act as a gateway for permission checking,
   # see documentation for [Permission::PermissionProxy] for more details.
   # @see [Permission::PermissionProxy]
@@ -16,9 +14,7 @@ module Reactor
   #
   # Therefore if the user lacks permissions no futher actions are executed.
   module Permission
-
     module Base
-
       # @see [PermissionProxy]
       def permission
         @permission ||= PermissionProxy.new(self)
@@ -29,7 +25,7 @@ module Reactor
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
       def release!(*args)
         ensure_permission_granted(:release)
-        return super
+        super
       end
 
       # Wraps around Reactor::Persistence::Base#take! and ensures
@@ -37,7 +33,7 @@ module Reactor
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
       def take!(*args)
         ensure_permission_granted(:take)
-        return super
+        super
       end
 
       # Wraps around Reactor::Persistence::Base#revert! and ensures
@@ -45,7 +41,7 @@ module Reactor
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
       def revert!(*args)
         ensure_permission_granted(:revert)
-        return super
+        super
       end
 
       # Wraps around Reactor::Persistence::Base#edit! and ensures
@@ -53,7 +49,7 @@ module Reactor
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
       def edit!(*args)
         ensure_permission_granted(:edit)
-        return super
+        super
       end
 
       # Wraps around ActiveRecord::Persistence#save and ensures
@@ -63,11 +59,11 @@ module Reactor
         if persisted?
           ensure_permission_granted(:write)
         else
-          ensure_create_permission_granted(self.parent_obj_id)
+          ensure_create_permission_granted(parent_obj_id)
         end
-        return super
+        super
       rescue Reactor::NotPermitted
-        return false
+        false
       end
 
       # Wraps around ActiveRecord::Persistence#save! and ensures
@@ -77,9 +73,9 @@ module Reactor
         if persisted?
           ensure_permission_granted(:write)
         else
-          ensure_create_permission_granted(self.parent_obj_id)
+          ensure_create_permission_granted(parent_obj_id)
         end
-        return super
+        super
       end
 
       # Wraps around Reactor::Persistence::Base#resolve_refs! and ensures
@@ -87,22 +83,29 @@ module Reactor
       # @raise [Reactor::NotPermitted] user lacks neccessary permission
       def resolve_refs!
         ensure_permission_granted(:write)
-        return super
+        super
       end
 
       private
 
       def ensure_permission_granted(type)
-        raise Reactor::NotPermitted, "#{self.path} lacks neccessary permissions for #{type}" unless self.permission.send("#{type}?")
-        return true
+        unless permission.send("#{type}?")
+          raise Reactor::NotPermitted, "#{path} lacks neccessary permissions for #{type}"
+        end
+
+        true
       end
 
       def ensure_create_permission_granted(obj_id)
-        raise RuntimeError, "Permission check for object with id=#{obj_id.inspect} which does not exist" unless RailsConnector::AbstractObj.exists?(obj_id)
-        raise Reactor::NotPermitted, 'Obj lacks neccessary permissions for creation' unless RailsConnector::AbstractObj.find(obj_id).permission.create_children?
-        return true
-      end
+        unless RailsConnector::AbstractObj.exists?(obj_id)
+          raise "Permission check for object with id=#{obj_id.inspect} which does not exist"
+        end
+        unless RailsConnector::AbstractObj.find(obj_id).permission.create_children?
+          raise Reactor::NotPermitted, "Obj lacks neccessary permissions for creation"
+        end
 
+        true
+      end
     end
 
     # This class acts as a proxy to underlying permission checking classes.
@@ -111,7 +114,6 @@ module Reactor
     # 2. Given user has the permission
     # 3. Given user doesn't have the permission
     class PermissionProxy
-
       def initialize(obj) #:nodoc:
         @obj = obj
         @cache = Reactor::Cache::Permission.instance
@@ -119,7 +121,7 @@ module Reactor
       end
 
       # Returns true if given user (or current user, if none given) has 'live' permission
-      def live?(user=nil)
+      def live?(user = nil)
         granted?(user, :live)
       end
 
@@ -180,7 +182,7 @@ module Reactor
       def set(permission, groups)
         identifier = identifier(permission)
 
-        groups = [groups] if groups.kind_of?(::String)
+        groups = [groups] if groups.is_a?(::String)
         crul_obj.permission_set(identifier, groups)
       end
 
@@ -189,7 +191,7 @@ module Reactor
       def grant(permission, groups)
         identifier = identifier(permission)
 
-        groups = [groups] if groups.kind_of?(::String)
+        groups = [groups] if groups.is_a?(::String)
         crul_obj.permission_grant(identifier, groups)
       end
 
@@ -198,7 +200,7 @@ module Reactor
       def revoke(permission, groups)
         identifier = identifier(permission)
 
-        groups = [groups] if groups.kind_of?(::String)
+        groups = [groups] if groups.is_a?(::String)
         crul_obj.permission_revoke(identifier, groups)
       end
 
@@ -228,7 +230,7 @@ module Reactor
         end
       rescue Reactor::Cm::MissingCredentials
         raise
-      rescue => e
+      rescue StandardError => e
         Rails.logger.error("Error looking up #{user}'s permission for #{permission} operation on #{obj.path} :\n#{e.message}")
         false
       end
@@ -236,11 +238,11 @@ module Reactor
       # A table with all available permissions and their identifier.
       def self.permissions
         @permissions ||= {
-          :read => 'permissionRead',
-          :root => 'permissionRoot',
-          :live => 'permissionLiveServerRead',
-          :write => 'permissionWrite',
-          :create_children => 'permissionCreateChildren',
+          read: "permissionRead",
+          root: "permissionRoot",
+          live: "permissionLiveServerRead",
+          write: "permissionWrite",
+          create_children: "permissionCreateChildren"
         }
       end
 
@@ -263,7 +265,6 @@ module Reactor
     end
 
     class PermissionLookup
-
       def initialize(obj)
         @obj = obj
         @cache = Reactor::Cache::User.instance
@@ -290,9 +291,6 @@ module Reactor
       def user_in_groups(user, groups)
         groups(user).detect { |user_group| groups.include?(user_group) } != nil
       end
-
     end
-
   end
-
 end

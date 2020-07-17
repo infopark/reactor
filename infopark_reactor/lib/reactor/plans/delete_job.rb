@@ -1,6 +1,5 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/cm/job'
-require 'reactor/plans/common_job'
+require "reactor/cm/job"
+require "reactor/plans/common_job"
 
 module Reactor
   module Plans
@@ -13,13 +12,12 @@ module Reactor
 
       def prepare!
         error("name is nil") if @name.nil?
-        error("job #{@name} does not exist") if not Reactor::Cm::Job.exists?(@name)
+        error("job #{@name} does not exist") unless Reactor::Cm::Job.exists?(@name)
       end
 
       def migrate!
         Reactor::Cm::Job.delete!(@name)
       end
-
     end
   end
 end

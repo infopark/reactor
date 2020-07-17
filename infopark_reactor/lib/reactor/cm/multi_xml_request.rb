@@ -1,13 +1,11 @@
-# -*- encoding : utf-8 -*-
-require 'net/http'
-require 'reactor/cm/xml_response'
-require 'reactor/cm/xml_multi_request_error'
-require 'reactor/cm/xml_markup'
-require 'nokogiri'
+require "net/http"
+require "reactor/cm/xml_response"
+require "reactor/cm/xml_multi_request_error"
+require "reactor/cm/xml_markup"
+require "nokogiri"
 
 module Reactor
   module Cm
-
     class MultiXmlRequest
       def self.timeout
         Reactor::Cm::XmlRequest.timeout
@@ -18,59 +16,56 @@ module Reactor
       end
 
       def self.execute
-        access = Configuration::xml_access
+        access = Configuration.xml_access
         sanity_check(access)
         xml = XmlMarkup.new
-        xml2 = nil
-        ret = nil
         xml.instruct!
         req = nil
-        ret = xml.tag!('cm-payload', 'payload-id' =>'abcabc', 'timestamp' => Time.now.getutc.strftime('%Y%m%d%H%M%S'), 'version' => '6.7.3') do
-          xml.tag!('cm-header') do
-            xml.tag!('cm-sender', 'sender-id' => access[:id], 'name' => "ruby-simple-client")
-            xml.tag!('cm-authentication', 'login' => access[:username], 'token' => token(access[:username],access[:secret]))
+        ret = xml.tag!("cm-payload", "payload-id" => "abcabc", "timestamp" => Time.now.getutc.strftime("%Y%m%d%H%M%S"), "version" => "6.7.3") do
+          xml.tag!("cm-header") do
+            xml.tag!("cm-sender", "sender-id" => access[:id], "name" => "ruby-simple-client")
+            xml.tag!("cm-authentication", "login" => access[:username], "token" => token(access[:username], access[:secret]))
           end
-          req = self.new(xml).tap do |instance|
+          req = new(xml).tap do |instance|
             yield instance
           end
         end
         req.execute!(ret)
       end
 
-      def mandatory(&block)
+      def mandatory
         req_id = self.class.generate_id
         @mandatory << req_id
-        @builder.tag!('cm-request', 'request-id' => req_id, 'preclusive' => 'true') do |xml2|
+        @builder.tag!("cm-request", "request-id" => req_id, "preclusive" => "true") do |xml2|
           yield xml2
         end
       end
 
-      def optional(&block)
+      def optional
         req_id = self.class.generate_id
         @optional << req_id
-        @builder.tag!('cm-request', 'request-id' => req_id, 'preclusive' => 'false') do |xml2|
+        @builder.tag!("cm-request", "request-id" => req_id, "preclusive" => "false") do |xml2|
           yield xml2
         end
       end
 
       def execute!(xml)
-        access = Configuration::xml_access
+        access = Configuration.xml_access
         payload = xml
 
         res = Net::HTTP.new(access[:host], access[:port]).start do |http|
           http.read_timeout = self.class.timeout
-          req = Net::HTTP::Post.new('/xml')
+          req = Net::HTTP::Post.new("/xml")
           req.body = payload
           http.request(req)
         end
 
-        result = MultiXmlResponse.new(res.body, @mandatory, @optional)
+        MultiXmlResponse.new(res.body, @mandatory, @optional)
       end
 
       class << self
-
         def generate_id
-          rand(10000)
+          rand(10_000)
         end
 
         protected
@@ -90,7 +85,9 @@ module Reactor
 
       class MultiXmlResponse
         def initialize(xml, mandatory, optional)
-          @xml, @mandatory, @optional = xml, mandatory, optional
+          @xml = xml
+          @mandatory = mandatory
+          @optional = optional
           @n = Nokogiri::XML.parse(@xml)
         end
 

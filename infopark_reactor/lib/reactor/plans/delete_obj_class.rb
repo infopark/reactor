@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Plans
     class DeleteObjClass < CommonObjClass
@@ -11,7 +10,7 @@ module Reactor
       end
 
       def prepare!
-        error("objClass #{@name} not found") if not Reactor::Cm::ObjClass.exists?(@name)
+        error("objClass #{@name} not found") unless Reactor::Cm::ObjClass.exists?(@name)
       end
 
       def migrate!

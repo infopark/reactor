@@ -6,7 +6,7 @@ gem 'rspec-rails'
 
 gem 'rspec-activemodel-mocks'
 
-gem "infopark_fiona_connector", "7.0.1.5.2.3.rc4"
+gem "infopark_fiona_connector", "7.0.1.5.2.3.rc5"
 gem 'infopark_reactor', path: '../infopark_reactor'
 gem 'mysql_blob_streaming', '2.3.0'
 

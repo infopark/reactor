@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Cm
     class Link
@@ -6,22 +5,22 @@ module Reactor
       attr_accessor :title, :target, :position
 
       def self.exists?(id)
-        return !Link.get(id).nil?
-      rescue XmlRequestError => e
-        return false
+        !Link.get(id).nil?
+      rescue XmlRequestError
+        false
       end
 
       def self.get(id)
         link = Link.new
-        link.send(:get,id)
+        link.send(:get, id)
         link
       end
 
-      def self.create_inside(obj, attr, url, title=nil, target=nil)
+      def self.create_inside(obj, attr, url, title = nil, target = nil)
         create(obj.edited_content, attr, url, title, target)
       end
 
-      def self.create(content, attr, url, title=nil, target=nil)
+      def self.create(content, attr, url, title = nil, target = nil)
         link = Link.new
         link.send(:create, content, attr, url, title, target)
         link
@@ -42,65 +41,64 @@ module Reactor
       end
 
       def dest_url=(url)
-        @is_external  = (/^\// =~ url).nil?
+        @is_external  = (%r{^/} =~ url).nil?
         @dest_obj_id  = Obj.get(url).obj_id unless @is_external
         @dest_url     = url
       end
 
       def save!
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @link_id)
+          xml.where_key_tag!(base_name, "id", @link_id)
           xml.set_tag!(base_name) do
-            xml.tag!('target', @target) if @target
-            xml.tag!('title', @title) if @title
-            xml.tag!('destinationUrl', @dest_url) if @dest_url
-            xml.tag!('position', @position) if @position
+            xml.tag!("target", @target) if @target
+            xml.tag!("title", @title) if @title
+            xml.tag!("destinationUrl", @dest_url) if @dest_url
+            xml.tag!("position", @position) if @position
           end
         end
-        response = request.execute!
+        request.execute!
       end
 
       def hash
         # yes, to_s.to_is is neccesary,
         # because self.link_id is of type REXML::Text for the most of the time
-        self.link_id.to_s.to_i
+        link_id.to_s.to_i
       end
 
-
       def eql?(other)
-        self.link_id == other.link_id
+        link_id == other.link_id
       end
 
       def delete!
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @link_id)
+          xml.where_key_tag!(base_name, "id", @link_id)
           xml.tag!("#{base_name}-delete")
         end
-        response = request.execute!
+        request.execute!
       end
 
       protected
-      def initialize
-      end
+
+      def initialize; end
 
       def base_name
-        'link'
+        "link"
       end
 
       def get(id)
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', id)
-          xml.get_key_tag!(base_name, ['id', 'isExternalLink', 'target', 'title', 'destination', 'destinationUrl', 'position'])
+          xml.where_key_tag!(base_name, "id", id)
+          xml.get_key_tag!(base_name, %w(id isExternalLink target title destination destinationUrl position))
         end
-        response      = request.execute!
+        response = request.execute!
 
-        @link_id      = response.xpath('//id/text()')
-        @is_external  = response.xpath('//isExternalLink/text()') == '1'
-        @target       = response.xpath('//target/text()').presence
-        @title        = response.xpath('//title/text()').presence
-        @dest_obj_id  = response.xpath('//destination/text()').presence
-        @dest_url     = response.xpath('//destinationUrl/text()').presence
-        @position     = response.xpath('//position/text()').presence
+        @link_id      = response.xpath("//id/text()")
+        @is_external  = response.xpath("//isExternalLink/text()") == "1"
+        @target       = response.xpath("//target/text()").presence
+        @title        = response.xpath("//title/text()").presence
+        @dest_obj_id  = response.xpath("//destination/text()").presence
+        @dest_url     = response.xpath("//destinationUrl/text()").presence
+        @position     = response.xpath("//position/text()").presence
 
         self
       end
@@ -108,25 +106,25 @@ module Reactor
       def create(content, attr, url, title = nil, target = nil)
         request = XmlRequest.prepare do |xml|
           xml.create_tag!(base_name) do
-            xml.tag!('attributeName', attr.to_s)
-            xml.tag!('sourceContent', content.to_s)
-            xml.tag!('destinationUrl', url.to_s)
+            xml.tag!("attributeName", attr.to_s)
+            xml.tag!("sourceContent", content.to_s)
+            xml.tag!("destinationUrl", url.to_s)
           end
         end
         response = request.execute!
 
-        id = response.xpath('//id/text()')
+        id = response.xpath("//id/text()")
         get(id)
 
         if !title.nil? || !target.nil?
           request = XmlRequest.prepare do |xml|
-            xml.where_key_tag!(base_name, 'id', id)
+            xml.where_key_tag!(base_name, "id", id)
             xml.set_tag!(base_name) do
-              xml.value_tag!('title', title) if title
-              xml.value_tag!('target', target) if target
+              xml.value_tag!("title", title) if title
+              xml.value_tag!("target", target) if target
             end
           end
-          response = request.execute!
+          request.execute!
         end
 
         self

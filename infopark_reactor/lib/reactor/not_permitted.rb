@@ -1,2 +1,1 @@
-# -*- encoding : utf-8 -*-
-class Reactor::NotPermitted < StandardError ; end
+class Reactor::NotPermitted < StandardError; end

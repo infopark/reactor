@@ -1,30 +1,29 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Cm
     class Attribute
       def self.exists?(name)
         begin
-          return Attribute.new.send(:get,name).ok?
-        rescue
-          return false
+          Attribute.new.send(:get, name).ok?
+        rescue StandardError
+          false
         end
       end
 
       def self.instance(name)
         attr = Attribute.new
-        attr.instance_variable_set('@name', name)
+        attr.instance_variable_set("@name", name)
         attr
       end
 
       def self.get(name)
         attr = Attribute.new
-        attr.send(:get,name)
+        attr.send(:get, name)
         attr
       end
 
       def self.create(name, type)
         attr = Attribute.new
-        attr.send(:create,name,type)
+        attr.send(:create, name, type)
         attr
       end
 
@@ -34,27 +33,28 @@ module Reactor
 
       def save!
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'name', @name)
+          xml.where_key_tag!(base_name, "name", @name)
           xml.set_tag!(base_name) do
             @params.each do |key, value|
               xml.value_tag!(key.to_s, value)
             end
           end
         end
-        response = request.execute!
+        request.execute!
       end
 
       def delete!
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'name', @name)
+          xml.where_key_tag!(base_name, "name", @name)
           xml.tag!("#{base_name}-delete")
         end
-        response = request.execute!
+        request.execute!
       end
 
       protected
+
       def base_name
-        'attribute'
+        "attribute"
       end
 
       def initialize
@@ -63,8 +63,8 @@ module Reactor
 
       def get(name)
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'name', name)
-          xml.get_key_tag!(base_name, 'name')
+          xml.where_key_tag!(base_name, "name", name)
+          xml.get_key_tag!(base_name, "name")
         end
         response = request.execute!
         @name = name
@@ -74,10 +74,10 @@ module Reactor
       def create(name, type)
         request = XmlRequest.prepare do |xml|
           xml.create_tag!(base_name) do
-            xml.tag!('name') do
+            xml.tag!("name") do
               xml.text!(name)
             end
-            xml.tag!('type') do
+            xml.tag!("type") do
               xml.text!(type)
             end
           end

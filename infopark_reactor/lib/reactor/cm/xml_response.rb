@@ -1,16 +1,11 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/tools/response_handler/xml_attribute'
-require 'reactor/tools/xpath_extractor'
-require 'rexml/document'
+require "reactor/tools/response_handler/xml_attribute"
+require "reactor/tools/xpath_extractor"
+require "rexml/document"
 
 module Reactor
-
   module Cm
-
     class XmlResponse
-
-      attr_reader :xml
-      attr_reader :xml_str
+      attr_reader :xml, :xml_str
 
       def initialize(xml)
         @xml_str = xml
@@ -24,19 +19,16 @@ module Reactor
       end
 
       def ok?
-        xp = xpath('//cm-code')
+        xp = xpath("//cm-code")
 
         if xp.is_a?(Array)
-          codes = xp.map { |result| result.attribute('numeric').value }.uniq
+          codes = xp.map { |result| result.attribute("numeric").value }.uniq
 
-          return codes.size == 1 && codes.first == '200'
+          return codes.size == 1 && codes.first == "200"
         end
 
-        xp.attribute('numeric').value == '200'
+        xp.attribute("numeric").value == "200"
       end
-
     end
-
   end
-
 end

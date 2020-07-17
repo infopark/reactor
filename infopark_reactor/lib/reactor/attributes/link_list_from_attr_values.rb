@@ -7,12 +7,13 @@ module Reactor
       end
 
       def call
-        (self.obj.attr_values[self.attribute.to_s] || []).map do |link_data|
+        (obj.attr_values[attribute.to_s] || []).map do |link_data|
           RailsConnector::Link.new(link_data)
         end
       end
 
       protected
+
       attr_accessor :obj, :attribute
     end
   end

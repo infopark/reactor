@@ -1,5 +1,4 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/plans/common_attribute_group'
+require "reactor/plans/common_attribute_group"
 
 module Reactor
   module Plans
@@ -22,7 +21,6 @@ module Reactor
         attrib = Reactor::Cm::AttributeGroup.create(@obj_class, @name, @index)
         migrate_params!(attrib)
       end
-
     end
   end
 end

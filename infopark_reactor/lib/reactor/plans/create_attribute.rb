@@ -1,5 +1,4 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/plans/common_attribute'
+require "reactor/plans/common_attribute"
 
 module Reactor
   module Plans
@@ -27,7 +26,6 @@ module Reactor
         attrib = Reactor::Cm::Attribute.create(@name, @type)
         migrate_params!(attrib)
       end
-
     end
   end
 end

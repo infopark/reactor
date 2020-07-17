@@ -8,7 +8,8 @@ module Reactor
       arr = REXML::XPath.match(@node, expr)
 
       return arr.first if arr.length == 1
-      return arr
+
+      arr
     end
   end
 end

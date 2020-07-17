@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Plans
     class UpdateAttribute < CommonAttribute
@@ -10,7 +9,7 @@ module Reactor
 
       def prepapre!
         error("name is nil") if @name.nil?
-        error("attribute #{@name} not found") if not Reactor::Cm::Attribute.exists?(@name)
+        error("attribute #{@name} not found") unless Reactor::Cm::Attribute.exists?(@name)
         prepare_params!(nil)
       end
 
@@ -18,7 +17,6 @@ module Reactor
         attrib = Reactor::Cm::Attribute.get(@name)
         migrate_params!(attrib)
       end
-
     end
   end
 end
