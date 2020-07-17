@@ -6,6 +6,10 @@ cache:
   - reactor_test/vendor/bundle
 rvm:
   - 2.4.5
+gemfile:
+  - Gemfile
+  - Gemfile_rails51
+  - Gemfile_rails50
 services:
   - docker
 before_install:

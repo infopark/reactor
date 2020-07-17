@@ -1,5 +1,4 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/tools/versioner'
+require "reactor/tools/versioner"
 
 module Reactor
   # Class responsible for running a single migration, a helper for Migrator
@@ -18,47 +17,42 @@ module Reactor
 
     def run
       return down if @direction.to_sym == :down
-      return up
+
+      up
     end
 
     def up
-      if @versioner.applied?(@version) then
+      if @versioner.applied?(@version)
         puts "Migrating up: #{@name} (#{@filename}) already applied, skipping"
-        return true
+        true
       else
         result = class_name.send(:up) and @versioner.add(@version)
-        class_name.contained.each do |version|
-          puts "#{class_name.to_s} contains migration #{version}"
-          #@versioner.add(version) # not neccesary!
-        end if result
+        if result
+          class_name.contained.each do |version|
+            puts "#{class_name} contains migration #{version}"
+            # @versioner.add(version) # not neccesary!
+          end
+        end
         result
       end
     end
 
     def down
       result = class_name.send(:down) and @versioner.remove(@version)
-      class_name.contained.each do |version|
-        puts "#{class_name.to_s} contains migration #{version}"
-        @versioner.remove(version)
-      end if result
+      if result
+        class_name.contained.each do |version|
+          puts "#{class_name} contains migration #{version}"
+          @versioner.remove(version)
+        end
+      end
       result
     end
 
     def class_name
-      return Kernel.const_get(@name)
+      Kernel.const_get(@name)
     end
 
-    def name
-      @name
-    end
-
-    def version
-      @version
-    end
-
-    def filename
-      @filename
-    end
+    attr_reader :name, :version, :filename
   end
 
   # Migrator is responsible for running migrations.
@@ -77,10 +71,10 @@ module Reactor
     # and target_version (an integer or nil).
     #
     # Used by a rake task.
-    def initialize(migrations_path, target_version=nil)
+    def initialize(migrations_path, target_version = nil)
       @migrations_path = migrations_path
       @target_version = target_version.to_i unless target_version.nil?
-      @target_version = 99999999999999 if target_version.nil?
+      @target_version = 99_999_999_999_999 if target_version.nil?
       @versioner = Versioner.instance
     end
 
@@ -88,25 +82,26 @@ module Reactor
     # Ouputs current version when done
     def migrate
       return up if @target_version.to_i > current_version.to_i
-      return down
+
+      down
     end
 
     def up
-      rem_migrations = migrations.reject do |version, name, file|
+      rem_migrations = migrations.reject do |version, _name, _file|
         version.to_i > @target_version.to_i or applied?(version)
       end
       run(rem_migrations, :up)
     end
 
     def down
-      rem_migrations = migrations.reject do |version, name, file|
-        version.to_i <= @target_version.to_i or not applied?(version)
+      rem_migrations = migrations.reject do |version, _name, _file|
+        version.to_i <= @target_version.to_i or !applied?(version)
       end
       run(rem_migrations.reverse, :down)
     end
 
     def migrations
-      files = Dir["#{@migrations_path}/[0-9]*_*.rb"].sort.collect do |file|
+      Dir["#{@migrations_path}/[0-9]*_*.rb"].sort.collect do |file|
         version, name = file.scan(/([0-9]+)_([_a-z0-9]*).rb/).first
         [version, name, file]
       end
@@ -124,12 +119,12 @@ module Reactor
       begin
         rem_migrations.each do |version, name, file|
           migration = MigrationProxy.new(@versioner, name.camelize, version, direction, file)
-          puts "Migrating #{direction.to_s}: #{migration.name} (#{migration.filename})"
-          migration.load_migration and migration.run or raise "Migrating #{direction.to_s}: #{migration.name} (#{migration.filename}) failed"
+          puts "Migrating #{direction}: #{migration.name} (#{migration.filename})"
+          migration.load_migration and migration.run or raise "Migrating #{direction}: #{migration.name} (#{migration.filename}) failed"
         end
       ensure
         puts "At version: " + @versioner.current_version.to_s
-        puts "WARNING: Could not store applied migrations!" if not @versioner.store
+        puts "WARNING: Could not store applied migrations!" unless @versioner.store
       end
     end
   end

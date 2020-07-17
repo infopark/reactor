@@ -1,10 +1,10 @@
-require 'reactor/attributes/date_serializer'
-require 'reactor/attributes/html_serializer'
-require 'reactor/attributes/link_list_serializer'
+require "reactor/attributes/date_serializer"
+require "reactor/attributes/html_serializer"
+require "reactor/attributes/link_list_serializer"
 
-require 'reactor/attributes/link_list_extender'
+require "reactor/attributes/link_list_extender"
 
-require 'singleton'
+require "singleton"
 
 module Reactor
   # This module provides support for ActiveRecord like attribute setting, plus additional
@@ -48,11 +48,7 @@ module Reactor
       end
 
       def blob
-        if attr_dict.respond_to?(:blob)
-          attr_dict.send :blob
-        else
-          nil
-        end
+        attr_dict.send :blob if attr_dict.respond_to?(:blob)
       end
 
       def blob=(value)
@@ -86,10 +82,11 @@ module Reactor
       # Sets given attribute, to given value. Converts values if neccessary
       # @see [Reactor::Attributes]
       # @note options are passed to underlying xml interface, but as of now have no effect
-      def set(key, value, options={})
+      def set(key, value, options = {})
         key = key.to_sym
         raise TypeError, "can't modify frozen object" if frozen?
-        raise ArgumentError, "Unknown attribute #{key.to_s} for #{self.class.to_s} #{self.path}" unless allowed_attr?(key)
+        raise ArgumentError, "Unknown attribute #{key} for #{self.class} #{path}" unless allowed_attr?(key)
+
         attribute_will_change!(key.to_s)
 
         attribute = key_to_attr(key)
@@ -106,7 +103,6 @@ module Reactor
         __send__(key)
       end
 
-
       # Uploads a file/string into a CM. Requires call to save afterwards(!)
       # @param [String, IO] data_or_io
       # @param [String] extension file extension
@@ -117,16 +113,16 @@ module Reactor
       end
 
       def uploaded?
-        self.uploaded == true
+        uploaded == true
       end
 
       # @deprecated
       def set_link(key, id_or_path_or_cms_obj)
         target_path = case id_or_path_or_cms_obj
-        when Integer then Obj.find(id_or_path_or_cms_obj).path
-        when String then id_or_path_or_cms_obj
-        when Obj then id_or_path_or_cms_obj.path
-        else raise ArgumentError.new("Link target must Integer, String or Obj, but was #{id_or_path_or_cms_obj.class}.")
+                      when Integer then Obj.find(id_or_path_or_cms_obj).path
+                      when String then id_or_path_or_cms_obj
+                      when Obj then id_or_path_or_cms_obj.path
+                      else raise ArgumentError, "Link target must Integer, String or Obj, but was #{id_or_path_or_cms_obj.class}."
         end
 
         edit!
@@ -134,18 +130,19 @@ module Reactor
         crul_obj.set_link(key, target_path.to_s)
       end
 
-      def reload_attributes(new_obj_class=nil)
-        new_obj_class = new_obj_class || self.obj_class
+      def reload_attributes(new_obj_class = nil)
+        new_obj_class ||= obj_class
         RailsConnector::Meta::EagerLoader.instance.forget_obj_class(new_obj_class)
-        Reactor::AttributeHandlers.reinstall_attributes(self.singleton_class, new_obj_class)
+        Reactor::AttributeHandlers.reinstall_attributes(singleton_class, new_obj_class)
         self.class.initialize_attributes
       end
 
       protected
+
       attr_accessor :uploaded
 
       def builtin_attributes
-        @builtin_attrs ||= (active_record_attributes + Reactor::Cm::Obj::PREDEFINED_ATTRS).map{|item| item.to_s.underscore.to_sym}
+        @builtin_attrs ||= (active_record_attributes + Reactor::Cm::Obj::PREDEFINED_ATTRS).map { |item| item.to_s.underscore.to_sym }
       end
 
       def builtin_attr?(attr)
@@ -165,8 +162,8 @@ module Reactor
         return true if builtin_attr?(attr)
 
         custom_attrs =
-          self.singleton_class.send(:instance_variable_get, '@_o_allowed_attrs') ||
-          self.class.send(:instance_variable_get, '@_o_allowed_attrs') ||
+          singleton_class.send(:instance_variable_get, "@_o_allowed_attrs") ||
+          self.class.send(:instance_variable_get, "@_o_allowed_attrs") ||
           []
 
         custom_attrs.include?(key_to_attr(attr))
@@ -174,12 +171,12 @@ module Reactor
 
       def key_to_attr(key)
         @__attribute_map ||= {
-          :body             => :blob,
-          :valid_until      => :validUntil,
-          :valid_from       => :validFrom,
-          :content_type     => :contentType,
-          :suppress_export  => :suppressExport,
-          :obj_class        => :objClass
+          body: :blob,
+          valid_until: :validUntil,
+          valid_from: :validFrom,
+          content_type: :contentType,
+          suppress_export: :suppressExport,
+          obj_class: :objClass
         }
 
         key = key.to_sym
@@ -205,13 +202,13 @@ module Reactor
         field = :blob if field == :body
         case attribute_type(field)
         when :linklist
-          send(:attr_dict).instance_variable_get('@attr_cache')[field] = value
+          send(:attr_dict).instance_variable_get("@attr_cache")[field] = value
           send(:attr_dict).send(:blob_dict)[field] = :special_linklist_handling_is_broken
         when :date
-          send(:attr_dict).instance_variable_get('@attr_cache')[field] = to_time_in_zone(value)
+          send(:attr_dict).instance_variable_get("@attr_cache")[field] = to_time_in_zone(value)
           send(:attr_dict).send(:blob_dict)[field] = value
         else
-          send(:attr_dict).instance_variable_get('@attr_cache')[field] = nil
+          send(:attr_dict).instance_variable_get("@attr_cache")[field] = nil
           send(:attr_dict).send(:blob_dict)[field] = value
         end
       end
@@ -221,7 +218,7 @@ module Reactor
         ActiveSupport::TimeZone["UTC"].parse(value).in_time_zone
       end
 
-      def cached_value?(attr, value)
+      def cached_value?(attr, _value)
         attribute_type(attr) == :linklist
       end
 
@@ -233,21 +230,23 @@ module Reactor
 
       private
 
-      def path=(*args) ; super ; end
+      def path=(*args)
+        super
+      end
 
       def attribute_type(attr)
-        return :html if [:body, :blob].include?(attr.to_sym)
-        return :date if [:valid_from, :valid_until, :last_changed].include?(attr.to_sym)
-        return :string if [:name, :title, :obj_class, :permalink, :suppress_export].include?(attr.to_sym)
+        return :html if %i(body blob).include?(attr.to_sym)
+        return :date if %i(valid_from valid_until last_changed).include?(attr.to_sym)
+        return :string if %i(name title obj_class permalink suppress_export).include?(attr.to_sym)
         return :multienum if [:channels].include?(attr.to_sym)
 
-        custom_attr = self.obj_class_def.try(:custom_attributes).try(:[],attr.to_s)
-        raise TypeError, "obj_class_def is nil for: #{obj_class}" if self.obj_class_def.nil?
+        custom_attr = obj_class_def.try(:custom_attributes).try(:[], attr.to_s)
+        raise TypeError, "obj_class_def is nil for: #{obj_class}" if obj_class_def.nil?
 
         # FIXME: this should blow up on error
         # raise TypeError, "Unable to determine type of attribute: #{attr}" if custom_attr.nil?
-        custom_attr ||= {"attribute_type"=>:string}
-        return custom_attr["attribute_type"].to_sym
+        custom_attr ||= { "attribute_type" => :string }
+        custom_attr["attribute_type"].to_sym
       end
     end
     module ClassMethods
@@ -261,22 +260,24 @@ module Reactor
       end
 
       def __cms_attributes(obj_class)
-        obj_class_def = RailsConnector::Meta::EagerLoader.instance.obj_class(obj_class) #RailsConnector::ObjClass.where(:obj_class_name => obj_class).first
+        obj_class_def = RailsConnector::Meta::EagerLoader.instance.obj_class(obj_class) # RailsConnector::ObjClass.where(:obj_class_name => obj_class).first
         obj_class_def ? obj_class_def.custom_attributes : {}
       end
 
       def __mandatory_cms_attributes(obj_class)
-        obj_class_def = RailsConnector::Meta::EagerLoader.instance.obj_class(obj_class) #RailsConnector::ObjClass.where(:obj_class_name => obj_class).first
-        obj_class_def ? obj_class_def.mandatory_attribute_names(:only_custom_attributes => true) : []
+        obj_class_def = RailsConnector::Meta::EagerLoader.instance.obj_class(obj_class) # RailsConnector::ObjClass.where(:obj_class_name => obj_class).first
+        obj_class_def ? obj_class_def.mandatory_attribute_names(only_custom_attributes: true) : []
       end
 
-      def reload_attributes(new_obj_class=nil)
-        new_obj_class ||= self.name
-        raise ArgumentError, "Cannot reload attributes because obj_class is unknown, provide one as a parameter" if new_obj_class.nil?
+      def reload_attributes(new_obj_class = nil)
+        new_obj_class ||= name
+        if new_obj_class.nil?
+          raise ArgumentError, "Cannot reload attributes because obj_class is unknown, provide one as a parameter"
+        end
 
         RailsConnector::Meta::EagerLoader.instance.forget_obj_class(new_obj_class)
         Reactor::AttributeHandlers.reinstall_attributes(self, new_obj_class)
-        self.initialize_attributes
+        initialize_attributes
       end
     end
   end

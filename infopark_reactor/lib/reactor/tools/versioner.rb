@@ -1,7 +1,6 @@
-# -*- encoding : utf-8 -*-
-require 'base64'
-require 'yaml'
-require 'singleton'
+require "base64"
+require "yaml"
+require "singleton"
 
 module Reactor
   # Class responsible for interfacing with version-storing mechanism
@@ -29,38 +28,39 @@ module Reactor
       def exists?
         begin
           request = Reactor::Cm::XmlRequest.prepare do |xml|
-            xml.where_key_tag!(base_name, 'name', name)
-            xml.get_key_tag!(base_name, 'name')
+            xml.where_key_tag!(base_name, "name", name)
+            xml.get_key_tag!(base_name, "name")
           end
           response = request.execute!
-          return response.ok?
-        rescue
-          return false
+          response.ok?
+        rescue StandardError
+          false
         end
       end
 
       def load
-        create if not exists?
+        create unless exists?
         request = Reactor::Cm::XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'name', name)
-          xml.get_key_tag!(base_name, 'recordSetCallback')
+          xml.where_key_tag!(base_name, "name", name)
+          xml.get_key_tag!(base_name, "recordSetCallback")
         end
         response = request.execute!
         base64 = response.xpath("//recordSetCallback").text.to_s
-        yaml = Base64::decode64(base64)
-        data = YAML::load(yaml)
-        return [] if data.nil? or data == false
-        return data.to_a
+        yaml = Base64.decode64(base64)
+        data = YAML.load(yaml)
+        return [] if data.nil? || (data == false)
+
+        data.to_a
       end
 
       def store(data)
-        create if not exists?
+        create unless exists?
         yaml = data.to_yaml
-        base64 = Base64::encode64(yaml).gsub("\n", '').gsub("\r", '')
-        content = '#' + base64
+        base64 = Base64.encode64(yaml).delete("\n").delete("\r")
+        content = "#" + base64
         request = Reactor::Cm::XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'name', name)
-          xml.set_key_tag!(base_name, 'recordSetCallback', content)
+          xml.where_key_tag!(base_name, "name", name)
+          xml.set_key_tag!(base_name, "recordSetCallback", content)
         end
         response = request.execute!
         response.ok?
@@ -69,11 +69,11 @@ module Reactor
       def create
         request = Reactor::Cm::XmlRequest.prepare do |xml|
           xml.create_tag!(base_name) do
-            xml.tag!('name') do
+            xml.tag!("name") do
               xml.text!(name)
             end
-            xml.tag!('objType') do
-              xml.text!('document')
+            xml.tag!("objType") do
+              xml.text!("document")
             end
           end
         end
@@ -105,17 +105,16 @@ module Reactor
     end
 
     def remove(version)
-      not @versions.delete(version.to_s).nil?
+      !@versions.delete(version.to_s).nil?
     end
 
-    def versions
-      @versions
-    end
+    attr_reader :versions
 
     def current_version
-      current = @versions.sort.reverse.first
+      current = @versions.max
       return 0 if current.nil?
-      return current
+
+      current
     end
   end
 end

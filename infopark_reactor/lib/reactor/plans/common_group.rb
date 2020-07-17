@@ -1,18 +1,14 @@
-# -*- encoding : utf-8 -*-
 module Reactor
-
   module Plans
-
     class CommonGroup
-
       include Prepared
 
-      ALLOWED_PARAMS = [
-        :users, 
-        :global_permissions, 
-        :real_name, 
-        :owner,
-      ]
+      ALLOWED_PARAMS = %i(
+        users
+        global_permissions
+        real_name
+        owner
+      ).freeze
 
       def initialize
         @params = {}
@@ -28,7 +24,7 @@ module Reactor
 
       protected
 
-      def prepare_params!(group = nil)
+      def prepare_params!(_group = nil)
         @params.keys.each { |key| error("unknown parameter: #{key}") unless ALLOWED_PARAMS.include?(key) }
       end
 
@@ -37,9 +33,6 @@ module Reactor
 
         group.save!
       end
-
     end
-
   end
-
 end

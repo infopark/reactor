@@ -1,5 +1,4 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/plans/common_attribute_group'
+require "reactor/plans/common_attribute_group"
 
 module Reactor
   module Plans
@@ -15,14 +14,13 @@ module Reactor
       def prepare!
         error("name ist nil") if @name.nil?
         error("obj_class is nil") if @obj_class.nil?
-        error("attribute group #{@pk} does not exist") if not Reactor::Cm::AttributeGroup.exists?(@pk)
+        error("attribute group #{@pk} does not exist") unless Reactor::Cm::AttributeGroup.exists?(@pk)
       end
 
       def migrate!
         attrib = Reactor::Cm::AttributeGroup.get(@pk)
         attrib.delete!
       end
-
     end
   end
 end

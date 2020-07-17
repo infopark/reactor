@@ -1,13 +1,14 @@
-require 'reactor/cm/multi_xml_request'
+require "reactor/cm/multi_xml_request"
 
 module Reactor
   module Cm
     class Obj
       attr_reader :obj_id
-      OBJ_ATTRS = [:permalink, :objClass, :workflowName, :name, :suppressExport, :parent]
-      PREDEFINED_ATTRS = [:blob, :body, :channels, :title]
 
-      ATTR_LENGTH_CONSTRAINT = {:name => 250, :title => 250}
+      OBJ_ATTRS = %i(permalink objClass workflowName name suppressExport parent).freeze
+      PREDEFINED_ATTRS = %i(blob body channels title).freeze
+
+      ATTR_LENGTH_CONSTRAINT = { name: 250, title: 250 }.freeze
 
       def self.create(name, parent, objClass)
         obj = Obj.new(name)
@@ -19,14 +20,14 @@ module Reactor
         obj = Obj.new
         begin
           obj.send(:load, path_or_id).ok?
-        rescue
-          return false
+        rescue StandardError
+          false
         end
       end
 
       def self.load(id)
         obj = Obj.new
-        obj.instance_variable_set('@obj_id', id)
+        obj.instance_variable_set("@obj_id", id)
         obj
       end
 
@@ -38,8 +39,7 @@ module Reactor
 
       def self.delete_where(conditions)
         request = XmlRequest.prepare do |xml|
-
-          xml.tag!('obj-where') do
+          xml.tag!("obj-where") do
             conditions.each do |key, value|
               xml.tag!(key, value)
             end
@@ -50,29 +50,29 @@ module Reactor
       end
 
       def upload(data_or_io, extension)
-        data = (data_or_io.kind_of?IO) ? data_or_io.read : data_or_io
+        data = (data_or_io.is_a? IO) ? data_or_io.read : data_or_io
         base64_data = Base64.encode64(data)
 
         set(:contentType, extension)
-        set(:blob, {base64_data=>{:encoding=>'base64'}})
+        set(:blob, { base64_data => { encoding: "base64" } })
       end
 
       def get(key)
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @obj_id)
+          xml.where_key_tag!(base_name, "id", @obj_id)
           xml.get_key_tag!(base_name, key)
         end
         response = request.execute!
         result = response.xpath("//#{key}")
-        if result.children.map {|i| i.respond_to?(:name) && (i.name == "listitem") }.reduce(:&)
-          result.children.map {|i| i.text.to_s }
+        if result.children.map { |i| i.respond_to?(:name) && (i.name == "listitem") }.reduce(:&)
+          result.children.map { |i| i.text.to_s }
         else
           result = result.text unless result.is_a? Array
           result
         end
       end
 
-      def set(key, value, options={})
+      def set(key, value, options = {})
         key = key.to_sym
         value = value[0, ATTR_LENGTH_CONSTRAINT[key]] if ATTR_LENGTH_CONSTRAINT[key] && value
         if OBJ_ATTRS.include?(key) then @obj_attrs[key] = value
@@ -84,9 +84,9 @@ module Reactor
 
       def permission_granted_to(user, permission)
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @obj_id)
+          xml.where_key_tag!(base_name, "id", @obj_id)
           xml.get_tag!(base_name) do
-            xml.tag!('permissionGrantedTo', :permission => permission, :user => user)
+            xml.tag!("permissionGrantedTo", permission: permission, user: user)
           end
         end
         response = request.execute!
@@ -98,8 +98,8 @@ module Reactor
           xml.where_key_tag!(base_name, :id, @obj_id)
 
           options = {
-            :permission => permission,
-            :type => :list,
+            permission: permission,
+            type: :list
           }
 
           xml.set_key_tag!(base_name, :permission, groups, options)
@@ -109,19 +109,19 @@ module Reactor
       end
 
       def permission_grant(permission, groups)
-        self.permission_command('GrantTo', permission, groups)
+        permission_command("GrantTo", permission, groups)
       end
 
       def permission_revoke(permission, groups)
-        self.permission_command('RevokeFrom', permission, groups)
+        permission_command("RevokeFrom", permission, groups)
       end
 
       def permission_clear(permission)
-        self.permission_set(permission, [])
+        permission_set(permission, [])
       end
 
       def get_links(attr)
-        get_link_ids(attr).map {|id| Link.get(id)}
+        get_link_ids(attr).map { |id| Link.get(id) }
       end
 
       def set_links(attr, new_links_as_hashes)
@@ -144,10 +144,10 @@ module Reactor
       end
 
       def set_multiple(attrs)
-        attrs.each {|a,(v,o)| set(a,v,o||{}) }
+        attrs.each { |a, (v, o)| set(a, v, o || {}) }
       end
 
-      def composite_save(attrs, links_to_add, links_to_remove, links_to_set, links_modified=false)
+      def composite_save(attrs, links_to_add, links_to_remove, links_to_set, links_modified = false)
         set_multiple(attrs)
 
         skip_version_creation = @attrs.empty? && links_to_remove.empty? && links_to_set.empty? && !links_modified
@@ -202,94 +202,98 @@ module Reactor
         # The solution is based on the precise source-code level knowledge
         # of the CM internals.
         resp = MultiXmlRequest.execute do |reqs|
-          reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'take') } unless skip_version_creation
-          reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'edit') } unless skip_version_creation
+          reqs.optional  { |xml| SimpleCommandRequest.build(xml, @obj_id, "take") } unless skip_version_creation
+          reqs.optional  { |xml| SimpleCommandRequest.build(xml, @obj_id, "edit") } unless skip_version_creation
 
-
-          reqs.mandatory {|xml| ObjSetRequest.build(xml, @obj_id, @obj_attrs) } unless @obj_attrs.empty? #important! requires different permissions
-          reqs.mandatory {|xml| ContentSetRequest.build(xml, @obj_id, @attrs, @attr_options) } unless skip_version_creation
-          reqs.mandatory  {|xml| ResolveRefsRequest.build(xml, @obj_id) } unless skip_version_creation
+          unless @obj_attrs.empty?
+            reqs.mandatory { |xml| ObjSetRequest.build(xml, @obj_id, @obj_attrs) }
+          end # important! requires different permissions
+          unless skip_version_creation
+            reqs.mandatory { |xml| ContentSetRequest.build(xml, @obj_id, @attrs, @attr_options) }
+          end
+          reqs.mandatory { |xml| ResolveRefsRequest.build(xml, @obj_id) } unless skip_version_creation
         end
 
         resp.assert_success
 
         yield(attrs, links_to_add, links_to_remove, links_to_set) if block_given?
 
-        resp = MultiXmlRequest.execute do |reqs|
-          reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'take') }
-          reqs.optional  {|xml| SimpleCommandRequest.build(xml, @obj_id, 'edit') }
+        unless skip_version_creation || (links_to_remove.empty? && links_to_add.empty? && links_to_set.empty?)
+          resp = MultiXmlRequest.execute do |reqs|
+            reqs.optional  { |xml| SimpleCommandRequest.build(xml, @obj_id, "take") }
+            reqs.optional  { |xml| SimpleCommandRequest.build(xml, @obj_id, "edit") }
 
-          links_to_remove.each do |link_id|
-            reqs.mandatory {|xml| LinkDeleteRequest.build(xml, link_id) }
-          end
+            links_to_remove.each do |link_id|
+              reqs.mandatory { |xml| LinkDeleteRequest.build(xml, link_id) }
+            end
 
-          links_to_set.each do |(link_id, link)|
-            reqs.mandatory {|xml| LinkSetRequest.build(xml, link_id, link) }
-          end
+            links_to_set.each do |(link_id, link)|
+              reqs.mandatory { |xml| LinkSetRequest.build(xml, link_id, link) }
+            end
 
-          links_to_add.each do |(attr, link)|
-            reqs.mandatory {|xml| LinkAddRequest.build(xml, @obj_id, attr, link) }
+            links_to_add.each do |(attr, link)|
+              reqs.mandatory { |xml| LinkAddRequest.build(xml, @obj_id, attr, link) }
+            end
           end
-        end unless skip_version_creation || (links_to_remove.empty? && links_to_add.empty? && links_to_set.empty?)
+        end
 
         resp.assert_success
       end
 
       def save!
-        links_to_remove = @removed_links.map {|l| l.link_id}
+        links_to_remove = @removed_links.map { |l| l.link_id }
         links_to_add = @links.map do |attr, links|
           links.map do |link|
-            [attr, {:destination_url => link.dest_url, :title => link.title, :target => link.target, :position => link.position}]
+            [attr, { destination_url: link.dest_url, title: link.title, target: link.target, position: link.position }]
           end.flatten
         end
         composite_save([], links_to_add, links_to_remove, [])
       end
 
-
-      def release!(msg=nil)
-        simple_command("release",msg)
+      def release!(msg = nil)
+        simple_command("release", msg)
       end
 
-      def unrelease!(msg=nil)
-        simple_command("unrelease",msg)
+      def unrelease!(msg = nil)
+        simple_command("unrelease", msg)
       end
 
-      def edit!(msg=nil)
-        simple_command("edit",msg)
+      def edit!(msg = nil)
+        simple_command("edit", msg)
       end
 
-      def take!(msg=nil)
-        simple_command("take",msg)
+      def take!(msg = nil)
+        simple_command("take", msg)
       end
 
-      def forward!(msg=nil)
-        simple_command("forward",msg)
+      def forward!(msg = nil)
+        simple_command("forward", msg)
       end
 
-      def commit!(msg=nil)
-        simple_command("commit",msg)
+      def commit!(msg = nil)
+        simple_command("commit", msg)
       end
 
-      def reject!(msg=nil)
-        simple_command("reject",msg)
+      def reject!(msg = nil)
+        simple_command("reject", msg)
       end
 
-      def revert!(msg=nil)
-        simple_command("revert",msg)
+      def revert!(msg = nil)
+        simple_command("revert", msg)
       end
 
-      def sign!(msg=nil)
-        simple_command("sign",msg)
+      def sign!(msg = nil)
+        simple_command("sign", msg)
       end
 
       def valid_actions
-        vcak = get('validControlActionKeys')
+        vcak = get("validControlActionKeys")
         (vcak || []).map(&:to_s)
       end
 
       def copy(new_parent, recursive = false, new_name = nil)
         request = XmlRequest.prepare do |xml|
-          xml.tag!('obj-where') do
+          xml.tag!("obj-where") do
             xml.tag!("id", @obj_id)
           end
           xml.tag!("obj-copy") do
@@ -316,19 +320,19 @@ module Reactor
 
       def resolve_refs!
         request = XmlRequest.prepare do |xml|
-          xml.tag!('content-where') do
-            xml.tag!('objectId', @obj_id)
-            xml.tag!('state', 'edited')
+          xml.tag!("content-where") do
+            xml.tag!("objectId", @obj_id)
+            xml.tag!("state", "edited")
           end
-          xml.tag!('content-resolveRefs')
+          xml.tag!("content-resolveRefs")
         end
         request.execute!
       end
 
       def path
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @obj_id)
-          xml.get_key_tag!(base_name, 'path')
+          xml.where_key_tag!(base_name, "id", @obj_id)
+          xml.get_key_tag!(base_name, "path")
         end
         response = request.execute!
         response.xpath("//obj/path").text
@@ -336,8 +340,8 @@ module Reactor
 
       def edited?
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @obj_id)
-          xml.get_key_tag!(base_name, 'isEdited')
+          xml.where_key_tag!(base_name, "id", @obj_id)
+          xml.get_key_tag!(base_name, "isEdited")
         end
         response = request.execute!
         response.xpath("//isEdited").text == "1"
@@ -345,79 +349,79 @@ module Reactor
 
       def reasons_for_incomplete_state
         request = XmlRequest.prepare do |xml|
-          xml.tag!('content-where') do
-            xml.tag!('objectId', @obj_id)
-            xml.tag!('state', 'edited')
+          xml.tag!("content-where") do
+            xml.tag!("objectId", @obj_id)
+            xml.tag!("state", "edited")
           end
-          xml.get_key_tag!('content', 'reasonsForIncompleteState')
+          xml.get_key_tag!("content", "reasonsForIncompleteState")
         end
         response = request.execute!
-        result = response.xpath('//reasonsForIncompleteState/*')
-        result.kind_of?(Array) ? result.map(&:text).map(&:to_s) : [result.to_s]
+        result = response.xpath("//reasonsForIncompleteState/*")
+        result.is_a?(Array) ? result.map(&:text).map(&:to_s) : [result.to_s]
       end
 
       def workflow_comment
         request = XmlRequest.prepare do |xml|
-          xml.tag!('content-where') do
-            xml.tag!('objectId', @obj_id)
-            xml.tag!('state', 'released')
+          xml.tag!("content-where") do
+            xml.tag!("objectId", @obj_id)
+            xml.tag!("state", "released")
           end
-          xml.get_key_tag!('content', 'workflowComment')
+          xml.get_key_tag!("content", "workflowComment")
         end
         response = request.execute!
-        response.xpath('//workflowComment/*').map {|x| x.text.to_s}.first
+        response.xpath("//workflowComment/*").map { |x| x.text.to_s }.first
       end
 
       def editor
         request = XmlRequest.prepare do |xml|
-          xml.tag!('content-where') do
-            xml.tag!('objectId', @obj_id)
-            xml.tag!('state', 'edited')
+          xml.tag!("content-where") do
+            xml.tag!("objectId", @obj_id)
+            xml.tag!("state", "edited")
           end
-          xml.get_key_tag!('content', 'editor')
+          xml.get_key_tag!("content", "editor")
         end
         response = request.execute!
-        response.xpath('//editor').text
+        response.xpath("//editor").text
       end
 
-      def blob_ticket_id(content='edited')
+      def blob_ticket_id(content = "edited")
         request = XmlRequest.prepare do |xml|
-          xml.tag!('content-where') do
-            xml.tag!('objectId', @obj_id)
-            xml.tag!('state', content)
+          xml.tag!("content-where") do
+            xml.tag!("objectId", @obj_id)
+            xml.tag!("state", content)
           end
-          xml.tag!('content-get') do
-            xml.tag!('blob')
+          xml.tag!("content-get") do
+            xml.tag!("blob")
           end
         end
         response = request.execute!
-        possible_ticket_id = response.xpath('//blob').text
-        encoding = response.xpath('//blob/@encoding').to_s
+        possible_ticket_id = response.xpath("//blob").text
+        encoding = response.xpath("//blob/@encoding").to_s
         # blob is smaller than
         # [systemConfig getKeys tuning.minStreamingDataLength]
         # and thus it is returned in-line
-        if encoding != 'stream'
-          raise Reactor::Cm::BlobTooSmallError
-        end
+        raise Reactor::Cm::BlobTooSmallError if encoding != "stream"
+
         possible_ticket_id
       end
 
       def edited_content
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @obj_id)
-          xml.get_key_tag!(base_name, 'editedContent')
+          xml.where_key_tag!(base_name, "id", @obj_id)
+          xml.get_key_tag!(base_name, "editedContent")
         end
         response = request.execute!
         response.xpath("//editedContent").text
       end
 
       protected
-      def simple_command(cmd_name, comment=nil)
+
+      def simple_command(cmd_name, comment = nil)
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @obj_id)
+          xml.where_key_tag!(base_name, "id", @obj_id)
           if comment
             xml.tag!("#{base_name}-#{cmd_name}") do
-              xml.tag!('comment', comment)
+              xml.tag!("comment", comment)
             end
           else
             xml.tag!("#{base_name}-#{cmd_name}")
@@ -427,14 +431,14 @@ module Reactor
       end
 
       def base_name
-        'obj'
+        "obj"
       end
 
       def get_content_attr_text(attr)
         content = edited_content
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!('content', 'id', content)
-          xml.get_tag!('content') do
+          xml.where_key_tag!("content", "id", content)
+          xml.get_tag!("content") do
             xml.tag!(attr.to_s)
           end
         end
@@ -446,12 +450,12 @@ module Reactor
       def get_link_ids(attr)
         content = edited_content
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!('content', 'id', content)
-          xml.get_key_tag!('content', attr.to_s)
+          xml.where_key_tag!("content", "id", content)
+          xml.get_key_tag!("content", attr.to_s)
         end
         response = request.execute!
         result = response.xpath("//listitem/text()")
-        result.kind_of?(Array) ? result : [result]
+        result.is_a?(Array) ? result : [result]
       rescue XmlRequestError
         []
       end
@@ -460,7 +464,7 @@ module Reactor
         response.xpath("//obj/id").text
       end
 
-      def initialize(name=nil)
+      def initialize(name = nil)
         @name = name
         @attrs = {}
         @obj_attrs = {}
@@ -471,12 +475,12 @@ module Reactor
 
       def create(parent, objClass)
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'path', parent)
+          xml.where_key_tag!(base_name, "path", parent)
           xml.create_tag!(base_name) do
-            xml.tag!('objClass') do
+            xml.tag!("objClass") do
               xml.text!(objClass)
             end
-            xml.tag!('name') do
+            xml.tag!("name") do
               xml.text!(@name)
             end
           end
@@ -487,12 +491,12 @@ module Reactor
       end
 
       def load(path_or_id)
-        key = (/^\// =~ path_or_id.to_s) ? 'path' : 'id'
+        key = %r{^/}.match?(path_or_id.to_s) ? "path" : "id"
         value = path_or_id
 
         request = XmlRequest.prepare do |xml|
           xml.where_key_tag!(base_name, key.to_s, value.to_s)
-          xml.get_key_tag!(base_name, 'id')
+          xml.get_key_tag!(base_name, "id")
         end
         response = request.execute!
         @obj_id = self.class.extract_id(response)
@@ -501,9 +505,9 @@ module Reactor
 
       def permission_command(type, permission, groups)
         request = XmlRequest.prepare do |xml|
-          xml.where_key_tag!(base_name, 'id', @obj_id)
+          xml.where_key_tag!(base_name, "id", @obj_id)
 
-          xml.tag!("#{base_name}-permission#{type}", :permission => permission) do
+          xml.tag!("#{base_name}-permission#{type}", permission: permission) do
             groups.each do |name|
               xml.tag!(:group, name)
             end
@@ -521,16 +525,16 @@ module Reactor
         end
 
         def self.build(xml, *args)
-          self.new(xml).build(*args)
+          new(xml).build(*args)
         end
       end
 
       class SimpleCommandRequest < Request
         def build(obj_id, cmd_name, comment = nil)
-          xml.where_key_tag!('obj', 'id', obj_id)
+          xml.where_key_tag!("obj", "id", obj_id)
           if comment
             xml.tag!("obj-#{cmd_name}") do
-              xml.tag!('comment', comment)
+              xml.tag!("comment", comment)
             end
           else
             xml.tag!("obj-#{cmd_name}")
@@ -540,8 +544,8 @@ module Reactor
 
       class ObjSetRequest < Request
         def build(obj_id, obj_attrs)
-          xml.where_key_tag!('obj', 'id', obj_id)
-          xml.set_tag!('obj') do
+          xml.where_key_tag!("obj", "id", obj_id)
+          xml.set_tag!("obj") do
             obj_attrs.each do |key, value|
               xml.value_tag!(key, value)
             end
@@ -551,9 +555,9 @@ module Reactor
 
       class ContentSetRequest < Request
         def build(id, attrs, attr_options)
-          xml.tag!('content-where') do
-            xml.tag!('objectId', id.to_s)
-            xml.tag!('state', 'edited')
+          xml.tag!("content-where") do
+            xml.tag!("objectId", id.to_s)
+            xml.tag!("state", "edited")
           end
           xml.tag!("content-set") do
             attrs.each do |key, value|
@@ -571,7 +575,7 @@ module Reactor
 
       class LinkDeleteRequest < Request
         def build(link_id)
-          xml.where_key_tag!('link', 'id', link_id)
+          xml.where_key_tag!("link", "id", link_id)
           xml.tag!("link-delete")
         end
       end
@@ -580,15 +584,15 @@ module Reactor
         def build(obj_id, attr, link_data)
           title = link_data[:title]
           target = link_data[:target]
-          xml.tag!('content-where') do
-            xml.tag!('objectId', obj_id.to_s)
-            xml.tag!('state', 'edited')
+          xml.tag!("content-where") do
+            xml.tag!("objectId", obj_id.to_s)
+            xml.tag!("state", "edited")
           end
-          xml.tag!('content-addLinkTo') do
-            xml.tag!('attribute', attr.to_s)
-            xml.tag!('destinationUrl', link_data[:destination_url].to_s)
-            xml.tag!('title', title.to_s) if title
-            xml.tag!('target', target.to_s) if target
+          xml.tag!("content-addLinkTo") do
+            xml.tag!("attribute", attr.to_s)
+            xml.tag!("destinationUrl", link_data[:destination_url].to_s)
+            xml.tag!("title", title.to_s) if title
+            xml.tag!("target", target.to_s) if target
           end
         end
       end
@@ -597,24 +601,24 @@ module Reactor
         def build(link_id, link_data)
           title = link_data[:title]
           target = link_data[:target]
-          xml.tag!('link-where') do
-            xml.tag!('id', link_id)
+          xml.tag!("link-where") do
+            xml.tag!("id", link_id)
           end
-          xml.tag!('link-set') do
-            xml.tag!('destinationUrl', link_data[:destination_url].to_s)
-            xml.tag!('title', title.to_s)
-            xml.tag!('target', target.to_s)
+          xml.tag!("link-set") do
+            xml.tag!("destinationUrl", link_data[:destination_url].to_s)
+            xml.tag!("title", title.to_s)
+            xml.tag!("target", target.to_s)
           end
         end
       end
 
       class ResolveRefsRequest < Request
         def build(obj_id)
-          xml.tag!('content-where') do
-            xml.tag!('objectId', obj_id.to_s)
-            xml.tag!('state', 'edited')
+          xml.tag!("content-where") do
+            xml.tag!("objectId", obj_id.to_s)
+            xml.tag!("state", "edited")
           end
-          xml.tag!('content-resolveRefs')
+          xml.tag!("content-resolveRefs")
         end
       end
     end

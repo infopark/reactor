@@ -1,9 +1,8 @@
 module Reactor
   module SessionHelper
-
     module RsessionHelper
       def rsession
-        @__rsession ||= RsessionHelper.from_session(self.session)
+        @__rsession ||= RsessionHelper.from_session(session)
       end
 
       def self.from_session(session)
@@ -13,6 +12,5 @@ module Reactor
         )
       end
     end
-
   end
 end

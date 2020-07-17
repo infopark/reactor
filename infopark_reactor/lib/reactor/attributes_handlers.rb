@@ -1,11 +1,10 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/attributes/date_serializer'
-require 'reactor/attributes/html_serializer'
-require 'reactor/attributes/link_list_serializer'
+require "reactor/attributes/date_serializer"
+require "reactor/attributes/html_serializer"
+require "reactor/attributes/link_list_serializer"
 
-require 'reactor/attributes/link_list_extender'
+require "reactor/attributes/link_list_extender"
 
-require 'singleton'
+require "singleton"
 
 module Reactor
   class AttributeHandlers
@@ -13,7 +12,7 @@ module Reactor
 
     def initialize
       # t1 = Time.now
-      self.generate_attribute_handlers
+      generate_attribute_handlers
       # Rails.logger.debug "Reactor::AttributeHandlers: generate_attribute_handlers took #{Time.now - t1}"
     end
 
@@ -31,13 +30,11 @@ module Reactor
     end
 
     def self.obj_class(klass)
-      klass.name.split('::').last
+      klass.name.split("::").last
     end
 
     def install(klass, obj_class)
-      if obj_class_known?(obj_class)
-        klass.send(:include, handler_module(obj_class))
-      end
+      klass.send(:include, handler_module(obj_class)) if obj_class_known?(obj_class)
     end
 
     def regenerate_attribute_handler(obj_class_name)
@@ -47,17 +44,17 @@ module Reactor
     protected
 
     def handler_module(obj_class)
-      Reactor::AttributeHandlers.const_get('Handler__' + obj_class.to_s)
+      Reactor::AttributeHandlers.const_get("Handler__" + obj_class.to_s)
     end
 
     def obj_class_known?(obj_class)
-      Reactor::AttributeHandlers.const_defined?('Handler__' + obj_class.to_s)
+      Reactor::AttributeHandlers.const_defined?("Handler__" + obj_class.to_s)
     end
 
     def generate_attribute_handlers
       RailsConnector::Meta::EagerLoader.instance.obj_classes.each do |_, obj_class|
         # Rails.logger.debug "Reactor::AttributeHandlers: preparing obj class #{obj_class.name}"
-        generate_attribute_handler(obj_class) if obj_class.try(:name) =~ /^[A-Z]/
+        generate_attribute_handler(obj_class) if /^[A-Z]/.match?(obj_class.try(:name))
       end
     end
 
@@ -112,8 +109,6 @@ module Reactor
         EOC
       end
 
-
-
       [:contentType].each do |attribute|
         writers << attribute.to_sym
         writers << attribute.to_s.underscore.to_sym
@@ -147,7 +142,7 @@ module Reactor
           module Handler__#{obj_class.name}
             def self.included(base)
               # store allowed attributes
-              allowed_attrs = %w|#{writers * ' '}|.map(&:to_sym)
+              allowed_attrs = %w|#{writers * " "}|.map(&:to_sym)
               base.send(:instance_variable_set, '@_o_allowed_attrs', allowed_attrs)
             end
 

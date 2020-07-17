@@ -2,32 +2,29 @@ module Reactor
   module WhereQuery
     def where(key, value)
       request = Cm::XmlRequest.prepare do |xml|
-        xml.where_tag!(self.base_name) do
+        xml.where_tag!(base_name) do
           xml.tag!(key) do
-            if value
-              xml.text!(value)
-            end
+            xml.text!(value) if value
           end
         end
 
-        xml.get_tag!(self.base_name) do
-          self.attributes.each do |_, xml_attribute|
+        xml.get_tag!(base_name) do
+          attributes.each do |_, xml_attribute|
             xml.tag!(xml_attribute.name)
           end
         end
       end
 
       response = request.execute!
-      result = response.xpath("//#{self.base_name}")
-      result = [result] unless result.kind_of?(Array)
+      result = response.xpath("//#{base_name}")
+      result = [result] unless result.is_a?(Array)
       result.map do |elem|
-        values = {}
-        values = self.response_handler.multiple(elem, self.attributes.values)
-        instance  = self.new
-        values.each do |name, value|
-          pair = self.attributes.find {|n, a| a.name.to_sym == name.to_sym }
+        values = response_handler.multiple(elem, attributes.values)
+        instance = new
+        values.each do |name, response_value|
+          pair = attributes.find { |_n, a| a.name.to_sym == name.to_sym }
           attribute = pair[0]
-          instance.send(:"#{attribute}=", value)
+          instance.send(:"#{attribute}=", response_value)
         end
         instance
       end

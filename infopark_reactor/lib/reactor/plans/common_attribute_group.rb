@@ -1,16 +1,15 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Plans
     class CommonAttributeGroup
       include Prepared
 
-      ALLOWED_PARAMS = [:title, :index]
+      ALLOWED_PARAMS = %i(title index).freeze
 
       def initialize
         @params = {}
       end
 
-      def set(key,value)
+      def set(key, value)
         key = key.to_sym
         if key == :attributes
           @attributes = value
@@ -32,8 +31,9 @@ module Reactor
       end
 
       protected
-      def prepare_params!(attribute=nil)
-        @params.keys.each{|k| error("unknown parameter: #{k}") unless ALLOWED_PARAMS.include? k}
+
+      def prepare_params!(_attribute = nil)
+        @params.keys.each { |k| error("unknown parameter: #{k}") unless ALLOWED_PARAMS.include? k }
       end
 
       def migrate_params!(attribute)
@@ -44,7 +44,7 @@ module Reactor
           attribute.remove_attributes(previous_attributes)
           attribute.add_attributes(@attributes)
         end
-        @params.each{|k,v|attribute.set(k,v)}
+        @params.each { |k, v| attribute.set(k, v) }
         attribute.save!
       end
     end

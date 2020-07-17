@@ -1,17 +1,16 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/cm/object_base'
+require "reactor/cm/object_base"
 
 module Reactor
   module Cm
     class Channel < ObjectBase
       # Attribute definitions
-      attribute :name, :except => [:set]
+      attribute :name, except: [:set]
       attribute :title
 
       primary_key :name
 
       def self.create(name)
-        super(name, {:name => name})
+        super(name, { name: name })
       end
     end
   end

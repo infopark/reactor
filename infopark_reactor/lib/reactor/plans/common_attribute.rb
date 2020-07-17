@@ -1,17 +1,16 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Plans
     class CommonAttribute
       include Prepared
 
-      ALLOWED_PARAMS = [:callback, :helpText, :maxSize, :minSize,
-        :title, :values]
+      ALLOWED_PARAMS = %i(callback helpText maxSize minSize
+                          title values).freeze
 
       def initialize
         @params = {}
       end
 
-      def set(key,value)
+      def set(key, value)
         @params[key.to_sym] = value
       end
 
@@ -20,12 +19,13 @@ module Reactor
       end
 
       protected
-      def prepare_params!(attribute=nil)
-        @params.keys.each{|k| error("unknown parameter: #{k}") unless ALLOWED_PARAMS.include? k}
+
+      def prepare_params!(_attribute = nil)
+        @params.keys.each { |k| error("unknown parameter: #{k}") unless ALLOWED_PARAMS.include? k }
       end
 
       def migrate_params!(attribute)
-        @params.each{|k,v|attribute.set(k,v)}
+        @params.each { |k, v| attribute.set(k, v) }
         attribute.save!
       end
     end

@@ -3,7 +3,8 @@ module Reactor
   module Attributes
     class DateSerializer
       def initialize(key, value)
-        @attr, @value = key, value
+        @attr = key
+        @value = value
       end
 
       def serialize
@@ -11,11 +12,11 @@ module Reactor
       end
 
       private
+
       def serialize_date(value)
         return nil if value.blank?
-        if value.is_a?(Date)
-          value = value.to_datetime
-        end
+
+        value = value.to_datetime if value.is_a?(Date)
         if value.is_a?(Time) || value.is_a?(DateTime)
           value.utc.to_s(:number)
         elsif value.is_a?(String)
@@ -28,8 +29,6 @@ module Reactor
               nil
             end
           end
-        else
-          nil
         end
       end
 

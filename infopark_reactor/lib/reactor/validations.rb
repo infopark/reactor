@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   # This module provides standard validations for Objs (:permalink, :parent_obj_id, :name, :obj_class),
   # and presence validations for all mandatory fields.
@@ -12,10 +11,10 @@ module Reactor
         base.extend(ClassMethods)
         # Common validations for all Objs
         base.class_eval do
-          validates :permalink,     :format => { :with => /\A[-_$.\/a-zA-Z0-9]*\Z/ }
-          validates :parent_obj_id, :numericality => { :only_integer => true }, :on => :create
-          validates :name,          :presence => true, :on => :create
-          validates :obj_class,     :presence => true, :on => :create
+          validates :permalink,     format: { with: %r{\A[-_$./a-zA-Z0-9]*\Z} }
+          validates :parent_obj_id, numericality: { only_integer: true }, on: :create
+          validates :name,          presence: true, on: :create
+          validates :obj_class,     presence: true, on: :create
         end
       end
 
@@ -23,8 +22,9 @@ module Reactor
       # in :release context before release. Raises exception when invalid.
       # @raise [ActiveRecord::RecordInvalid] validations registered for :release failed
       def release!(*args)
-        raise(ActiveRecord::RecordInvalid.new(self)) unless valid?(:release)
-        return super
+        raise ActiveRecord::RecordInvalid, self unless valid?(:release)
+
+        super
       end
     end
 
@@ -34,19 +34,23 @@ module Reactor
 
         # Add validation for each mandatory attribute
         mandatory_attrs = __mandatory_cms_attributes(subclass.name)
-        mandatory_attrs.each  do |attr|
-          subclass.send(:validates_presence_of, attr.to_sym, :on => :release)
-        end if mandatory_attrs
+        mandatory_attrs&.each  do |attr|
+          subclass.send(:validates_presence_of, attr.to_sym, on: :release)
+        end
 
-        cms_attributes  = __cms_attributes(subclass).values
+        cms_attributes = __cms_attributes(subclass).values
         # Add validation for linklist & multienum [minSize/maxSize]
-        array_attributes= cms_attributes.select {|attr| ["linklist", "multienum"].include?(attr.attribute_type) }
+        array_attributes = cms_attributes.select { |attr| %w(linklist multienum).include?(attr.attribute_type) }
         array_attributes.each do |attr|
           length_hash = {}
-          length_hash[:minimum] = attr.min_size if attr.min_size && "linklist" != attr.attribute_type # CMS ignores minimum for linklists.
+          if attr.min_size && "linklist" != attr.attribute_type
+            length_hash[:minimum] = attr.min_size
+          end # CMS ignores minimum for linklists.
           length_hash[:maximum] = attr.max_size if attr.max_size
 
-          subclass.send(:validates, attr.attribute_name.to_sym, :length => length_hash, :on => :release) unless length_hash.empty?
+          unless length_hash.empty?
+            subclass.send(:validates, attr.attribute_name.to_sym, length: length_hash, on: :release)
+          end
         end
 
         subclass

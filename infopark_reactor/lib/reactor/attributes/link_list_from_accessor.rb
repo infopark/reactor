@@ -7,10 +7,11 @@ module Reactor
       end
 
       def call
-        self.obj[self.attribute.to_sym] || RailsConnector::LinkList.new([])
+        obj[attribute.to_sym] || RailsConnector::LinkList.new([])
       end
 
       protected
+
       attr_accessor :obj, :attribute
     end
   end

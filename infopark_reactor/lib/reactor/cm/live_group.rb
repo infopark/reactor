@@ -1,14 +1,10 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/cm/group'
+require "reactor/cm/group"
 
 module Reactor
-
   module Cm
-
     # The LiveGroup class respects the user management configured in the content manager and
     # handles all live groups. See @Group for further details.
     class LiveGroup < Group
-
       protected
 
       # Overwritten method from +Group+.
@@ -17,11 +13,8 @@ module Reactor
       end
 
       def self.base_name
-        'secondaryGroupProxy'
+        "secondaryGroupProxy"
       end
-
     end
-
   end
-
 end

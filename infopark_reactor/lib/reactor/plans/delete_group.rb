@@ -1,19 +1,15 @@
-# -*- encoding : utf-8 -*-
 module Reactor
-
   module Plans
-
     class DeleteGroup < CommonGroup
-
       def initialize(*args)
         super()
 
-        (name, _), options = separate_arguments(*args)
+        (name,), options = separate_arguments(*args)
         @name = name || options[:name]
       end
 
       def prepare!
-        error('name is nil') if @name.nil?
+        error("name is nil") if @name.nil?
         error("group #{@name} does not exist") unless Reactor::Cm::Group.exists?(@name)
       end
 
@@ -21,9 +17,6 @@ module Reactor
         group = Reactor::Cm::Group.get(@name)
         group.delete!
       end
-
     end
-
   end
-
 end
