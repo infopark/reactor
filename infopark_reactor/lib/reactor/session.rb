@@ -5,7 +5,9 @@ require "reactor/cache/user"
 require "reactor/session/observers"
 
 class Reactor::Session
-  include ObservableState = Struct.new(:user_name, :session_id) do
+  include Observable
+
+  class State < Struct.new(:user_name, :session_id)
     def serialize
       [user_name, session_id]
     end
