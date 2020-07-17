@@ -8,11 +8,12 @@ rvm:
   - 2.4.5
 env:
   jobs:
-    - BUNDLE_GEMFILE=Gemfile.rails50
-    - BUNDLE_GEMFILE=Gemfile.rails51
     - BUNDLE_GEMFILE=Gemfile
+    - BUNDLE_GEMFILE=Gemfile.rails51
+    - BUNDLE_GEMFILE=Gemfile.rails50
 services:
   - docker
+if: branch =~ /^travis|^develop$|^master$/
 before_install:
   - export TZ=Europe/Berlin
   - cd reactor_test
@@ -25,3 +26,11 @@ before_script:
 after_script:
   - cd docker-build
   - docker-compose down --volumes
+jobs:
+  include:
+  - name: Rubocop
+    before_install:
+      - cd infopark_reactor
+    before_script: skip
+    script: bundle exec rubocop
+    after_script: skip
