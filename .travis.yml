@@ -3,7 +3,8 @@ os: linux
 dist: xenial
 cache:
   directories:
-  - reactor_test/vendor/bundle
+    - infopark_reactor/vendor/bundle
+    - reactor_test/vendor/bundle
 rvm:
   - 2.4.5
 env:
