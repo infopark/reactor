@@ -134,7 +134,7 @@ module Reactor
         new_obj_class ||= obj_class
         RailsConnector::Meta::EagerLoader.instance.forget_obj_class(new_obj_class)
         Reactor::AttributeHandlers.reinstall_attributes(singleton_class, new_obj_class)
-        self.class.initialize_attributes
+        self.class.reinitialize_attributes
       end
 
       protected
@@ -278,7 +278,7 @@ module Reactor
 
         RailsConnector::Meta::EagerLoader.instance.forget_obj_class(new_obj_class)
         Reactor::AttributeHandlers.reinstall_attributes(self, new_obj_class)
-        initialize_attributes
+        reinitialize_attributes
       end
     end
   end
