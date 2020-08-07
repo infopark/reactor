@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
   s.add_dependency "nokogiri", "~> 1"
   s.add_dependency "rails", "~> 5.0"
 
-  s.add_development_dependency "rspec", '~> 3'
+  s.add_development_dependency "rspec", "~> 3"
   s.add_development_dependency "rubocop", "~> 0.87.1"
-  s.add_development_dependency "rubocop-performance", '~> 0'
-  s.add_development_dependency "yard", '~> 0'
+  s.add_development_dependency "rubocop-performance", "~> 1"
+  s.add_development_dependency "yard", ">= 0"
 end
