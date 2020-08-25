@@ -23,13 +23,16 @@ module Reactor
           if iso_format?(value)
             value
           else
-            begin
-              Time.zone.parse(value).utc.to_s(:number)
-            rescue ArgumentError
-              nil
-            end
+            parse_time(value)
           end
         end
+      end
+
+      def parse_time(value)
+        parsed_time = Time.zone.parse(value)
+        return nil unless parsed_time.present?
+
+        parsed_time.utc.to_s(:number)
       end
 
       def iso_format?(val)
