@@ -24,7 +24,7 @@ module Reactor
             value
           else
             begin
-              DateTime.parse(value).utc.to_s(:number)
+              Time.zone.parse(value).utc.to_s(:number)
             rescue ArgumentError
               nil
             end
