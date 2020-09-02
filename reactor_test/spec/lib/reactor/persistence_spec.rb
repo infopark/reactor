@@ -212,6 +212,7 @@ describe Reactor::Persistence do
       let(:obj) { stub_model(Obj) }
       before { allow(obj).to receive(:edited?) { false } }
       before { allow(obj).to receive(:really_edited?) { false } }
+      before { allow(obj).to receive(:committed?) { false } }
       before { allow(obj).to receive(:workflow_name) { nil } }
 
       it "raises AlreadyReleased exception" do
@@ -667,7 +668,7 @@ describe Reactor::Persistence do
   describe '#resolve_refs' do
     context "object without resolved refs" do
       let(:obj) {Obj.find_by_path('/object_without_resolved_refs')}
-      
+
       it "returns true" do
         expect(obj.resolve_refs).to be_truthy
       end
