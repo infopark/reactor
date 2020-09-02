@@ -63,7 +63,7 @@ module Reactor
       # @raise [Reactor::NotPermitted] current user lacks required permissions
       def release!(comment = nil)
         run_callbacks(:release) do
-          raise(Reactor::AlreadyReleased) unless really_edited?
+          raise(Reactor::AlreadyReleased) unless edited_or_committed?
 
           crul_obj.release!(comment)
           reload
@@ -237,11 +237,13 @@ module Reactor
         end
       end
 
-      # Equivalent to Obj#edited?
       def really_edited?
         # check if really edited with curl request
         crul_obj.edited?
-        # self.edited?
+      end
+
+      def edited_or_committed?
+        really_edited? || committed?
       end
 
       # Returns an array of errors
