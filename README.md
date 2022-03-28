@@ -1,6 +1,6 @@
 # How to use it #
 Just put this in your `Gemfile`:
-    
+
     gem "infopark_reactor"
 
 # Supported versions #
@@ -18,8 +18,11 @@ Following versions of `infopark_rails_connector`/`infopark_fiona_connector` and 
 |     2.2.4    |     4.1.14    |           *none*          |          7.0.0            |
 |     2.2.6    |     4.2.7.1   |           *none*          |          7.0.1.beta2      |
 |     2.2.6    |     4.2.7.1   |           *none*          |          7.0.1            |
+|     2.2.6    |     4.2.7.1   |           *none*          |          7.0.1            |
+|     2.6.6    |     5.x       |           *none*          |          7.0.1            |
+|     2.7.x    |    >5.2       |           *none*          |          7.0.1            |
 
-Fiona versions: 7.0.1, 7.0.0, 6.10.2, 6.10.0, 6.9.0, 6.8.0, 6.7.3 and 6.7.2 are supported.
+Fiona versions: 7.0.2,7.0.1, 7.0.0, 6.10.2, 6.10.0, 6.9.0, 6.8.0, 6.7.3 and 6.7.2 are supported.
 
 
 REACTOR
@@ -164,7 +167,7 @@ Older version of Rails Connector support extensions to the RailsConnector::Obj c
           include Reactor::Attributes::Base   # core module
           include Reactor::Persistence::Base  # core module
 
-          include Reactor::Validations::Base  # optional module, 
+          include Reactor::Validations::Base  # optional module,
                                               #  enables Rails validations
 
           include Reactor::Permission::Base   # optional module,
@@ -188,7 +191,7 @@ Core and optional modules are pretty well documented. If you are looking for exa
 MIGRATIONS
 ===========
 
-Reactor::Migrations is a Rails 3 gem that makes working with Fiona just as easy as with Rails native migrations. Reactor::Migrations stores it's versioning information inside CM and thus it is compatible with all backup solutions. Please note the fact, that Reactor cannot account for manual modifications made to the CM (although it gives it's best)
+Reactor::Migrations is a Rails gem that makes working with Fiona just as easy as with Rails native migrations. Reactor::Migrations stores it's versioning information inside CM and thus it is compatible with all backup solutions. Please note the fact, that Reactor cannot account for manual modifications made to the CM (although it gives it's best)
 
 
 Disclaimer
@@ -252,7 +255,7 @@ edit cm/migrate/[timestamp]_example_migration.rb
   end
 
   def self.down
-    delete_attribute_group :obj_class => 'ExampleClass', :name => 'my_custom_group' 
+    delete_attribute_group :obj_class => 'ExampleClass', :name => 'my_custom_group'
     delete_class :name => 'ExampleClass'
     delete_attribute :name => 'test_attribute'
   end
