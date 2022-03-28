@@ -18,7 +18,7 @@ services:
       # Path on the host, relative to the Compose file
       - ./reactor_test.sql:/tmp/test_db_dump.sql
     environment:
-      LD_LIBRARY_PATH: "/fiona/CMS-Fiona-7.0.1/lib/sles"
+      LD_LIBRARY_PATH: "/fiona/CMS-Fiona-7.0.2/lib/sles"
       TERM: xterm
       TZ: Europe/Berlin
     ports:

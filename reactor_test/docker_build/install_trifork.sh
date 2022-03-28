@@ -2,7 +2,7 @@
 # set -x
 VERSION=4.1.40
 REL_BASE_DIR=`dirname $0`
-REL_BASE_DIR="$HOME/Infopark-CMS-Fiona-7.0.1-Linux/trifork-4.1.40"
+REL_BASE_DIR="$HOME/Infopark-CMS-Fiona-7.0.2-Linux/trifork-4.1.40"
 BASE_DIR=`cd $REL_BASE_DIR && pwd || echo "Unable to cd into $REL_BASE_DIR"; exit 1`
 BASE_DIR=`pwd`
 
