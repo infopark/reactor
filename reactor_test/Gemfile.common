@@ -6,9 +6,13 @@ gem 'rspec-rails'
 
 gem 'rspec-activemodel-mocks'
 
-gem "infopark_fiona_connector", "~> 7.0.1.5.2.4.rc1"
+#gem "infopark_fiona_connector", "~> 7.0.1.5.2.4.rc1"
+#gem 'mysql_blob_streaming', '2.3.0'
+
+gem 'infopark_fiona_connector', git: 'https://github.com/infopark/fiona_connector.git', branch: 'remove_jquery_dependency'
 gem 'infopark_reactor', path: '../infopark_reactor'
-gem 'mysql_blob_streaming', '2.3.0'
+gem 'mysql_blob_streaming', '2.5.0', git: 'https://github.com/infopark/mysql_blob_streaming.git', branch: 'mysql_blob_streaming_2.5.0'
+
 
 gem 'mysql2', '~> 0.5.2'
 

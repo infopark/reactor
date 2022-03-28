@@ -2,3 +2,6 @@ source "http://rubygems.org"
 
 # Specify your gem's dependencies in infopark_reactor.gemspec
 gemspec
+
+gem 'infopark_fiona_connector', git: 'https://github.com/infopark/fiona_connector.git', branch: 'remove_jquery_dependency'
+gem 'mysql_blob_streaming', '2.5.0', git: 'https://github.com/infopark/mysql_blob_streaming.git', branch: 'mysql_blob_streaming_2.5.0'
