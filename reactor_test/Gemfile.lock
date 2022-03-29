@@ -25,7 +25,7 @@ GIT
 PATH
   remote: ../infopark_reactor
   specs:
-    infopark_reactor (1.27.0.rc10)
+    infopark_reactor (1.28.0)
       nokogiri (~> 1)
       rails (~> 5.0)
 
@@ -191,7 +191,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  infopark_fiona_connector!
+  infopark_fiona_connector (~> 7.0.1.5.2.7.rc1)!
   infopark_reactor!
   mysql2 (~> 0.5.2)
   mysql_blob_streaming (= 2.5.0)!
