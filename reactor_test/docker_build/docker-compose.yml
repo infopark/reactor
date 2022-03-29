@@ -1,7 +1,7 @@
-version: '2.1'
+version: '2.2'
 services:
   db:
-    image: mysql:5.6
+    image: mariadb:10.2.43
     container_name: reactor_db_test
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -16,7 +16,7 @@ services:
     command: ["./wait-for-it.sh", "db:3306", "-s", "--timeout=30", "--", "./start.sh"]
     volumes:
       # Path on the host, relative to the Compose file
-      - ./reactor_test.sql:/tmp/test_db_dump.sql
+      - ./reactor_test_mariadb.sql:/tmp/test_db_dump.sql
     environment:
       LD_LIBRARY_PATH: "/fiona/CMS-Fiona-7.0.2/lib/sles"
       TERM: xterm
