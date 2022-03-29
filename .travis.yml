@@ -5,8 +5,8 @@ cache:
   directories:
     - reactor_test/vendor/bundle
 rvm:
-  - 2.4.10
-  - 2.7.4
+  - 2.6.9
+  - 2.7.5
 env:
   jobs:
     - BUNDLE_GEMFILE=Gemfile
