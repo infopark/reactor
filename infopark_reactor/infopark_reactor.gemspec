@@ -7,10 +7,10 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Tomasz Przedmojski", "Anton Mezin", "Roman Lemekha"]
   s.email       = ["tomasz.przedmojski@infopark.de", "anton.mezin@infopark.de", "roman.lemekha@infopark.de"]
-  s.homepage    = ""
+  s.homepage    = "https://www.justrelate.com/"
   s.summary     = "Write into CM in familiar, Rails-like way"
   s.description = "Use the ActiveRecord mimicking API to write into CM and enjoy all the benefits of callbacks, validations and permission checking"
-  s.license     = "LGPL-3"
+  s.license     = "LGPL-3.0"
 
   # s.rubyforge_project = "infopark_reactor"
 
