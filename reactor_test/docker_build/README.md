@@ -19,6 +19,7 @@ Run to build the image
 IF necessary (i.e. expired license-key or new Fiona-Version) push build to aws
 
     docker image tag fiona7_reactor_test 721039963787.dkr.ecr.eu-central-1.amazonaws.com/mpg-reactor-test
+    docker push 721039963787.dkr.ecr.eu-central-1.amazonaws.com/mpg-reactor-test
 
 For starting CM
 

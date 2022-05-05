@@ -1,5 +1,5 @@
 # Pull base image.
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 
 RUN mkdir /fiona /data
 VOLUME /data
@@ -11,11 +11,17 @@ ENV MYSQL_USER=mysql \
 
 RUN \
   dpkg --add-architecture i386 && \
+  apt-get update && apt-get install -y software-properties-common gnupg && \
+  # set mariadb-version
+  apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
+  add-apt-repository --remove 'deb [arch=amd64,i386,ppc64el] http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu bionic main' && \
+  add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.2/ubuntu bionic main' && \
+  # done setting mariadb-version
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils \
     unzip build-essential\
     libc6:i386 libncurses5:i386 libstdc++6:i386 \
-    software-properties-common mysql-client libmysqlclient-dev \
+    software-properties-common mariadb-client libmysqlclient-dev libmariadb3 \
     && rm -rf ${MYSQL_DATA_DIR} \
     && rm -rf /var/lib/apt/lists/*
 
