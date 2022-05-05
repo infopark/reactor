@@ -1,11 +1,12 @@
 language: ruby
 os: linux
-dist: xenial
+dist: bionic
 cache:
   directories:
     - reactor_test/vendor/bundle
 rvm:
-  - 2.4.5
+  - 2.7.5
+  - 2.6.9
 env:
   jobs:
     - BUNDLE_GEMFILE=Gemfile
@@ -17,7 +18,7 @@ if: branch =~ /^travis|^develop$|^master$/
 before_install:
   - export TZ=Europe/Berlin
   - cd reactor_test
-  - gem install bundler
+  - gem install bundler -v '< 2'
   - travis/docker_login.sh
 before_script:
   - travis/docker_start.sh

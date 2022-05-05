@@ -3,13 +3,13 @@
 # set -x
 
 BASEDIR=`cd "\`dirname \"$0\"\`" && /bin/pwd`
-BASEDIR="$HOME/Infopark-CMS-Fiona-7.0.1-Linux"
+BASEDIR="$HOME/Infopark-CMS-Fiona-7.0.2-Linux"
 
 LOG_FILE="${HOME}/npsinstall.log"
 DEFAULT_LICENSE_PATH="${HOME}/license.xml"
 
 # Configuration
-DEFAULT_NPS_PATH="$HOME/CMS-Fiona-7.0.1"
+DEFAULT_NPS_PATH="$HOME/CMS-Fiona-7.0.2"
 PORT_LIST="3001 3002 3003 3011 3012 3013 3051 3052 3053 8080"
 
 # see installTriforkLicense() for TRIFORK_LICENSE
@@ -541,7 +541,7 @@ main()
 {
     echo "" > "$LOG_FILE"
     message
-    message "Welcome to the installation of Fiona 7.0.1"
+    message "Welcome to the installation of Fiona 7.0.2"
     message
     message "The log file for this installation is $LOG_FILE."
     message "You can abort the installation at any time by pressing CTRL-C."
