@@ -40,7 +40,8 @@ module Reactor
 
         cms_attributes = __cms_attributes(subclass).values
         # Add validation for linklist & multienum [minSize/maxSize]
-        array_attributes = cms_attributes.select { |attr| %w(linklist multienum).include?(attr.attribute_type) }
+        array_attr = %w(linklist multienum)
+        array_attributes = cms_attributes.select { |attr| array_attr.include?(attr.attribute_type) }
         array_attributes.each do |attr|
           length_hash = {}
           if attr.min_size && "linklist" != attr.attribute_type
