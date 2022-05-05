@@ -18,7 +18,7 @@ if: branch =~ /^travis|^develop$|^master$/
 before_install:
   - export TZ=Europe/Berlin
   - cd reactor_test
-  - travis/install_bundler.sh
+  - gem install bundler -v '< 2'
   - travis/docker_login.sh
 before_script:
   - travis/docker_start.sh
