@@ -8,7 +8,7 @@ ReactorTest::Application.configure do
   # test suite.  You never need to work with it otherwise.  Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs.  Don't rely on the data there!
-  config.cache_classes = true
+  config.cache_classes = false
 
   # Log error messages when you accidentally call methods on nil.
   #config.whiny_nils = true
@@ -37,5 +37,5 @@ ReactorTest::Application.configure do
   config.active_support.deprecation = :stderr
 
   #config.eager_load = true if config.respond_to? :eager_load
-  config.eager_load = true
+  config.eager_load = false
 end

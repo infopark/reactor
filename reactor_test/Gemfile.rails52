@@ -6,9 +6,7 @@ gem 'rspec-rails'
 
 gem 'rspec-activemodel-mocks'
 
-# gem "infopark_fiona_connector", "~> 7.0.1.5.2.7.rc1"
-gem "infopark_fiona_connector", git: "https://github.com/infopark/fiona_connector.git", branch: "rails_6_update"
-
+gem "infopark_fiona_connector", "~> 7.0.1.5.2.7.rc1"
 gem 'mysql_blob_streaming', '2.5.0'
 
 gem 'infopark_reactor', path: '../infopark_reactor'
@@ -17,5 +15,3 @@ gem 'infopark_reactor', path: '../infopark_reactor'
 gem 'mysql2', '~> 0.5.2'
 
 gem "pry-byebug"
-
-gem 'listen'

@@ -25,7 +25,7 @@ describe "Invalid links", focus: false do
     expect(@source.test_attr_linklist.length).to eq(0)
     expect(@source.attr_values["test_attr_linklist"].length).to eq(1)
 
-    @source.update_attributes!(test_attr_linklist: [{title: "", destination_object: @new_target.path}])
+    @source.update!(test_attr_linklist: [{title: "", destination_object: @new_target.path}])
     @source.resolve_refs!
     expect(Obj.find(@source.id).test_attr_linklist.length).to eq(1)
     expect(@source.attr_values["test_attr_linklist"].length).to eq(1)

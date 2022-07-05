@@ -14,8 +14,8 @@ describe "in-content link persisting", focus: false do
     before :all do
       @sure_object = Obj.find_by_path('/object_sure_to_exist')
       @sure_image = Obj.find_by_path('/image_sure_to_exist')
-      @sure_object.update_attributes!(permalink: 'object_sure_to_exist') if @sure_object.permalink != 'object_sure_to_exist'
-      @sure_image.update_attributes!(permalink: 'image_sure_to_exist') if @sure_image.permalink != 'image_sure_to_exist'
+      @sure_object.update!(permalink: 'object_sure_to_exist') if @sure_object.permalink != 'object_sure_to_exist'
+      @sure_image.update!(permalink: 'image_sure_to_exist') if @sure_image.permalink != 'image_sure_to_exist'
 
       @sure_object2 = Obj.create!(:obj_class => 'PlainObjClass', :name => 'object_sure_to_exist2', :parent => '/')
       @sure_image2 = Obj.create!(:obj_class => 'image', :name => 'image_sure_to_exist2', :parent => '/')
