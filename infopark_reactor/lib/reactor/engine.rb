@@ -17,10 +17,10 @@ module Reactor
 
     initializer "reactor.rsession" do |_app|
       ActiveSupport.on_load(:action_controller) do
-        include Reactor::SessionHelper::RsessionHelper
-        __send__(:helper_method, :rsession)
-        include Reactor::SessionHelper::AuthHelper
-        include Reactor::SessionHelper::AuthFilter
+        ActionController::Base.include Reactor::SessionHelper::RsessionHelper
+        ActionController::Base.__send__(:helper_method, :rsession)
+        ActionController::Base.include Reactor::SessionHelper::AuthHelper
+        ActionController::Base.include Reactor::SessionHelper::AuthFilter
       end
     end
   end
