@@ -1,3 +1,6 @@
+## 1.29.0
+- Support for Rails 6
+- Support for Ruby 3 and 3.1
 ## 1.28.0
 - Support for Rails 5.2
 - Updated dependencies:
