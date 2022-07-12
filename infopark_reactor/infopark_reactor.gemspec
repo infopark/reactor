@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = "Write into CM in familiar, Rails-like way"
   s.description = "Use the ActiveRecord mimicking API to write into CM and enjoy all the benefits of callbacks, validations and permission checking"
   s.license     = "LGPL-3.0"
+  s.metadata["rubygems_mfa_required"] = "true"
 
   # s.rubyforge_project = "infopark_reactor"
 
