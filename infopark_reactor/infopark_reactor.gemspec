@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   # s.add_dependency "infopark_fiona_connector", "~> 7.0.1.5.2.7.rc1"
   s.add_dependency "nokogiri", "~> 1"
-  s.add_dependency "rails", "~> 6.0"
+  s.add_dependency "rails", [">= 5.0", "< 7.0"]
 
   s.add_development_dependency "rspec", "~> 3"
   s.add_development_dependency "rubocop", "~> 0.89.1"
