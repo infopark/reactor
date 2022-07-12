@@ -19,7 +19,7 @@ PATH
   specs:
     infopark_reactor (1.29.0)
       nokogiri (~> 1)
-      rails (~> 6.1.0)
+      rails (~> 6.0)
 
 GEM
   remote: https://rubygems.org/
