@@ -18,3 +18,8 @@ gem 'mysql2', '~> 0.5.2'
 gem "pry-byebug"
 
 gem 'listen'
+
+gem 'rexml', require: false
+gem 'net-smtp', require: false
+gem 'net-pop', require: false
+gem 'net-imap', require: false
