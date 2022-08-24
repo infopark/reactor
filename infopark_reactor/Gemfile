@@ -2,5 +2,3 @@ source "http://rubygems.org"
 
 # Specify your gem's dependencies in infopark_reactor.gemspec
 gemspec
-
-gem "infopark_fiona_connector", git: "https://github.com/infopark/fiona_connector.git", branch: "rails_6_update"
