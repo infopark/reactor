@@ -55,13 +55,13 @@ describe Reactor::Persistence do
     it 'sets suppress_export' do
       o1 = TestClassWithCustomAttributes.create(:parent => '/', :name => 'suppress1_')
       expect(o1.suppress_export).to be false
-      o1.update_attributes(suppress_export: 1)
+      o1.update!(suppress_export: 1)
       expect(o1.suppress_export).to be true
 
 
       o2 = TestClassWithCustomAttributes.create(:parent => '/', :name => 'suppress2_', suppress_export: '1')
       expect(o2.suppress_export).to be true
-      o2.update_attributes(suppress_export: 0)
+      o2.update!(suppress_export: 0)
       expect(o2.suppress_export).to be false
     end
   end
@@ -214,6 +214,7 @@ describe Reactor::Persistence do
       before { allow(obj).to receive(:really_edited?) { false } }
       before { allow(obj).to receive(:committed?) { false } }
       before { allow(obj).to receive(:workflow_name) { nil } }
+      before { allow(obj).to receive(:valid?) { true } }
 
       it "raises AlreadyReleased exception" do
         expect { obj.release! }.to raise_exception(Reactor::AlreadyReleased)
@@ -745,8 +746,8 @@ describe Reactor::Persistence do
       expect(Obj.find(@source.id).parent).to eq(@target)
     end
 
-    it "works via update_attributes" do
-      @source.update_attributes!(parent: @target)
+    it "works via update!" do
+      @source.update!(parent: @target)
 
       expect(@source.parent).to eq(@target)
       expect(Obj.find(@source.id).parent).to eq(@target)

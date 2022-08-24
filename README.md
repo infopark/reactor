@@ -21,8 +21,11 @@ Following versions of `infopark_rails_connector`/`infopark_fiona_connector` and 
 |     2.2.6    |     4.2.7.1   |           *none*          |          7.0.1            |
 |     2.6.6    |     5.x       |           *none*          |          7.0.1            |
 |     2.7.x    |    >5.2       |           *none*          |          7.0.1            |
+|     2.7.x    |   ~>6.0       |           *none*          |          7.0.1            |
+|     3.0.4    |   ~>6.0       |           *none*          |          7.0.1            |
+|     3.1.x    |   ~>6.0       |           *none*          |          7.0.1            |
 
-Fiona versions: 7.0.2,7.0.1, 7.0.0, 6.10.2, 6.10.0, 6.9.0, 6.8.0, 6.7.3 and 6.7.2 are supported.
+Fiona versions: 7.0.2, 7.0.1, 7.0.0, 6.10.2, 6.10.0, 6.9.0, 6.8.0, 6.7.3 and 6.7.2 are supported.
 
 
 REACTOR

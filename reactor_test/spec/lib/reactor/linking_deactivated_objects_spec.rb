@@ -23,7 +23,7 @@ describe "Linking deactivated objects", focus: false do
     expect(@source.attr_values["test_attr_linklist"].length).to eq(1)
     expect(@source.test_attr_linklist.length).to eq(1)
 
-    @target.update_attributes!(valid_from: 3.minutes.ago, valid_until: 2.minutes.ago)
+    @target.update!(valid_from: 3.minutes.ago, valid_until: 2.minutes.ago)
     @target.release!
 
     @source.reload
@@ -31,7 +31,7 @@ describe "Linking deactivated objects", focus: false do
     expect(@source.test_attr_linklist.length).to eq(0)
     expect(@source.attr_values["test_attr_linklist"].length).to eq(1)
 
-    @source.update_attributes!(test_attr_linklist: [{title: "", destination_object: @new_target.path}])
+    @source.update!(test_attr_linklist: [{title: "", destination_object: @new_target.path}])
 
     expect(@source.test_attr_linklist.length).to eq(1)
     expect(@source.attr_values["test_attr_linklist"].length).to eq(1)
