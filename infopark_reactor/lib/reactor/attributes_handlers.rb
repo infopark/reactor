@@ -104,7 +104,7 @@ module Reactor
         # active model dirty tracking
         attribute_methods << <<-EOC
         def #{attribute}_changed?(**options)
-          attribute_changed?(:#{attribute}, options)
+          will_save_change_to_attribute?(:#{attribute}, **options)
         end
         EOC
       end
