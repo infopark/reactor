@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", [">= 5.0", "< 7.0"]
 
   s.add_development_dependency "rspec", "~> 3"
-  s.add_development_dependency "rubocop", "~> 0.89.1"
-  s.add_development_dependency "rubocop-performance", "~> 1"
+  s.add_development_dependency "rubocop"
+  s.add_development_dependency "rubocop-performance"
   s.add_development_dependency "yard", ">= 0"
 end
