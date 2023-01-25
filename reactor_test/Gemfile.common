@@ -1,0 +1,25 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+gem 'rspec-rails'
+
+gem 'rspec-activemodel-mocks'
+
+gem "infopark_fiona_connector", "~> 7.0.1.6.1.6.rc1"
+
+gem 'mysql_blob_streaming', '2.5.0'
+
+gem 'infopark_reactor', path: '../infopark_reactor'
+
+
+gem 'mysql2', '~> 0.5.2'
+
+gem "pry-byebug"
+
+gem 'listen'
+
+gem 'rexml', require: false
+gem 'net-smtp', require: false
+gem 'net-pop', require: false
+gem 'net-imap', require: false

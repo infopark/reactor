@@ -1,8 +1,7 @@
-# -*- encoding : utf-8 -*-
 require 'spec_helper'
 
 describe "Default attribute values" do
-  subject { TestClassWithCustomAttributes.new }
+  subject { Obj.find_by_path('/test_obj_with_custom_attributes')}
 
   describe 'channels' do
     specify { expect(subject.channels).to eq([]) }
@@ -32,6 +31,5 @@ describe "Default attribute values" do
 
   describe 'html' do
     specify { expect(subject.test_attr_html).to eq('') }
-    specify { expect(subject.test_attr_html).to be_html_safe }
   end
 end

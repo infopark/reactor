@@ -1,11 +1,8 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/cm/xml_attribute'
-require 'reactor/tools/response_handler/xml_attribute'
+require "reactor/cm/xml_attribute"
+require "reactor/tools/response_handler/xml_attribute"
 
 module Reactor
-
   module XmlAttributes
-
     extend ActiveSupport::Concern
 
     included do
@@ -17,7 +14,6 @@ module Reactor
     end
 
     module ClassMethods
-
       # This method can act as both getter and setter.
       # I admit, that it is not the best design ever.
       # But it makes a pretty good DSL
@@ -36,14 +32,14 @@ module Reactor
 
         attribute = Reactor::Cm::XmlAttribute.new(xml_name, type, options)
 
-        self._attributes[name.to_sym] = attribute
+        _attributes[name.to_sym] = attribute
 
         attr_accessor name
       end
 
       def attributes(scopes = [])
         scopes = Array(scopes)
-        attributes = self._attributes
+        attributes = _attributes
 
         if scopes.present?
           attributes.reject { |_, xml_attribute| (xml_attribute.scopes & scopes).blank? }
@@ -53,19 +49,16 @@ module Reactor
       end
 
       def xml_attribute(name)
-        self._attributes[name.to_sym]
+        _attributes[name.to_sym]
       end
 
       def xml_attribute_names
-        self._attributes.values.map(&:name)
+        _attributes.values.map(&:name)
       end
 
       def attribute_names
-        self._attributes.keys
+        _attributes.keys
       end
-
     end
-
   end
-
 end

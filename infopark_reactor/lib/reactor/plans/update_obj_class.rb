@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Plans
     class UpdateObjClass < CommonObjClass
@@ -21,7 +20,6 @@ module Reactor
         migrate_attrs!(@klass)
         migrate_params!(@klass)
       end
-
     end
   end
 end

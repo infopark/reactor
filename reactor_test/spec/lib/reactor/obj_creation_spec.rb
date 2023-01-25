@@ -1,11 +1,4 @@
-# -*- encoding : utf-8 -*-
 require 'spec_helper'
-
-unless defined?(TestClassWithCustomAttributes)
-  class TestClassWithCustomAttributes < Obj
-  end
-end
-
 
 describe "Reactor::Persistence" do
   describe "Obj.new(:name, :parent, :obj_class) .. #save" do
@@ -105,10 +98,6 @@ describe "Reactor::Persistence" do
     end
   end
 
-  describe "Obj.create(:name, :parent, :obj_class, :custom_attributes)" do
-    skip
-  end
-
   describe "TestClassWithCustomAttributes.create(:name, :parent, :custom_attributes)" do
     before(:all) do
       attr_values = {
@@ -119,7 +108,7 @@ describe "Reactor::Persistence" do
         :test_attr_enum => "value1",
         :test_attr_multienum => ["value2", "value3"],
         :test_attr_html => "<strong>html</strong>",
-        :test_attr_date => Time.parse("2011-10-11 15:00"),
+        :test_attr_date => Time.parse("2011-10-11 15:00").in_time_zone,
         :test_attr_linklist => 'http://google.com'
       }
       @obj = TestClassWithCustomAttributes.create(attr_values)
@@ -147,16 +136,12 @@ describe "Reactor::Persistence" do
     end
 
     it "sets test_attr_date" do
-      expect(@obj[:test_attr_date]).to eq(Time.parse("2011-10-11 15:00"))
+      expect(@obj[:test_attr_date]).to eq(Time.parse("2011-10-11 15:00").in_time_zone)
     end
 
     it "sets test_attr_linklist" do
       expect(@obj[:test_attr_linklist].first.url).to eq("http://google.com")
     end
-  end
-
-  describe "Obj.new(:name, :parent, :obj_class, :custom_attributes) .. #save" do
-    skip
   end
 
   describe "TestClassWithCustomAttributes.new(:name, :parent, :custom_attributes) .. #save" do
@@ -206,5 +191,5 @@ describe "Reactor::Persistence" do
     end
 
   end
-  
+
 end

@@ -1,8 +1,6 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Tools
     class Uploader
-
       attr_reader :cm_obj
 
       def initialize(cm_obj)
@@ -24,7 +22,7 @@ module Reactor
       # the upload may fail randomly. For this platform
       # and this case fallback to memory streaming is used.
       def upload(data_or_io, extension)
-        if (data_or_io.kind_of?IO)
+        if data_or_io.is_a? IO
           io = data_or_io
           begin
             ticket_id = stream_io(io, extension)
@@ -46,7 +44,7 @@ module Reactor
         end
 
         cm_obj.set(:contentType, extension)
-        cm_obj.set(:blob, {ticket_id=>{:encoding=>'stream'}})
+        cm_obj.set(:blob, { ticket_id => { encoding: "stream" } })
 
         ticket_id
       end
@@ -58,8 +56,8 @@ module Reactor
       # Stream into CM from memory. Used in cases when the file
       # has already been read into memory
       def stream_data(data, extension)
-        response = (Net::HTTP.new(self.class.streaming_host, self.class.streaming_port).post('/stream', data,
-          {'Content-Type' => self.class.content_type_for_ext(extension)}))
+        response = Net::HTTP.new(self.class.streaming_host, self.class.streaming_port).post("/stream", data,
+                                                                                            { "Content-Type" => self.class.content_type_for_ext(extension) })
         ticket_id = response.body
 
         handle_response(response, ticket_id)
@@ -68,12 +66,13 @@ module Reactor
       # Stream directly an IO object into CM. Uses minimal memory,
       # as the IO is read in 1024B-Blocks
       def stream_io(io, extension)
-        request = Net::HTTP::Post.new('/stream')
+        request = Net::HTTP::Post.new("/stream")
         request.body_stream = io
         request.content_length = read_io_content_length(io)
         request.content_type = self.class.content_type_for_ext(extension)
 
-        response, ticket_id = nil, nil
+        response = nil
+        ticket_id = nil
         Net::HTTP.start(self.class.streaming_host, self.class.streaming_port) do |http|
           http.read_timeout = Reactor::Cm::XmlRequest.timeout
           response = http.request(request)
@@ -85,11 +84,7 @@ module Reactor
 
       # Returns ticket_id if response if one of success (success or redirect)
       def handle_response(response, ticket_id)
-        if response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
-          ticket_id
-        else
-          nil
-        end
+        ticket_id if response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
       end
 
       # Returns the size of the IO stream.
@@ -97,9 +92,9 @@ module Reactor
       # the :stat method or be able to seek to
       # random position
       def read_io_content_length(io)
-        if (io.respond_to?(:stat))
+        if io.respond_to?(:stat)
           # For files it is easy to read the filesize
-          return io.stat.size
+          io.stat.size
         else
           # For streams it is not. We seek to end of
           # the stream, read the position, and rewind
@@ -125,8 +120,8 @@ module Reactor
       # mime type for given extension. But since the CM
       # accepts 'application/octet-stream', no extra logic
       # or external dependency is required.
-      def self.content_type_for_ext(extension)
-        'application/octet-stream'
+      def self.content_type_for_ext(_extension)
+        "application/octet-stream"
       end
     end
   end

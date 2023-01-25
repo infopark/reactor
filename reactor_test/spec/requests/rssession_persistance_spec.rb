@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe "RSession persistance" do
+describe "RSession persistance", type: :request do
   [:marshal, :hybrid, :json].each do |serialization_scheme|
     context "with #{serialization_scheme} cookie serialization" do
       before do
@@ -16,7 +18,7 @@ describe "RSession persistance" do
 
       context "with root user" do
         it "persists the user in the session" do
-          post "/login", user_name: "root"
+          post "/login", params: {user_name: "root"}
           expect(response).to be_ok
 
           get "/login"
@@ -26,7 +28,7 @@ describe "RSession persistance" do
 
       context "with non_root user" do
         it "persists the user in the session" do
-          post "/login", user_name: "non_root"
+          post "/login", params: {user_name: "non_root"}
           expect(response).to be_ok
 
           get "/login"

@@ -5,7 +5,7 @@ describe "Error messages" do
 
   it "does not contain <phrase>" do
     expect { obj.release! }.to raise_error { |error|
-      error.message.should_not match(/<phrase>/)
+      expect(error.message).not_to match(/<phrase>/)
     }
   end
 end

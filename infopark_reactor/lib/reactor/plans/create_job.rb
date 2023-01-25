@@ -1,6 +1,5 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/cm/job'
-require 'reactor/plans/common_job'
+require "reactor/cm/job"
+require "reactor/plans/common_job"
 
 module Reactor
   module Plans
@@ -16,7 +15,7 @@ module Reactor
       end
 
       def migrate!
-        job = Reactor::Cm::Job.create(@name, @params)
+        Reactor::Cm::Job.create(@name, @params)
       end
     end
   end

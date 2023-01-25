@@ -1,0 +1,38 @@
+version: '2.2'
+services:
+  db:
+    image: mariadb:10.2.43
+    container_name: reactor_db_test
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: reactor_test
+      MYSQL_USER: reactor_user
+      MYSQL_PASSWORD: reactor_user
+    ports:
+      - "23306:3306"
+  fiona:
+    image: 721039963787.dkr.ecr.eu-central-1.amazonaws.com/mpg-reactor-test
+    # image: fiona7_reactor_test  # uncomment to use local image
+    container_name: mpg-reactor-test
+    command: ["./wait-for-it.sh", "db:3306", "-s", "--timeout=30", "--", "./start.sh"]
+    volumes:
+      # Path on the host, relative to the Compose file
+      - ./reactor_test_mariadb.sql:/tmp/test_db_dump.sql
+    environment:
+      LD_LIBRARY_PATH: "/fiona/CMS-Fiona-7.0.2/lib/sles"
+      TERM: xterm
+      TZ: Europe/Berlin
+    ports:
+      - "23002:3002"
+      - "25022:22"
+    healthcheck:
+      test: ./healthcheck.sh
+      interval: 2s
+      timeout: 1m30s
+      retries: 15
+    links:
+      - db
+    depends_on:
+      - db
+volumes:
+  mysql_data: {}

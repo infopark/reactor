@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
-  VERSION = "1.26.0"
+  VERSION = "1.29.0".freeze
 end

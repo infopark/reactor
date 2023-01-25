@@ -1,5 +1,5 @@
 # Rake::Task['test'].clear
-# 
+#
 # desc "Run all tests (specs)"
 # task :test => ['cm:seed:test'] do
 #   exec "bundle exec rspec ./spec/"
@@ -11,4 +11,4 @@ task :spec do ; end
 task(:spec).clear_prerequisites.clear_actions
 
 desc "Run all specs in spec directory"
-RSpec::Core::RakeTask.new(:spec => ["cm:migrate", "cm:seed:test"])
+RSpec::Core::RakeTask.new(:spec => ["cm:seed:test", "cm:migrate"])

@@ -1,13 +1,12 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/link/temporary_link'
-require 'infopark_fiona_connector'
-#require 'infopark_rails_connector'
+require "reactor/link/temporary_link"
+require "infopark_fiona_connector"
 
 module Reactor
   module Attributes
     class LinkListSerializer
       def initialize(attr, value)
-        @attr, @value = attr, value
+        @attr = attr
+        @value = value
       end
 
       def serialize
@@ -20,10 +19,12 @@ module Reactor
       end
 
       private
+
       def enumerate(value)
         return [] if value.nil? || value.blank?
-        return [value] unless value.kind_of?(Array)
-        return value
+        return [value] unless value.is_a?(Array)
+
+        value
       end
     end
   end

@@ -1,14 +1,10 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/cm/group'
+require "reactor/cm/group"
 
 module Reactor
-
   module Cm
-
     # The EditorialGroup class respects the user management configured in the content manager and
     # handles all editorial groups. See @Group for further details.
     class EditorialGroup < Group
-
       primary_key :name
 
       protected
@@ -19,11 +15,8 @@ module Reactor
       end
 
       def self.base_name
-        'groupProxy'
+        "groupProxy"
       end
-
     end
-
   end
-
 end

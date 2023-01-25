@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Plans
     class RenameObjClass
@@ -13,7 +12,7 @@ module Reactor
       def prepare!
         error("from is nil") if @from.nil?
         error("to is nil") if @to.nil?
-        error("from does not exist") if not Reactor::Cm::ObjClass.exists?(@from)
+        error("from does not exist") unless Reactor::Cm::ObjClass.exists?(@from)
         error("to does exist") if Reactor::Cm::ObjClass.exists?(@to)
       end
 

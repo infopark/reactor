@@ -1,5 +1,4 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/tools/xml_attributes'
+require "reactor/tools/xml_attributes"
 
 module Reactor
   module Cm
@@ -12,7 +11,7 @@ module Reactor
 
       # Default base_name is lowercased class name (without namespaces)
       def self.base_name
-        self.name.split('::').last.downcase
+        name.split("::").last.downcase
       end
 
       def base_name
@@ -24,9 +23,9 @@ module Reactor
       #       set_base_name 'obj'
       #     end
       def self.set_base_name(base_name_value)
-         # we us evaluation of a string in this case, because
+        # we us evaluation of a string in this case, because
         # define_method cannot handle default values
-        self.class_eval <<-EOH
+        class_eval <<-EOH
           def self.base_name
             '#{base_name_value}'
           end
@@ -50,7 +49,7 @@ module Reactor
         response = request.execute!
 
         self.class.attributes.each do |attr_name, attr_def|
-          self.send(:"#{attr_name}=", self.class.response_handler.get(response, attr_def))
+          send(:"#{attr_name}=", self.class.response_handler.get(response, attr_def))
         end
 
         self
@@ -62,23 +61,24 @@ module Reactor
           xml.where_key_tag!(base_name, primary_key, primary_key_value)
           xml.set_tag!(base_name) do
             self.class.attributes(:set).each do |name, xml_attribute|
-              value = self.send(name)
+              value = send(name)
               serialize_attribute_to_xml(xml, xml_attribute, value)
             end
           end
         end
 
         response = request.execute!
-
         response.ok?
       end
 
       # Alias for #save!
-      def save ; save! ; end
+      def save
+        save!
+      end
 
       # Proxy method. @see .delete!(login)
       def delete!
-        self.class.delete!(self.primary_key_value)
+        self.class.delete!(primary_key_value)
       end
 
       def serialize_attribute_to_xml(xml, xml_attribute, value)
@@ -99,10 +99,9 @@ module Reactor
 
         response = request.execute!
 
-        return response.ok?
-
-      rescue XmlRequestError => e
-        return false
+        response.ok?
+      rescue XmlRequestError
+        false
       end
 
       # Returns an instance of the class for object with given primary key
@@ -122,43 +121,49 @@ module Reactor
           xml.delete_tag!(base_name)
         end
 
-        return request.execute!.ok?
+        request.execute!.ok?
       end
+
       # Alias for #delete!
-      def delete ; delete! ; end
+      def delete
+        delete!
+      end
 
       class << self
         # This method should never be called directly. It should always be overriden!
         # pk_value is the value of primary key, it should have its double in attributes hash
         # attributes is a hash of attributes set on creation {:name => 'value'}
+
         protected
+
         def create(pk_value, attributes)
           request = XmlRequest.prepare do |xml|
             xml.create_tag!(base_name) do
               attributes.each do |attr_name, attr_value|
-                #serialize_attribute_to_xml(xml, xml_attribute, value)
+                # serialize_attribute_to_xml(xml, xml_attribute, value)
                 xml.value_tag!(attr_name, attr_value)
               end
             end
           end
 
-          response = request.execute!
+          request.execute!
 
-          return get(pk_value)
+          get(pk_value)
         end
       end
 
       protected
+
       def primary_key
         self.class.primary_key
       end
 
       def primary_key_value
-        instance_variable_get("@#{self.primary_key}")
+        instance_variable_get("@#{primary_key}")
       end
 
       def primary_key_value_set(value)
-        instance_variable_set("@#{self.primary_key}", value)
+        instance_variable_set("@#{primary_key}", value)
       end
     end
   end

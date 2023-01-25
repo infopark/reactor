@@ -1,0 +1,25 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-performance
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - lib/generators/cm/migration/templates/**/*
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    "%i": "()"
+    "%w": "()"
+    "%W": "()"
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+Style/RedundantBegin:
+  Enabled: false
+Style/StructInheritance:
+  Enabled: false

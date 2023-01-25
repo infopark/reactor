@@ -1,5 +1,4 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/link/temporary_link'
+require "reactor/link/temporary_link"
 
 module Reactor
   module Attributes
@@ -23,11 +22,13 @@ module Reactor
             # install #size_changed callback
             Array.instance_methods(false).each do |meth|
               old = instance_method(meth)
+              next unless meth.to_sym != :map
+
               define_method(meth) do |*args, &block|
                 detect_modification do
                   old.bind(self).call(*args, &block)
                 end
-              end if meth.to_sym != :map
+              end
             end
 
             def changed?
@@ -43,23 +44,24 @@ module Reactor
             end
 
             protected
+
             def link_ids
-              self.map(&:id).compact
+              map(&:id).compact
             end
 
             def temporary_links_present?
-              self.any? {|l| l.kind_of? Reactor::Link::TemporaryLink }
+              any? { |l| l.is_a? Reactor::Link::TemporaryLink }
             end
 
-            def detect_modification(&block)
+            def detect_modification
               original_link_ids
               yield.tap do
-                @changed = @changed || original_link_ids != link_ids
+                @changed ||= original_link_ids != link_ids
               end
             end
 
             def transform_into_link(link_data)
-              if (link_data.respond_to?(:external?) && link_data.respond_to?(:internal?))
+              if link_data.respond_to?(:external?) && link_data.respond_to?(:internal?)
                 link_data
               else
                 Reactor::Link::TemporaryLink.new(link_data)

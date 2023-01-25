@@ -1,6 +1,5 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/cm/channel'
-require 'reactor/plans/common_channel'
+require "reactor/cm/channel"
+require "reactor/plans/common_channel"
 
 module Reactor
   module Plans

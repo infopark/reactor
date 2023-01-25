@@ -1,3 +1,16 @@
+## 1.29.0
+- Support for Rails 6
+- Support for Ruby 3 and 3.1
+## 1.28.0
+- Support for Rails 5.2
+- Updated dependencies:
+  - mysql_blob_streaming
+  - fiona_connector
+## 1.27.0
+- Support for Rails 5
+## 1.26.1
+- [fix] replace Fixnum with Integer
+- [new] Add unrelease for Obj
 ## 1.26.0
 * Implement Jobs API
 

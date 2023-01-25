@@ -9,11 +9,11 @@ describe Reactor::Cm::Job do
     after  { described_class.delete!(job_name) }
 
     it 'creates a job with given name' do
-      described_class.exists?(job_name).should be_true
+      expect(described_class.exists?(job_name)).to be_truthy
     end
 
     it 'is readable directly from the database' do
-      expect(RailsConnector::Job.exists?(job_name: job_name)).to be_true
+      expect(RailsConnector::Job.exists?(job_name: job_name)).to be_truthy
     end
 
     it 'does not raise exception when getting created job' do
@@ -39,7 +39,7 @@ describe Reactor::Cm::Job do
 
       [:title, :comment, :exec_login, :script, :is_active].each do |attribute|
         it "sets #{attribute}" do
-          subject.send(attribute).should eq(attributes[attribute])
+          expect(subject.send(attribute)).to eq(attributes[attribute])
         end
       end
 
@@ -61,16 +61,16 @@ describe Reactor::Cm::Job do
 
       it "sets schedule" do
         schedule = subject.schedule
-        schedule.should have(2).entries
+        expect(schedule.entries.size).to eq(2)
 
         first = schedule.first
         second = schedule.last
 
-        first[:years].should eq(['2013'])
-        first[:minutes].should eq(['11'])
+        expect(first[:years]).to eq(['2013'])
+        expect(first[:minutes]).to eq(['11'])
 
-        second[:years].should eq(['2012', '2014'])
-        second[:minutes].should eq(['55'])
+        expect(second[:years]).to eq(['2012', '2014'])
+        expect(second[:minutes]).to eq(['55'])
       end
     end
   end

@@ -1,3 +1,4 @@
+# TODO: RailsConnector for rails version 5 has only support for newer version of RailsConnector
 module RailsConnector
   # This trick is a workaround to provide compatiblity with both
   # ObjExtensions-enabled versions (older versions) and ObjExtensions-deprecated
@@ -25,7 +26,7 @@ module RailsConnector
 
   class AbstractObj
     def self.compute_type(type_name)
-      try_type { type_name.safe_constantize } || self
+      try_type { type_name.constantize } || self
     end
   end
 end

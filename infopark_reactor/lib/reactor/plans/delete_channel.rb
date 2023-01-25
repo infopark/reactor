@@ -1,8 +1,6 @@
-# -*- encoding : utf-8 -*-
-require 'reactor/cm/channel'
-require 'reactor/plans/common_channel'
+require "reactor/cm/channel"
+require "reactor/plans/common_channel"
 module Reactor
-
   module Plans
     class DeleteChannel < CommonChannel
       def initialize(*args)
@@ -13,13 +11,12 @@ module Reactor
 
       def prepare!
         error("name is nil") if @name.nil?
-        error("channel #{@name} does not exist") if not Reactor::Cm::Channel.exists?(@name)
+        error("channel #{@name} does not exist") unless Reactor::Cm::Channel.exists?(@name)
       end
 
       def migrate!
         Reactor::Cm::Channel.get(@name).delete!
       end
-
     end
   end
 end

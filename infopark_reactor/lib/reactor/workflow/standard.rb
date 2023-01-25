@@ -1,11 +1,11 @@
-# -*- encoding : utf-8 -*-
 module Reactor
   module Workflow
     class Standard
-      WORKFLOW_ACTIONS = [:take, :forward, :reject, :commit, :release, :sign]
+      WORKFLOW_ACTIONS = %i(take forward reject commit release sign).freeze
 
       def initialize(obj, meta_obj)
-        @obj, @meta_obj = obj, meta_obj
+        @obj = obj
+        @meta_obj = meta_obj
       end
 
       def empty?
@@ -27,6 +27,7 @@ module Reactor
       end
 
       protected
+
       def valid_action?(action)
         @obj.send(:crul_obj).valid_actions.include?(action.to_s)
       end
