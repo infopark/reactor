@@ -82,8 +82,8 @@ module RailsConnector
       @keep_edited = true
     end
 
-    def t(key, opts = {})
-      I18n.t(key, opts)
+    def t(key, **opts)
+      I18n.t(key, **opts)
     end
   end
 end
