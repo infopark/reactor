@@ -18,7 +18,7 @@ module Reactor
 
         value = value.to_datetime if value.is_a?(Date)
         if value.is_a?(Time) || value.is_a?(DateTime)
-          value.utc.to_s(:number)
+          value.utc.to_formatted_s(:number)
         elsif value.is_a?(String)
           if iso_format?(value)
             value
@@ -32,7 +32,7 @@ module Reactor
         parsed_time = Time.zone.parse(value)
         return nil unless parsed_time.present?
 
-        parsed_time.utc.to_s(:number)
+        parsed_time.utc.to_formatted_s(:number)
       end
 
       def iso_format?(val)

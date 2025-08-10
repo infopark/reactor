@@ -185,7 +185,7 @@ module Reactor
           # super # Throws RecordNotFound when changing obj_class
           # AR reload
           send(:clear_aggregation_cache) if respond_to?(:clear_aggregation_cache, true)
-          send(:clear_association_cache)
+          send(:clear_association_cache) if respond_to?(:clear_association_cache, true)
           fresh_object = RailsConnector::AbstractObj.find(id, options)
           @attributes = fresh_object.instance_variable_get("@attributes")
           @attributes_cache = {}
