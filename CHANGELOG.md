@@ -1,3 +1,6 @@
+## 1.29.2
+- Support for Rails 7
+- Fix deprication warnings
 ## 1.29.0
 - Support for Rails 6
 - Support for Ruby 3 and 3.1

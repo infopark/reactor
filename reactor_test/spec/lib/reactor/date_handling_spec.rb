@@ -6,7 +6,7 @@ describe 'Date Handling' do
     context "setting 'ISO' time as string" do
       it "parses the string and stores proper time" do
         t = Time.parse('Wed Aug 24 11:16:46 UTC 2011')
-        iso = t.to_s(:number)
+        iso = t.to_formatted_s(:number)
         @obj.test_attr_date = iso
         expect(@obj.test_attr_date.utc.change(:usec => 0)).to eq(t.change(:usec => 0))
 
