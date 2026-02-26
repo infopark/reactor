@@ -26,11 +26,7 @@ module Reactor
 
       def invalidate(user)
         # Rails 7.1+ versions don't allow nil values and empty string as cache keys.
-        if user.present?
-          @@backing_storage.delete(user.to_s)
-        else
-          Rails.logger.warn "Reactor::Cache::Permission: Skipping cache invalidation because the key derived from user.to_s was blank."
-        end
+        @@backing_storage.delete(user.to_s) if user.present?
       end
     end
   end
