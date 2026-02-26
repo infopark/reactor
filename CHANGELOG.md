@@ -1,3 +1,5 @@
+## 1.29.3
+- Remove unnecessary warnings when invalidating cache
 ## 1.29.2
 - Support for Rails 7
 - Fix deprication warnings
