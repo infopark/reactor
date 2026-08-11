@@ -5,16 +5,16 @@ ReactorTest::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
-  # every request.  This slows down response time but is perfect for development
+  # every request. This slows down response time but is perfect for development
   # since you don't have to restart the webserver when you make code changes.
-  config.cache_classes = false
-
-  # Log error messages when you accidentally call methods on nil.
-  #config.whiny_nils = true
+  if config.respond_to?(:enable_reloading)
+    config.enable_reloading = true
+  else
+    config.cache_classes = false
+  end
 
   # Show full error reports and disable caching
-  config.consider_all_requests_local       = true
-  #config.action_view.debug_rjs             = true # INCOMPATIBLE WITH 3.1
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
@@ -23,9 +23,8 @@ ReactorTest::Application.configure do
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
-  # Only use best-standards-support built into browsers
-  config.action_dispatch.best_standards_support = :builtin
   config.eager_load = false
+
   # Raise exceptions for disallowed deprecations.
   # config.active_support.disallowed_deprecation = :raise
 
@@ -37,14 +36,6 @@ ReactorTest::Application.configure do
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
-
-  # Debug mode disables concatenation and preprocessing of assets.
-  # This option may cause significant delays in view rendering with a large
-  # number of complex assets.
-  config.assets.debug = true
-
-  # Suppress logger output for asset requests.
-  config.assets.quiet = true
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

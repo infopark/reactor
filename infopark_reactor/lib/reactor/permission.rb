@@ -225,6 +225,7 @@ module Reactor
 
       def granted?(user, permission)
         user ||= default_user
+        raise Reactor::Cm::MissingCredentials if user.nil? || user.empty?
         cache.lookup(user, "#{obj.id}:#{permission}") do
           lookup.superuser?(user) || lookup.send("#{permission}?", user)
         end

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "openssl"
+OpenSSL::Provider.load("legacy") if OpenSSL::Provider.respond_to?(:load)
+
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'

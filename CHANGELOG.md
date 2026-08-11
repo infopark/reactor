@@ -1,3 +1,12 @@
+## 1.30.0
+- Support for Rails 7.0, 7.2, and 8.1
+- Support for Ruby 3.2+
+- Drop support for Ruby < 3.2 and Rails < 7.0
+- Add `observer` gem as explicit dependency (extracted from stdlib in Ruby 3.4)
+- Add `sprockets-rails` dependency (no longer included by default in Rails 8)
+- Fix missing credentials not raising `MissingCredentials` when permission cache is warm
+- Upgrade `infopark_fiona_connector` dependency to `~> 7.1`
+
 ## 1.29.3
 - Remove unnecessary warnings when invalidating cache
 ## 1.29.2

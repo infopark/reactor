@@ -11,8 +11,8 @@ services:
     ports:
       - "23306:3306"
   fiona:
-    image: 721039963787.dkr.ecr.eu-central-1.amazonaws.com/mpg-reactor-test
-    # image: fiona7_reactor_test  # uncomment to use local image
+    # image: 721039963787.dkr.ecr.eu-central-1.amazonaws.com/mpg-reactor-test
+    image: fiona7_reactor_test
     container_name: mpg-reactor-test
     command: ["./wait-for-it.sh", "db:3306", "-s", "--timeout=30", "--", "./start.sh"]
     volumes:
